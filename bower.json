@@ -1,0 +1,18 @@
+{
+  "name": "simple_mean",
+  "description": "",
+  "main": "server.js",
+  "authors": [
+    "Bradford Loesch"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/Bradford-Loesch/TADojoChat",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
