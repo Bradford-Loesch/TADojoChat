@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <script type="text/javascript">
+  $('.dropdown-toggle').dropdown()
+  </script>
+  <body>
+    <div class="container-fluid">
+      <h1>Register</h1>
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <form>
+            <input type="text" ng-model="user.first" class="form-control" placeholder="First Name">
+            <input type="text" class="form-control" ng-model="user.last" placeholder="Last Name">
+            <input type="text" class="form-control" ng-model="user.username" placeholder="username">
+            <input type="password" class="form-control" ng-model="user.password" placeholder="password">
+            <input type="password" class="form-control" ng-model="user.password" placeholder="password Confirmation">
+            <br>
+            <input class="btn btn-default" type="submit" ng-click"">
+            <br>
+          </form>
+          <br>
+          <a href="/#!/login">Already have an account?</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
