@@ -1,13 +1,19 @@
-var express = require("express");
-var app = express();
+var express         = require("express"),
+    static_loader   = require("utils"),
+    q               = require("q"),
+    socketIO        = require("socket.io"),
+    session         = require("express-session"),
+    pgSession       = require("connect-pg-simple")(session),
+    pgp             = require("pg-promise")(),
+    routes          = require("./server/config/routes.js"),
+    bp              = require("body-parser"),
+    app             = express();
 
-var q = require("q");
+app.use( express.static( path.join( root, 'client' )));
+app.use( express.static( path.join( root, 'server' )));
+app.use( express.static( path.join( root, 'node_modules' )));
+app.use(bp.json());
 
-var socketIO = require("socket.io");
-
-app.use(require("body-parser").json());
-
-var pgp = require("pg-promise")();
 var db = pgp({
   "database": "chat",
   "user": "coder65535",
@@ -15,8 +21,6 @@ var db = pgp({
   "host": "localhost",
   "port": "5432"
 });
-var session = require("express-session");
-var pgSession = require("connect-pg-simple")(session);
 app.use(session({
   store: new pgSession({
     pg:pgp.pg,
@@ -33,18 +37,17 @@ app.use(session({
   resave:"keep"
 }));
 
-var static_loader = require("utils");
 
 
 var ioDelayed = q.defer();
 
-var routes = require("./server/config/routes.js");
 routes(app, ioDelayed.promise, db);
 
 static_loader.install(app);
 
-app.set("views", __dirname + "/client");
-app.set("view engine", "ejs");
+
+// app.set("views", __dirname + "/client");
+// app.set("view engine", "ejs");
 
 // NOTE: Begin static page routing block
 app.get("/", function(req, res){
@@ -57,7 +60,7 @@ app.get("/", function(req, res){
 // NOTE: End static page routing block
 
 var server = app.listen(8000, function () {
-  console.log("Listening");
+  console.log("Listening on port 8000");
 });
 
 var io = socketIO.listen(server);
