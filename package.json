@@ -1,18 +1,24 @@
 {
-  "name": "simple_mean",
+  "name": "test_json",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Bradford Loesch",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "angular": "^1.6.0",
     "angular-route": "^1.6.0",
+    "async-q": "^0.3.1",
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.15.2",
+    "connect-pg-simple": "^3.1.2",
     "express": "^4.14.0",
-    "mongoose": "^4.7.2"
+    "express-session": "^1.15.0",
+    "pg-promise": "^5.5.6",
+    "q": "^1.4.1",
+    "socket.io": "^1.7.2"
   }
 }
