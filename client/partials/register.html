@@ -5,43 +5,15 @@
   <title></title>
 </head>
 <body>
-  <script type="text/javascript">
-  $(document).ready(function(){
-    $('#menu').slicknav({
-      label: '',
-      duration: 1000,
-      easingOpen: "easeOutBounce", //available with jQuery UI
-      prependTo:'#top'
-    });
-  });
-  </script>
-  <body>
-    <div id="top"></div>
-    <ul id="menu">
-    <li><a href="/#!/">Home</a></li>
-    <li><a href="/#!/pricing">Prices</a></li>
-    <li><a href="/#!/contact">Contact</a></li>
-    <li>Gallery
-            <ul>
-                <li><a href="/#!/gallery#gold">Gold Package</a></li>
-                <li><a href="/#!/gallery#diamond">Diamond Package</a></li>
-                <li><a href="/#!/gallery#vip">Vip</a></li>
-                <li><a href="/#!/gallery#xv">Quinceañera</a></li>
-
-            </ul>
-        </li>
-</ul>
-
     <div class="container-fluid">
       <h1>Register</h1>
       <div class="row">
         <div class="col-md-6 col-md-offset-3">
           <form>
-            <input type="text" ng-model="user.first" class="form-control" placeholder="First Name">
-            <input type="text" class="form-control" ng-model="user.last" placeholder="Last Name">
-            <input type="text" class="form-control" ng-model="user.username" placeholder="username">
-            <input type="password" class="form-control" ng-model="user.password" placeholder="password">
-            <input type="password" class="form-control" ng-model="user.password" placeholder="password Confirmation">
+            <input type="text" class="form-control" ng-model="user.email" placeholder="Email">
+            <input type="text" class="form-control" ng-model="user.username" placeholder="Username">
+            <input type="password" class="form-control" ng-model="user.password" placeholder="Password">
+            <input type="password" class="form-control" ng-model="user.passwordconf" placeholder="Confirm Password">
             <br>
             <input class="btn btn-default" type="submit" ng-click"">
             <br>

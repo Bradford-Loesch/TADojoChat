@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <script type="text/javascript">
+    $(document).ready(function(){
+      $('#menu').slicknav({
+        label: '',
+        duration: 300,
+        easingOpen: "swing",
+        prependTo:'#UserWrapper'
+      });
+    });
+    </script>
+    <body>
+      <div id="top"></div>
+      <ul id="menu">
+        <li>Chatrooms
+          <ul>
+            <li><a href="/#!/chatroom/1">chatroom1</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <div id="UserWrapper">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-7 col-sm-4"></div>
+            <div class="col-xs-5 col-sm-4">
+              <p class="toptxt">Welcome User</p>
+            </div>
+          </div>
+      <h1>Chatrooms</h1>
+        <div id="chats">
+          <div id="header">
+            <h3>Chat room 1</h3>
+          </div>
+          <div id="join">
+            <a href="#!/chatroom/1">join</a>
+          </div>
+          <p>description of chatroom 1</p>
+        </div>
+      </div>
+      <br>
+      <a href="#">Create a new Chatroom</a>
+    </div>
+  </body>
+ </html>

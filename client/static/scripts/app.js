@@ -8,6 +8,14 @@ app.config(function($routeProvider){
         .when('/login',{
             templateUrl:"partials/login.html"
         })
+        .when('/rooms',{
+            templateUrl:"partials/dashboard.html"
+        })
+        .when('/chatroom/1',{
+            templateUrl:"partials/chatroom.html"
+        })
+
+
         .otherwise({
             redirect_to: '/'
         });
