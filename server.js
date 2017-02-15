@@ -1,5 +1,5 @@
 var express         = require("express"),
-    static_loader   = require("utils"),
+    // static_loader   = require("utils"),
     q               = require("q"),
     socketIO        = require("socket.io"),
     session         = require("express-session"),
@@ -47,7 +47,7 @@ var ioDelayed = q.defer();
 
 routes(app, ioDelayed.promise, db);
 
-static_loader.install(app);
+// static_loader.install(app);
 
 
 // app.set("views", __dirname + "/client");
