@@ -6,9 +6,32 @@
 </head>
 <body>
   <script type="text/javascript">
-  $('.dropdown-toggle').dropdown()
+  $(document).ready(function(){
+    $('#menu').slicknav({
+      label: '',
+      duration: 1000,
+      easingOpen: "easeOutBounce", //available with jQuery UI
+      prependTo:'#top'
+    });
+  });
   </script>
   <body>
+    <div id="top"></div>
+    <ul id="menu">
+    <li><a href="/#!/">Home</a></li>
+    <li><a href="/#!/pricing">Prices</a></li>
+    <li><a href="/#!/contact">Contact</a></li>
+    <li>Gallery
+            <ul>
+                <li><a href="/#!/gallery#gold">Gold Package</a></li>
+                <li><a href="/#!/gallery#diamond">Diamond Package</a></li>
+                <li><a href="/#!/gallery#vip">Vip</a></li>
+                <li><a href="/#!/gallery#xv">Quinceañera</a></li>
+
+            </ul>
+        </li>
+</ul>
+
     <div class="container-fluid">
       <h1>Register</h1>
       <div class="row">
