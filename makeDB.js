@@ -21,7 +21,7 @@ pgtools.dropdb(config, "chat").then(()=>{
       +"CREATE FUNCTION set_updated_at() RETURNS TRIGGER AS $set_updated_at$ BEGIN NEW.updated_at = NOW(); RETURN NEW; END; $set_updated_at$ LANGUAGE plpgsql;").then(()=>{
         return db.task(t=>{
           return t.map("SELECT p.tablename as name FROM pg_tables p WHERE p.schemaname = 'public';",{},table=>{
-            return t.any("CREATE TRIGGER ${name#}_updated_at AFTER INSERT ON ${name#} FOR EACH ROW EXECUTE PROCEDURE set_updated_at();",table);
+            return t.any("CREATE TRIGGER ${name#}_updated_at BEFORE UPDATE ON ${name#} FOR EACH ROW EXECUTE PROCEDURE set_updated_at();",table);
           }).then(t.batch).then(()=>{
             console.log("done");
             process.exit(0);
