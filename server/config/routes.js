@@ -9,14 +9,14 @@ module.exports = function(app, ioPromise, db) {
 
   // Fetching/modifying users and user lists
   // Get all users
-  app.get("/users", UsersCtrl.index);
+  // app.get("/users", UsersCtrl.index);
   // Get a subset of users
-  app.post("/users", UsersCtrl.subset);
+  // app.post("/users", UsersCtrl.subset);
   // Get one user
-  app.get("/users/:id", UsersCtrl.show);
+  // app.get("/users/:id", UsersCtrl.show);
   // Update user account
-  app.put("/users/:id", UsersCtrl.update);
+  // app.put("/users/:id", UsersCtrl.update);
   // Delete user account
-  app.get("/users/delete/:id", UsersCtrl.delete);
+  // app.get("/users/delete/:id", UsersCtrl.delete);
 
 };
