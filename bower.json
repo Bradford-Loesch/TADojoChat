@@ -11,12 +11,13 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components"
+    "bower_components",
     "test",
     "tests"
   ],
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "slicknav": "^1.0.10"
+    "slicknav": "^1.0.10",
+    "angular-socket-io": "^0.7.0"
   }
 }
