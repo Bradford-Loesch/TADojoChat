@@ -4,7 +4,7 @@ var express         = require("express"),
     socketIO        = require("socket.io"),
     session         = require("express-session"),
     pgSession       = require("connect-pg-simple")(session),
-    pgp             = require("pg-promise")(),
+    pgp             = require("pg-promise")({promiseLib: q}),
     path            = require( 'path' ),
     routes          = require("./server/config/routes.js"),
     bp              = require("body-parser"),
@@ -17,24 +17,20 @@ app.use( express.static( path.join( root, 'server' )));
 app.use( express.static( path.join( root, 'node_modules' )));
 app.use(bp.json());
 
-var db = pgp({
-  "database": "chat",
-  "user": "coder65535",
-  "password": "Brian1",
-  "host": "localhost",
-  "port": "5432"
-});
+var cn = {
+  database: "chat",
+  user: "coder65535",
+  password: "Brian1",
+  host: "localhost",
+  port: "5432"    
+};
+
+var db = pgp(cn);
 
 app.use(session({
   store: new pgSession({
-    pg:pgp.pg,
-    conString:{
-      "database": "chat",
-      "user": "coder65535",
-      "password": "Brian1",
-      "host": "localhost",
-      "port": "5432"
-    }
+    pg: pgp.pg,
+    conString: cn
   }),
   saveUninitialized:true,
   secret:"SecretPassForSessionData",
