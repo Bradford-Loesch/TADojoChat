@@ -5,59 +5,33 @@ app.factory('UserFactory', ['$http', '$routeParams', function ($http, $routePara
 
     // Retrieve a list of all users
     factory.index = function(callback) {
-        $http.get('/users').then(function(response) {
-            users = response.data;
-            callback(users);
-        }, function(err) {
-            console.log(err);
-        });
+        return $http.get('/profiles')
     };
 
     // Retrieve a subset of users
-    factory.subset = function(filter, callback) {
-        $http.post('/user_subset', filter).then(function(response) {
-            users = response.data;
-            callback(users);
-        }, function(err) {
-            console.log(err);
-        });
+    // Possibly refactor to get with filter information in url
+    factory.subset = function(filter) {
+        return $http.post('/profiles/subset', filter)
     };
 
     // Retrieve data for one user
     factory.show = function (callback) {
-        $http.get(`/users/${$routeParams.id}`).then(function(response) {
-            user = response.data;
-            callback(user);
-        }, function(err) {
-            console.log(err);
-        });
+        return $http.get(`/profiles/${$routeParams.id}`)
     }
 
     // Create a new user
-    factory.create = function(newUser, callback) {
-        $http.post('/register', user).then(function(response) {
-            callback(response.data);
-        }, function(err) {
-            console.log(err);
-        });
+    factory.create = function(newUser) {
+        return $http.post('/profiles', newUser)
     };
 
     // Update user information
-    factory.update = function(editedUser, callback) {
-        $http.put(`/users/${$routeParams.id}`, editedUser).then(function(response) {
-            callback(response);
-        }, function(err) {
-            console.log(err);
-        })
+    factory.update = function(editedUser) {
+        $http.patch(`/profiles/${$routeParams.id}`, editedUser)
     }
 
     // Delete a user
     factory.delete = function(callback) {
-        $http.delete(`/users/${$routeParams.id}`).then(function(response) {
-            callback(response);
-        }, function(err) {
-            console.log(err);
-        });
+        return $http.delete(`/profiles/${$routeParams.id}`)
     }
 
     return factory;
