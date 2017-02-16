@@ -81,7 +81,29 @@ chats h4{
   border-radius: 10px;
   background-color: #3872d1;
 }
-
+.guestMessage{
+  background-color: #313233;
+  height: 3em;
+  width:5em;
+  border-radius: 10px;
+  color: white;
+  padding-top: 0.5em;
+}
+#formBottom{
+  width:100%;
+  bottom: 0;
+  position: absolute;
+}
+#userForm{
+  display: inline-block;
+  width: 300px;
+}
+#buttonForm{
+  display: inline-block;
+}
+div.form-group{
+  display: inline-block;
+}
 @media screen and (max-width: 40em) {
 	.js #menu {
 		display:none;
