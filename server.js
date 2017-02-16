@@ -22,7 +22,7 @@ var cn = {
   user: "coder65535",
   password: "Brian1",
   host: "localhost",
-  port: "5432"    
+  port: 5432    
 };
 
 var db = pgp(cn);
