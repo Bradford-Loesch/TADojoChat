@@ -17,6 +17,12 @@
   ],
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "slicknav": "^1.0.10"
+    "slicknav": "^1.0.10",
+    "angular-socket-io": "latest"
+  },
+  "devDependencies": {
+    "socket.io-client": "latest",
+    "angular-mocks": "latest",
+    "angular-socket.io-mock": "latest"
   }
 }
