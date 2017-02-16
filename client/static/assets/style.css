@@ -74,20 +74,19 @@ chats h4{
 }
 
 .userMessage{
-  background-color: red;
-  height: 3em;
-  width:5em;
   margin-left: 50px;
   border-radius: 10px;
   background-color: #3872d1;
+  word-wrap: break-word;
+
 }
 .guestMessage{
   background-color: #313233;
-  height: 3em;
-  width:5em;
+  margin-left: 2em;
   border-radius: 10px;
   color: white;
-  padding-top: 0.5em;
+  padding: 3px;
+  word-wrap: break-word;
 }
 #formBottom{
   width:100%;
@@ -104,6 +103,7 @@ chats h4{
 div.form-group{
   display: inline-block;
 }
+
 @media screen and (max-width: 40em) {
 	.js #menu {
 		display:none;
@@ -118,6 +118,14 @@ div.form-group{
   #chats{
     width: 95%;
     height: 16em;
+  }
+  .guestMessage{
+    margin-left: 10px;
+    padding: 5px;
+  }
+  .userMessage{
+    margin-left: 10px;
+    padding: 5px;
   }
 
 }
