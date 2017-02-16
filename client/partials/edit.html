@@ -39,11 +39,17 @@
           <div id="userPageImage"></div>
           <div id="userPage">
             <div id="userDescription">
-              <h2>Full name: <span>username</span></h2>
-              <h2>chats joined: <span>chat 1</span></h2>
-              <h2>messages sent: <span>999</span></h2>
-              <h2>Email: <span>999</span></h2>
-              <a href="/#!/edit/user">edit the user</a>
+              <form>
+                <input type="text" class="form-control" ng-model="user.username" placeholder="Username">
+                <input type="text" class="form-control" ng-model="user.email" placeholder="Email">
+                <input type="password" class="form-control" ng-model="user.password" placeholder="Password">
+                <input type="password" class="form-control" ng-model="user.passwordConf" placeholder="Confirm password">
+
+                <br>
+                <input class="btn btn-default" type="submit" ng-click"">
+                <br>
+              </form>
+
             </div>
         </div>
       </div>
