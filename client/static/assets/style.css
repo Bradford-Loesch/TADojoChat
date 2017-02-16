@@ -103,7 +103,9 @@ chats h4{
 div.form-group{
   display: inline-block;
 }
-
+#dash{
+  height:4em;
+}
 @media screen and (max-width: 40em) {
 	.js #menu {
 		display:none;
