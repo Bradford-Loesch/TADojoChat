@@ -14,8 +14,12 @@ app.config(function($routeProvider){
         .when('/chatroom/1',{
             templateUrl:"partials/chatroom.html"
         })
-
-
+        .when('/newRoom',{
+            templateUrl:"partials/newRoom.html"
+        })
+        .when('/user',{
+            templateUrl:"partials/user.html"
+        })
         .otherwise({
             redirect_to: '/'
         });
