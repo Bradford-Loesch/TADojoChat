@@ -1,4 +1,4 @@
-app.controller("MessageController", ["$scope", "MessageFactory", function ($scope, MessageFactory) {
+app.controller("MessageController", ["$scope", "MessageFactory", "socketFactory", function ($scope, MessageFactory, socketFactory) {
     $scope.messages = [];
     $scope.message = {};
 
@@ -31,4 +31,7 @@ app.controller("MessageController", ["$scope", "MessageFactory", function ($scop
     $scope.delete = function(id) {
         MessageFactory.delete(setMessages);
     }
+    socketFactory.onNewMessage(function(data) {
+      
+    })
 }]);

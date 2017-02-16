@@ -68,7 +68,10 @@ var server = app.listen(port, function () {
 });
 
 var io = socketIO.listen(server);
+io.sockets.on('connection', function (socket) {
+  console.log('a user connected');
 // var ioSession = require("io-session");
 // io.use(ioSession(session));
 
 ioDelayed.resolve(io);
+});
