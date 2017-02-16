@@ -1,3 +1,4 @@
+
 var express       = require("express"),
   static_loader   = require("utils"),
   q               = require("q"),
@@ -15,26 +16,23 @@ var express       = require("express"),
 app.use( express.static( path.join( root, "client" )));
 // app.use( express.static( path.join( root, "server" )));  Server-side files SHOULD NEVER be client-accessible!
 // app.use( express.static( path.join( root, "node_modules" )));
+
 app.use(bp.json());
 
-var db = pgp({
-  "database": "chat",
-  "user": "coder65535",
-  "password": "Brian1",
-  "host": "localhost",
-  "port": "5432"
-});
+var cn = {
+  database: "chat",
+  user: "coder65535",
+  password: "Brian1",
+  host: "localhost",
+  port: 5432
+};
+
+var db = pgp(cn);
 
 app.use(session({
   store: new pgSession({
-    pg:pgp.pg,
-    conString:{
-      "database": "chat",
-      "user": "coder65535",
-      "password": "Brian1",
-      "host": "localhost",
-      "port": "5432"
-    }
+    pg: pgp.pg,
+    conString: cn
   }),
   saveUninitialized:true,
   secret:"SecretPassForSessionData",
@@ -48,6 +46,7 @@ var ioDelayed = q.defer();
 routes(app, ioDelayed.promise, db);
 
 static_loader.install(app);
+
 
 var server = app.listen(port, function () {
   console.log( `server running on port ${ port }` );

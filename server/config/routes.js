@@ -3,8 +3,9 @@ var ChatCtrl = require("../controllers/ChatCtrl.js");
 
 module.exports = function(app, ioPromise, db) {
   UsersCtrl.setDB(db);
-  app.get("/register", UsersCtrl.register);
-  app.get("/login", UsersCtrl.login);
+  // Login and registration methods
+  app.post("/register", UsersCtrl.register);
+  app.post("/login", UsersCtrl.login);
   app.get("/logout", UsersCtrl.logout);
   app.get("/profile", UsersCtrl.getMe);
   app.get("/profile/:id", UsersCtrl.getUser);

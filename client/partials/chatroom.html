@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <script type="text/javascript">
+    $(document).ready(function(){
+      $('#menu').slicknav({
+        label: '',
+        duration: 300,
+        easingOpen: "swing",
+        prependTo:'#chatWrapper'
+      });
+    });
+    </script>
+    <body>
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <ul class="nav navbar-nav">
+            <li><a href="/#!/rooms">chatrooms</a></li>
+            <li><a href="#">logout</a></li>
+          </ul>
+        </div>
+      </nav>
+        <div id="top"></div>
+      <ul id="menu">
+        <li><a href="/#!/rooms">Home</a></li>
+        <li>Chatrooms
+          <ul>
+            <li><a href="/#!/chatroom/1">chatroom1</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div id="chatWrapper">
+        <div class="container-fluid">
+          <h3>chatroom1</h3>
+          <br>
+          <p>time message was sent</p>
+          <br>
+          <div class="row">
+            <div class="col-xs-6 col-sm-8"></div>
+            <div class="col-xs-6 col-sm-3">
+              <div class="userMessage">
+                <p>hey whats upppp kladslkjasdflkjsdfljsadflj</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 col-sm-3">
+            <div class="guestMessage">
+            <p>nalfjaldjflsdjflafjlfjlafjl;fjsldjadfasdfasdfasdfasdfasdfasdfasdfasdfasdfk</p>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-3"></div>
+          <div id="formBottom">
+            <form class="form-inline">
+              <div class="form-group">
+                <label for="exampleInputName2"></label>
+                <input id="userForm" type="text" class="form-control" placeholder="Jane Doe">
+              </div>
+              <button id="buttonForm" type="submit" class="btn btn-default">Send</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </body>
+ </html>

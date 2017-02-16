@@ -19,6 +19,12 @@
     "bootstrap": "^3.3.7",
     "slicknav": "^1.0.10",
     "angular": "^1.6.2",
-    "angular-route": "^1.6.2"
+    "angular-route": "^1.6.2",
+    "angular-socket-io": "latest"
+  },
+  "devDependencies": {
+    "socket.io-client": "latest",
+    "angular-mocks": "latest",
+    "angular-socket.io-mock": "latest"
   }
 }
