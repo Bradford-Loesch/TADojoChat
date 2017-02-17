@@ -13,7 +13,6 @@ var express       = require("express"),
   port            = process.env.PORT || 8000,
   app             = express();
 
-app.use( express.static( path.join( root, "client" )));
 // app.use( express.static( path.join( root, "server" )));  Server-side files SHOULD NEVER be client-accessible!
 // app.use( express.static( path.join( root, "node_modules" )));
 
@@ -29,7 +28,7 @@ var cn = {
 
 var db = pgp(cn);
 
-app.use(session({
+var sess = session({
   store: new pgSession({
     pg: pgp.pg,
     conString: cn
@@ -37,9 +36,19 @@ app.use(session({
   saveUninitialized:true,
   secret:"SecretPassForSessionData",
   resave:"keep"
-}));
+})
+
+app.use(sess);
+
+var sharedsession = require("express-socket.io-session");
 
 
+app.get("/", function(req, res){
+  req.session.user = 0;
+  static_loader.serve_file(res, "index.html","../client/")
+})
+
+app.use( express.static( path.join( root, "client" )));
 
 var ioDelayed = q.defer();
 
@@ -53,14 +62,14 @@ var server = app.listen(port, function () {
 });
 
 var io = socketIO.listen(server);
+io.use(sharedsession(sess));
 io.sockets.on('connection', function(socket) {
   console.log("sockets working");
-  console.log(socket.id);
   socket.on('send_message', function(data){
     io.emit('broadcast_message', data);
+    db.any("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3)",[1,socket.handshake.session.user,data.message.content])
   })
   socket.on('disconnect', function(){
-    console.log(socket.id);
     console.log("logged off");
   })
 })
