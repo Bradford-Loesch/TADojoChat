@@ -12,7 +12,7 @@ module.exports = {
       res.json({success:false, err:{header:"Error in register:",items:["Password does not match confirmation"]}});
       return;
     }
-    bcrypt.hash(data.password,15).then((pass)=>db.one("INSERT INTO users_user(email, username, password, created_at, updated_at) VALUES($1,$2,$3, NOW(), NOW()) RETURNING id",[data.email, data.username, pass]))
+    bcrypt.hash(data.password,15).then((pass)=>db.one("INSERT INTO Users(email, username, password, created_at, updated_at) VALUES($1,$2,$3, NOW(), NOW()) RETURNING id",[data.email, data.username, pass]))
     .then((user)=>{
       console.log("new user ",user);
 
@@ -28,7 +28,7 @@ module.exports = {
     var data = req.body;
     console.log("hi");
     console.log(data);
-    db.oneOrNone("SELECT * FROM users_user WHERE username=$1",[data.username]).then(function(user){
+    db.oneOrNone("SELECT * FROM Users WHERE username=$1",[data.username]).then(function(user){
       if (!user){
         throw "User not found";
       }
