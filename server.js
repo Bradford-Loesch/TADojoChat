@@ -53,6 +53,17 @@ var server = app.listen(port, function () {
 });
 
 var io = socketIO.listen(server);
+io.sockets.on('connection', function(socket) {
+  console.log("sockets working");
+  console.log(socket.id);
+  socket.on('send_message', function(data){
+    io.emit('broadcast_message', data);
+  })
+  socket.on('disconnect', function(){
+    console.log(socket.id);
+    console.log("logged off");
+  })
+})
 // var ioSession = require("io-session");
 // io.use(ioSession(session));
 
