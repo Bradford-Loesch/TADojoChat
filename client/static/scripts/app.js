@@ -23,6 +23,9 @@ app.config(function($routeProvider){
         .when('/edit/user',{
             templateUrl:"partials/edit.html"
         })
+        .when('/testing',{
+            templateUrl:"partials/test.html"
+        })
         .otherwise({
             redirect_to: '/'
         });
