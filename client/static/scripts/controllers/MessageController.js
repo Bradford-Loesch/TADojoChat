@@ -2,10 +2,20 @@ app.controller("MessageController", ["$scope", "socketFactory", function ($scope
   console.log("loaded MessageController");
   $scope.allMessages = [];
   $scope.message = {};
+  $scope.user = {username: "Brad"}
+
+  getMessages = function(){
+    socketFactory.index().then(function(res){
+      $scope.allMessages = res.data.allMessages;
+    }, function(){
+      //errors
+    });
+  }
+  // getMessages();
 
   $scope.createMessage = function () {
     console.log($scope.message);
-    socketFactory.socket.emit('send_message', {message: $scope.message});
+    socketFactory.socket.emit('send_message', {'user': $scope.user.username, 'message': $scope.message.content});
     $scope.message = {};
   }
   socketFactory.socket.on('broadcast_message', function(data) {
