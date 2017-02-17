@@ -3,7 +3,7 @@ app.controller('RegisterController',['$scope',  'registerFactory', function ($sc
     $scope.create = function(){
       console.log($scope.user)
       registerFactory.register($scope.user).then(function(res){
-        console.log(res.data);
+        console.log(res.data)
       })
       }
 }]);
