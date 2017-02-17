@@ -4,6 +4,17 @@
     <meta charset="utf-8">
     <title></title>
   </head>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $('#menu').slicknav({
+      label: '',
+      duration: 300,
+      easingOpen: "swing",
+      prependTo:'#newRoomTop'
+    });
+  });
+  </script>
+
   <body>
     <nav class="navbar navbar-inverse">
       <div id="dash" class="container-fluid">
@@ -14,7 +25,16 @@
         </ul>
       </div>
     </nav>
-
+    <ul id="menu">
+      <li><a href="/#!/rooms">home</a></li>
+      <li><a href="/#!/user">My Account</a></li>
+      <li>Chatrooms
+        <ul>
+          <li><a href="/#!/chatroom/1">chatroom1</a></li>
+        </ul>
+      </li>
+    </ul>
+    <div id="newRoomTop"></div>
     <div class="container-fluid">
       <div id="formLogin">
         <h1>Create a chatroom</h1>

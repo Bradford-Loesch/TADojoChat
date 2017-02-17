@@ -4,18 +4,16 @@
     <meta charset="utf-8">
     <title></title>
   </head>
-  <body>
-    <script type="text/javascript">
-    $(document).ready(function(){
-      $('#menu').slicknav({
-        label: '',
-        duration: 300,
-        easingOpen: "swing",
-        prependTo:'#UserWrapper'
-      });
-    });
-    </script>
     <body>
+      <ul id="menu">
+        <li><a href="/#!/user">user</a></li>
+        <li>Chatrooms
+          <ul>
+            <li><a href="/#!/chatroom/1">chatroom1</a></li>
+
+          </ul>
+        </li>
+      </ul>
       <div id="top"></div>
       <nav class="navbar navbar-inverse">
         <div id="dash" class="container-fluid">
