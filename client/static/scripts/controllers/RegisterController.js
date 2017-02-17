@@ -5,5 +5,5 @@ app.controller('RegisterController',['$scope',  'registerFactory', function ($sc
       registerFactory.register($scope.user).then(function(res){
         console.log(res.data)
       })
-      }
-}]);
+    }
+  }]);
