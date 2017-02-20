@@ -64,15 +64,18 @@ var server = app.listen(port, function () {
 var io = socketIO.listen(server);
 io.use(sharedsession(sess));
 io.sockets.on('connection', function(socket) {
+  // Emit to all users that a new user has joined
+  io.emit('broadcast_user_connect', ******data******)
+
+  // Receive messages from user and emit to all users
   socket.on('send_message', function(data){
     io.emit('broadcast_message', data);
     db.any("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3)",[1,socket.handshake.session.user,data.message.content])
   })
-  socket.on('user_join', function(){
-    io.emit('broadcast_users', data)
-  })
+  // Remove user when diconnection occurs
   socket.on('disconnect', function(){
-    console.log("logged off");
+    io.emit('broadcast_user_disconnect', *****data*****)
+    // update table
   })
 })
 // var ioSession = require("io-session");

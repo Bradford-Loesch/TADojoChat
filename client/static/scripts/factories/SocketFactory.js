@@ -1,4 +1,4 @@
-app.factory('SocketFactory',['$http', function ($http, SocketFactory) {
+app.factory('SocketFactory',[function () {
   var factory = {};
   var socket = io.connect()
 
@@ -7,8 +7,16 @@ app.factory('SocketFactory',['$http', function ($http, SocketFactory) {
     socket.emit('send_message', data);
   }
 
-  factory.onBroadcast = function(cb) {
-    socket.on('broadcast_message', cb);
+  factory.onBroadcast = function(callback) {
+    socket.on('broadcast_message', callback);
+  }
+
+  factory.onUserConnect = function(callback) {
+    socket.on('broadcast_user_connect', callback)
+  }
+
+  factory.onUserDisconnect = function(callback) {
+    socket.on('broadcast_user_disconnect', callback)
   }
 
 
