@@ -5,7 +5,7 @@
     <title></title>
   </head>
   <body>
-    <div class="container-fluid">
+    <div class="container-fluid" ng-controller="LoginController">
       <div id="formLogin">
       <img src="client/static/images/login.png" alt="">
       <h1>Login</h1>
@@ -15,11 +15,11 @@
             <input type="text" class="form-control" ng-model="user.username" placeholder="username">
             <input type="password" class="form-control" ng-model="user.password" placeholder="password">
             <br>
-            <input class="btn btn-default" type="submit" ng-click"">
+            <input class="btn btn-default" type="submit" ng-click="login()">
             <br>
           </form>
             <br>
-          <a href="/#!/login">Or you can Register here</a>
+          <a href="/#!/">Or you can Register here</a>
         </div>
         </div>
       </div>

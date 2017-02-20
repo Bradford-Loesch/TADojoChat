@@ -1,7 +1,9 @@
-app.controller("LoginController", ["$scope", "UserFactory", function ($scope, UserFactory) {
-        // Login call to factory
-    $scope.login = function ()
-    {
-        UserFactory.login($scope.user, setUsers);
-    };
-}]);
+app.controller('LoginController',['$scope', '$location', 'loginFactory', function ($scope, $location,loginFactory){
+    $scope.login = function(){
+      loginFactory.login($scope.user).then(function(res){
+        if(res.data.success == true){
+          $location.url('/rooms')
+        }
+      })
+    }
+  }]);

@@ -25,25 +25,21 @@ module.exports = {
       db.one("SELECT * FROM Users WHERE username=$1",[data.username]).then(function(user){
         if (user){
           errors.append("User already exists");
-          res.json({success:false, err:{header:"Error in register:",items:errors}});
-          return null;
-        } else {
-          return db.one("SELECT * FROM Users WHERE email=$1",[data.email]).then(function(email){
-            if (email){
-              errors.append("Email already exists");
-              res.json({success:false, err:{header:"Error in register:",items:errors}});
-              return null;
-            }
-            return bcrypt.hash(data.password,14).then((pass)=>db.one("INSERT INTO Users(email, username, password, created_at, updated_at) VALUES($1,$2,$3, NOW(), NOW()) RETURNING id",[data.email, data.username, pass]))
-            .then((user)=>{
-              console.log("new user ",user);
-
-              req.session.user = user.id;
-              res.json({success:true});
-              return null;
-            });
-          });
         }
+        return db.one("SELECT * FROM Users WHERE email=$1",[data.email]).then(function(email){
+          if (email){
+            errors.append("Email already exists");
+            res.json({success:false, err:{header:"Error in register:",items:errors}});
+            return null;
+          }
+          return bcrypt.hash(data.password,14).then((pass)=>db.one("INSERT INTO Users(email, username, password, created_at, updated_at) VALUES($1,$2,$3, NOW(), NOW()) RETURNING id",[data.email, data.username, pass]))
+          .then((user)=>{
+            console.log("new user ",user);
+            req.session.user = user.id;
+            res.json({success:true});
+            return null;
+          });
+        });
 
       }).catch((err)=>{
         res.json({success:false, err:{header:"Error in register:",items:[err.message||err]}});

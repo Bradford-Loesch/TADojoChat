@@ -1,10 +1,11 @@
-app.controller("UserController", ["$scope", "UserFactory", function ($scope, UserFactory) {
-    // User variable
-    $scope.user = {};
-
-    // Function to call factory create
-    $scope.create = function (newUser)
-    {
-        UserFactory.create(newUser);
-    };
+app.controller('RegisterController',['$scope', '$location', 'registerFactory', function ($scope, $location ,registerFactory) {
+  $scope.create = function(){
+    console.log($scope.user)
+    registerFactory.register($scope.user).then(function(res){
+      console.log(res.data.success)
+      if(res.data.success == true){
+        $location.url('/rooms')
+      }
+    })
+  }
 }]);

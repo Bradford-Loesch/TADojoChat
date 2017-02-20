@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+    <body>
+      <ul id="menu">
+        <li><a href="/#!/user">user</a></li>
+        <li>Chatrooms
+          <ul>
+            <li><a href="/#!/chatroom/1">chatroom1</a></li>
+
+          </ul>
+        </li>
+      </ul>
+      <div id="top"></div>
+      <nav class="navbar navbar-inverse">
+        <div id="dash" class="container-fluid">
+          <ul class="nav navbar-nav">
+            <li><a href="/#!/rooms">Chatrooms</a></li>
+            <li><a href="/#!/user">My Account</a></li>
+
+            <li><a href="#">Logout</a></li>
+          </ul>
+        </div>
+      </nav>
+      <ul id="menu">
+        <li>Chatrooms
+          <ul>
+            <li><a href="/#!/chatroom/1">chatroom1</a></li>
+          </ul>
+        </li>
+      </ul>
+        <div class="container-fluid">
+          <h1>User</h1>
+          <div id="userPageImage"></div>
+          <div id="userPage">
+            <div id="userDescription">
+              <form>
+                <input type="text" class="form-control" ng-model="user.username" placeholder="Username">
+                <input type="text" class="form-control" ng-model="user.email" placeholder="Email">
+                <input type="password" class="form-control" ng-model="user.password" placeholder="Password">
+                <input type="password" class="form-control" ng-model="user.passwordConf" placeholder="Confirm password">
+
+                <br>
+                <input class="btn btn-default" type="submit" ng-click"">
+                <br>
+              </form>
+
+            </div>
+        </div>
+      </div>
+  </body>
+ </html>

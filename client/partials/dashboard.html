@@ -18,14 +18,17 @@
     <body>
       <div id="top"></div>
       <nav class="navbar navbar-inverse">
+
         <div id="dash" class="container-fluid">
           <ul class="nav navbar-nav">
-            <li><a href="/#!/rooms">chatrooms</a></li>
-            <li><a href="#">logout</a></li>
+            <li><a href="/#!/rooms">Chatrooms</a></li>
+            <li><a href="/#!/user">My Account</a></li>
+            <li><a href="#">Logout</a></li>
           </ul>
         </div>
       </nav>
       <ul id="menu">
+        <li><a href="/#!/user">user</a></li>
         <li>Chatrooms
           <ul>
             <li><a href="/#!/chatroom/1">chatroom1</a></li>
@@ -34,11 +37,6 @@
       </ul>
       <div id="UserWrapper">
         <div class="container-fluid">
-          <div class="row">
-            <div class="col-xs-7 col-sm-4"></div>
-            <div class="col-xs-5 col-sm-4">
-            </div>
-          </div>
       <h1>Chatrooms</h1>
         <div id="chats">
           <div id="header">
@@ -49,9 +47,8 @@
           </div>
           <p>description of chatroom 1</p>
         </div>
+        <a style="color:red;"href="/#!/newRoom">Create a new Chatroom</a>
       </div>
-      <br>
-      <a href="">Create a new Chatroom</a>
     </div>
   </body>
  </html>

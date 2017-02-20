@@ -1,0 +1,9 @@
+
+<div class="wrapper" ng-controller="MessageController">
+  <ul ng-repeat = "message in allMessages">
+    <li ng-bind="message"> </li>
+    <li>{{ message.message.content }}</li>
+  </ul>
+  <input type="text" name="message" ng-model="message.content" value="">
+  <button type="button" name="send" ng-href="#here" ng-click="createMessage()">Send</button>
+</div>
