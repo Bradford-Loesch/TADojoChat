@@ -26,7 +26,7 @@ module.exports = {
         if (user){
           errors.push("User already exists");
         }
-        return db.one("SELECT * FROM Users WHERE email=$1",[data.email]).then(function(email){
+        return db.oneOrNone("SELECT * FROM Users WHERE email=$1",[data.email]).then(function(email){
           if (email){
             errors.push("Email already exists");
             res.json({success:false, err:{header:"Error in register:",items:errors}});
