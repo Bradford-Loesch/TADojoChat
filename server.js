@@ -36,7 +36,7 @@ var sess = session({
   saveUninitialized:true,
   secret:"SecretPassForSessionData",
   resave:"keep"
-})
+});
 
 app.use(sess);
 
@@ -45,8 +45,8 @@ var sharedsession = require("express-socket.io-session");
 
 app.get("/", function(req, res){
   req.session.user = 0;
-  static_loader.serve_file(res, "index.html","../client/")
-})
+  static_loader.serve_file(res, "index.html","../client/");
+});
 
 app.use( express.static( path.join( root, "client" )));
 
@@ -63,16 +63,16 @@ var server = app.listen(port, function () {
 
 var io = socketIO.listen(server);
 io.use(sharedsession(sess));
-io.sockets.on('connection', function(socket) {
+io.sockets.on("connection", function(socket) {
   console.log("sockets working");
-  socket.on('send_message', function(data){
-    io.emit('broadcast_message', data);
-    db.any("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3)",[1,socket.handshake.session.user,data.message.content])
-  })
-  socket.on('disconnect', function(){
+  socket.on("send_message", function(data){
+    io.emit("broadcast_message", data);
+    db.any("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3)",[1,socket.handshake.session.user,data.message.content]);
+  });
+  socket.on("disconnect", function(){
     console.log("logged off");
-  })
-})
+  });
+});
 // var ioSession = require("io-session");
 // io.use(ioSession(session));
 

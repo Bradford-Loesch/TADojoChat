@@ -1,6 +1,6 @@
-app.factory('socketFactory',['$http', function ($http, socketFactory) {
+app.factory("socketFactory",[function () {
   var factory = {};
   console.log("loaded socket factory");
-  factory.socket = io.connect()
+  factory.socket = io.connect();
   return factory;
-}])
+}]);

@@ -1,34 +1,30 @@
-app.controller("UserController", ["$scope", "UserFactory", function ($scope, UserFactory) {
-    $scope.users = [];
-    $scope.user = {};
-
-    $scope.setUsers = function() {
-        UserFactory.index(function (data) {
-            $scope.users = data;
-        });
-    }
-    $scope.setUsers();
-
-    function setUser(data) {
-        $scope.user = data;
-        $scope.newUser = {};
-    }
-
-    $scope.show = function() {
-        UserFactory.show(setUser);
-    }
-
-    $scope.create = function (newUser)
-    {
-        UserFactory.create(newUser, setUsers);
-    };
-
-    $scope.update = function() {
-        UserFactory.update($scope.newUser, setUsers);
-        newUser = {};
-    }
-
-    $scope.delete = function(id) {
-        UserFactory.delete(setUsers);
-    }
+app.controller("UserController", ["$scope", "$location", "UserFactory", function ($scope, $location, UserFactory) {
+  $scope.login = function(){
+    UserFactory.login($scope.user).then(res=>{
+      if(!res.data.err){
+        $location.url("/rooms");
+      } else {
+        throw res.data.err;
+      }
+      return null;
+    }).catch(console.error);
+  };
+  $scope.create = function(){
+    console.log($scope.user);
+    UserFactory.register($scope.user).then(res=>{
+      console.log(res.data.success);
+      if(!res.data.err){
+        $location.url("/rooms");
+      } else {
+        throw res.data.err;
+      }
+      return null;
+    }).catch(console.error);
+  };
+  $scope.get = function(id){
+    UserFactory.get(id).then(userData=>{
+      $scope.user = userData;
+      return null;
+    }).catch(console.error);
+  };
 }]);
