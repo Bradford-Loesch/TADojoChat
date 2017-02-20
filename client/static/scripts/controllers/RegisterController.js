@@ -2,7 +2,7 @@ app.controller('RegisterController',['$scope', '$location', 'registerFactory', f
   $scope.create = function(){
     console.log($scope.user)
     registerFactory.register($scope.user).then(function(res){
-      console.log(res.data.success)
+      console.log(res.data)
       if(res.data.success == true){
         $location.url('/rooms')
       }

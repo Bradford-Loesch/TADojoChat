@@ -7,5 +7,8 @@ app.factory('loginFactory', ['$http', function($http) {
       console.log(user)
         return $http.post('/login',user)
     }
+    factory.logout = function(){
+      return $http.get('/logout')
+    }
     return factory;
 }]);
