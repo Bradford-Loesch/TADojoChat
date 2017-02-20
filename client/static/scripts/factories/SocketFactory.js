@@ -1,6 +1,16 @@
-app.factory('socketFactory',['$http', function ($http, socketFactory) {
+app.factory('SocketFactory',['$http', function ($http, SocketFactory) {
   var factory = {};
-  console.log("loaded socket factory");
-  factory.socket = io.connect()
+  var socket = io.connect()
+
+
+  factory.sendMessage = function(data) {
+    socket.emit('send_message', data);
+  }
+
+  factory.onBroadcast = function(cb) {
+    socket.on('broadcast_message', cb);
+  }
+
+
   return factory;
 }])

@@ -64,10 +64,12 @@ var server = app.listen(port, function () {
 var io = socketIO.listen(server);
 io.use(sharedsession(sess));
 io.sockets.on('connection', function(socket) {
-  console.log("sockets working");
   socket.on('send_message', function(data){
     io.emit('broadcast_message', data);
     db.any("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3)",[1,socket.handshake.session.user,data.message.content])
+  })
+  socket.on('user_join', function(){
+    io.emit('broadcast_users', data)
   })
   socket.on('disconnect', function(){
     console.log("logged off");
