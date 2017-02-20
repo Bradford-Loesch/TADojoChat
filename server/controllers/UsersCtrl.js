@@ -13,22 +13,22 @@ module.exports = {
     var data = req.body;
     var errors = [];
     if (data.password !== data.passconf){
-      errors.append("Password does not match confirmation");
+      errors.push("Password does not match confirmation");
     }
     if (!data.email.match(/^(?=[A-Z0-9][A-Z0-9@._%+-]{5,253}$)[A-Z0-9._%+-]{1,64}@(?:(?=[A-Z0-9-]{1,63}\.)[A-Z0-9]+(?:-[A-Z0-9]+)*\.){1,8}[A-Z]{2,63}$/i)){
-      errors.append("Invalid email");
+      errors.push("Invalid email");
     }
-    if (data.username.toLowerCase() === "anonymous" || data.username.toLowerCase() === "[deleted]" || data.username.match(/^[ -~]+$/)){//space to tilde enforces printable ascii
-      errors.append("Invalid username");
+    if (data.username.toLowerCase() === "anonymous" || data.username.toLowerCase() === "[deleted]" || !data.username.match(/^[ -~]+$/)){//space to tilde enforces printable ascii
+      errors.push("Invalid username");
       res.json({success:false, err:{header:"Error in register:",items:errors}});
     } else {
-      db.one("SELECT * FROM Users WHERE username=$1",[data.username]).then(function(user){
+      db.oneOrNone("SELECT * FROM Users WHERE username=$1",[data.username]).then(function(user){
         if (user){
-          errors.append("User already exists");
+          errors.push("User already exists");
         }
         return db.one("SELECT * FROM Users WHERE email=$1",[data.email]).then(function(email){
           if (email){
-            errors.append("Email already exists");
+            errors.push("Email already exists");
             res.json({success:false, err:{header:"Error in register:",items:errors}});
             return null;
           }
