@@ -73,6 +73,15 @@ module.exports = {
     delete req.session.is_admin;
     res.redirect("/");
   },
+  getUsers:function(req, res){
+    db.many("SELECT * FROM Users").then(users=>{
+      res.json(users);
+      return null;
+    }).catch(err=>{
+      console.error(err);
+      res.json(err);
+    });
+  },
   getMe:function(req, res){
     db.one("SELECT * FROM Users WHERE id=$1",[req.session.user]).then(res.json).catch(err=>{
       console.error(err);
@@ -135,7 +144,8 @@ module.exports = {
         delete data.password; //It might be empty, so remove it.
       }
       if (req.file){
-        operations.push(q.denodefy(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename));
+        operations.push((q.denodefy(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename)).then(()=>1));//give an actual value so that it's in the .then
+        operations.push(q.denodefy(fs.unlink),user.avatar);
         data.avatar = "../client/avatars/"+user.username+"/"+req.file.filename;
       }
       return Promise.all(operations);
@@ -145,7 +155,7 @@ module.exports = {
         user.password = pass;
       }
       if (avatar){
-        user.avatar = avatar;
+        user.avatar = data.avatar;
       }
       for (let key in data){
         user[key]=data[key];
