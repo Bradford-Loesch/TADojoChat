@@ -17,7 +17,7 @@
     </script>
     <body>
       <div id="top"></div>
-      <nav class="navbar navbar-inverse" ng-controller="roomsController" ng-init="index()">
+      <nav class="navbar navbar-inverse">
 
         <div id="dash" class="container-fluid">
           <ul class="nav navbar-nav">
@@ -34,17 +34,32 @@
           </ul>
         </li>
       </ul>
-      <div id="UserWrapper">
+      <div id="UserWrapper"  ng-controller="roomsController" ng-init="index()">
         <div class="container-fluid">
       <h1>Chatrooms</h1>
         <div id="chats">
-          <div id="header">
-            <h3>Chat room 1</h3>
-          </div>
-          <div id="join">
-            <a href="#!/chatroom/1">join</a>
-          </div>
-          <p>description of chatroom 1</p>
+
+          <table>
+            <thead>
+              <!-- <th>Chatroom</th> -->
+              <!-- <th>action</th> -->
+            </thead>
+            <tbody>
+              <tr ng-repeat="room in rooms">
+                <td>
+
+                  <div id="header">
+                    <h3>{{ room.name }}</h3>
+                  </div>
+                  <div id="join">
+                    <a href="#!/chatroom/1">join</a>
+                  </div>
+                  <p>{{ room.description }}</p>
+                </td>
+              </tr>
+            </tbody>
+            </tbody>
+          </table>
         </div>
         <a style="color:red;"href="/#!/newRoom">Create a new Chatroom</a>
       </div>

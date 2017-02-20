@@ -16,6 +16,7 @@ module.exports = {
     });
   },
   makeRoom:function(req, res){
+    console.log(req.body)
     db.any("INSERT INTO Room(name, owner_id) VALUES ($1, $2)",[req.body.name, req.session.user]).then(()=>{
       res.json({});
       return null;
