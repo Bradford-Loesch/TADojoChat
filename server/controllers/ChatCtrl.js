@@ -1,5 +1,3 @@
-
-
 var db = null;
 
 module.exports = {
@@ -7,7 +5,7 @@ module.exports = {
     db = db||dbObj;
   },
   listRooms:function(req, res){
-    db.any("SELECT * FROM Room").then(rooms=>{
+    db.any("SELECT * FROM Room WHERE is_private = false").then(rooms=>{
       res.json({"rooms":rooms});
       return null;
     }).catch(err=>{
@@ -17,7 +15,8 @@ module.exports = {
   },
   makeRoom:function(req, res){
     console.log(req.body)
-    db.any("INSERT INTO Room(name, owner_id) VALUES ($1, $2)",[req.body.name, req.session.user]).then(()=>{
+
+    db.any("INSERT INTO Room(name, owner_id, description) VALUES ($1, $2, $3)",[req.body.name, req.session.user, req.body.description]).then(()=>{
       res.json({});
       return null;
     }).catch(err=>{

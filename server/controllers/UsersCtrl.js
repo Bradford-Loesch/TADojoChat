@@ -15,10 +15,13 @@ module.exports = {
     if (data.password !== data.passconf){
       errors.push("Password does not match confirmation");
     }
-    if (!data.email.match(/^(?=[A-Z0-9][A-Z0-9@._%+-]{5,253}$)[A-Z0-9._%+-]{1,64}@(?:(?=[A-Z0-9-]{1,63}\.)[A-Z0-9]+(?:-[A-Z0-9]+)*\.){1,8}[A-Z]{2,63}$/i)){
+    if (!data.password){
+      errors.push("Invalid password");
+    }
+    if (!data.email || !data.email.match(/^(?=[A-Z0-9][A-Z0-9@._%+-]{5,253}$)[A-Z0-9._%+-]{1,64}@(?:(?=[A-Z0-9-]{1,63}\.)[A-Z0-9]+(?:-[A-Z0-9]+)*\.){1,8}[A-Z]{2,63}$/i)){
       errors.push("Invalid email");
     }
-    if (data.username.toLowerCase() === "anonymous" || data.username.toLowerCase() === "[deleted]" || !data.username.match(/^[ -~]+$/)){//space to tilde enforces printable ascii
+    if (!data.username || data.username.toLowerCase() === "anonymous" || data.username.toLowerCase() === "[deleted]" || !data.username.match(/^[ -~]+$/)){//space to tilde enforces printable ascii
       errors.push("Invalid username");
       res.json({success:false, err:{header:"Error in register:",items:errors}});
     } else {
