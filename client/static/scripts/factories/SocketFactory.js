@@ -1,4 +1,4 @@
-app.factory('SocketFactory',[function () {
+app.factory('SocketFactory',['$routeParams', function ($routeParams) {
   var factory = {};
   var socket = io.connect()
 
@@ -18,7 +18,6 @@ app.factory('SocketFactory',[function () {
   factory.onUserDisconnect = function(callback) {
     socket.on('broadcast_user_disconnect', callback)
   }
-
 
   return factory;
 }])

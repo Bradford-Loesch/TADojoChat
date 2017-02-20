@@ -65,7 +65,7 @@ var io = socketIO.listen(server);
 io.use(sharedsession(sess));
 io.sockets.on('connection', function(socket) {
   // Emit to all users that a new user has joined
-  io.emit('broadcast_user_connect', ******data******)
+  // io.emit('broadcast_user_connect', ******data******)
 
   // Receive messages from user and emit to all users
   socket.on('send_message', function(data){
@@ -74,8 +74,8 @@ io.sockets.on('connection', function(socket) {
   })
   // Remove user when diconnection occurs
   socket.on('disconnect', function(){
-    io.emit('broadcast_user_disconnect', *****data*****)
-    // update table
+    io.emit('broadcast_user_disconnect', socket.handshake.session.user)
+    db.any("DELETE FROM User_Rooms WHERE user_id = $1 AND name = $2", [socket.handshake.session.user, 'first'])
   })
 })
 // var ioSession = require("io-session");

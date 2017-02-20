@@ -8,8 +8,8 @@ app.controller("MessageController", ["$scope", "SocketFactory", "MessageFactory"
   // http functions for messsages
   getMessages = function(){
     SocketFactory.getMessages().then(function(res){
-      // $scope.allMessages = res.data.allMessages;
-      print res.data
+      $scope.allMessages = res.data.messages;
+      $scope.allUsers = res.data.users;
     });
   }
   getMessages();
@@ -24,14 +24,14 @@ app.controller("MessageController", ["$scope", "SocketFactory", "MessageFactory"
   }
 
   // receive data from message broadcasts
-  SocketFactory.onBroadcast(function(data){
-    $scope.allMessages.push(data);
+  SocketFactory.onBroadcast(function(res){
+    $scope.allMessages.push(res.data.message);
     $scope.$apply();
   })
 
   // receive data from user connect broadcasts
   SocketFactory.onUserConnect(function(){
-    $scope.allUsers.push(DATA);
+    $scope.allUsers.push(res.data.user);
     $scope.$apply();
   })
 
