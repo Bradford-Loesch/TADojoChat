@@ -10,6 +10,8 @@ app.factory("UserFactory", ["$http", function ($http) {
   factory.register = function(user) {
     return $http.post("/register", user);
   };
-
+  factory.logout = function(){
+    return $http.get('/logout')
+  }
   return factory;
 }]);
