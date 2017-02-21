@@ -1,3 +1,8 @@
+<script type="text/javascript">
+  $('#submit').on('click',function(){
+    $('#validator').addClass('animated shake')
+  })
+</script>
 <div class="container-fluid">
   <div ng-controller="RegisterController">
     <h1>Register</h1>
@@ -9,11 +14,17 @@
           <input type="password" class="form-control" ng-model="user.password" placeholder="Password">
           <input type="password" class="form-control" ng-model="user.passconf" placeholder="Confirm Password">
           <br>
-          <input class="btn btn-default" type="submit" ng-click="create()">
+          <input class="btn btn-default" id="submit" type="submit" ng-click="create()">
           <br>
         </form>
         <br>
         <a href="/#!/login">Already have an account?</a>
+        <table>
+          <tr ng-repeat="validate in validations">
+            <td id="validator" ><h1>dsfs{{validate}}</h1></td>
+          </tr>
+        </table>
+
       </div>
     </div>
   </div>

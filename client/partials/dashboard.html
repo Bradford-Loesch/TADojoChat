@@ -38,26 +38,19 @@
         <div class="container-fluid">
       <h1>Chatrooms</h1>
         <div id="chats">
-
           <table>
-            <thead>
-              <!-- <th>Chatroom</th> -->
-              <!-- <th>action</th> -->
-            </thead>
             <tbody>
               <tr ng-repeat="room in rooms">
                 <td>
-
                   <div id="header">
                     <h3>{{ room.name }}</h3>
                   </div>
                   <div id="join">
-                    <a href="#!/chatroom/1">join</a>
+                    <a href="#!/chatroom/{{room.id}}">join</a>
                   </div>
                   <p>{{ room.description }}</p>
                 </td>
               </tr>
-            </tbody>
             </tbody>
           </table>
         </div>
