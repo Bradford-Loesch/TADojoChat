@@ -28,8 +28,10 @@ module.exports = {
   },
 
   getRoom:function(req, res){
-    db.any("SELECT * FROM Message JOIN Room ON Room.id = Message.room_id JOIN Users ON Users.id = Message.poster_id WHERE Room.name=$1 ORDER BY created_at ASC",[req.params.name]).then(messages=>{
-      return db.any("SELECT * from User_Rooms JOIN Room ON Room.id = room_id WHERE Room.name = $1",[req.params.name]).then(users=>{
+    db.any("SELECT * FROM Message JOIN Room ON Room.id = Message.room_id JOIN Users ON Users.id = Message.poster_id WHERE Room.id=$1 ORDER BY Message.created_at ASC",[req.params.room]).then(messages=>{
+      return db.any("SELECT * from User_Rooms JOIN Room ON Room.id = room_id JOIN Users on User_rooms.user_id=Users.id WHERE Room.id = $1",[req.params.room]).then(users=>{
+        console.log("**********ChatCtrl users*********");
+        console.log(users)
         res.json({"users":users, "messages":messages});
         return null;
       });
@@ -38,7 +40,7 @@ module.exports = {
       res.json({err:err});
     });
   },
-  
+
   deleteRoom:function(req, res){
     db.one("SELECT * FROM Room WHERE Room.name = $1",[req.params.name]).then(room=>{
       if (!req.session.is_admin && req.session.user !== room.owner_id){

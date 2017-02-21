@@ -65,18 +65,31 @@ var io = socketIO.listen(server);
 io.use(sharedsession(sess));
 io.sockets.on('connection', function(socket) {
   // Emit to all users that a new user has joined
-  io.emit('broadcast_user_connect', socket.handshake.session.user)
-  db.any("INSERT INTO User_Rooms(room_id, user_id) VALUES($1, $2)", ['**ROOMID**', socket.handshake.session.user])
+  db.any("INSERT INTO User_Rooms(room_id, user_id) VALUES($1, $2)", [1, socket.handshake.session.user]).then(function(){
+    console.log("********** session user id **************");
+    io.emit('broadcast_user_connect', socket.handshake.session.user)
+  }).catch(err=>{
+    console.error(err);
+  });
 
   // Receive messages from user and emit to all users
   socket.on('send_message', function(data){
-    io.emit('broadcast_message', data);
-    db.any("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3)",[1,socket.handshake.session.user,data.message.content])
+    console.log('***********data**************');
+    console.log(data);
+    db.any("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3)",[data.room, socket.handshake.session.user, data.message]).then(newMessage=>{
+      console.log('************newMessage*************');
+      console.log(newMessage);
+      db.any("SELECT username FROM Users JOIN Message ON Users.id = Message.poster_id WHERE Message.id=$1",[newMessage.id])
+    }).then(user=>{
+      console.log('**********sent message************');
+      console.log(message);
+      io.emit('broadcast_message', message);
+    })
   })
   // Remove user when diconnection occurs
   socket.on('disconnect', function(){
     io.emit('broadcast_user_disconnect', socket.handshake.session.user)
-    db.any("DELETE FROM User_Rooms WHERE user_id = $1 AND name = $2", [socket.handshake.session.user, '**ROOMID**'])
+    db.any("DELETE FROM User_Rooms WHERE user_id = $1", [socket.handshake.session.user])
   })
 })
 // var ioSession = require("io-session");
