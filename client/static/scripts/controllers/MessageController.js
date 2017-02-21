@@ -18,19 +18,19 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
 
   // socket functions for messages
   // receive data from user connect broadcasts
-  // SocketFactory.onUserConnect(function(data){
-  //   console.log("data from user connect");
-  //   console.log(data);
-  //   console.log("$scope.allUsers");
-  //   console.log($scope.allUsers);
-  //   if ($scope.allUsers.length == 0) {
-  //     getMessages();
-  //   }
-  //   else {
-  //     $scope.allUsers.push(data);
-  //     $scope.$apply();
-  //   }
-  // });
+  SocketFactory.onUserConnect(function(data){
+    console.log("data from user connect");
+    console.log(data);
+    console.log("$scope.allUsers");
+    console.log($scope.allUsers);
+    if ($scope.allUsers.length == 0) {
+      getMessages();
+    }
+    else {
+      $scope.allUsers.push(data);
+      $scope.$apply();
+    }
+  });
 
   // post new message
   $scope.sendMessage = function() {
@@ -48,7 +48,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
   SocketFactory.onBroadcast(function(data){
     console.log(data);
     $scope.allMessages.push({
-      'user': 'aethelwulf',
+      'user': data.username,
       'message': data.message});
     console.log($scope.allMessages);
     $scope.$apply();
