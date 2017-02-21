@@ -65,7 +65,7 @@ var io = socketIO.listen(server);
 io.use(sharedsession(sess));
 io.sockets.on('connection', function(socket) {
   // Emit to all users that a new user has joined
-  io.emit('broadcast_user_connect', ******data******)
+  io.emit('broadcast_user_connect', socket.handshake.session.user)
   db.any("INSERT INTO User_Rooms(room_id, user_id) VALUES($1, $2)", ['**ROOMID**', socket.handshake.session.user])
 
   // Receive messages from user and emit to all users
