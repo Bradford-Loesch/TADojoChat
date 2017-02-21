@@ -1,24 +1,36 @@
-app.controller("MessageController", ["$scope", "socketFactory", function ($scope, socketFactory) {
-  console.log("loaded MessageController");
+console.log("loaded MessageController");
+app.controller("MessageController", ["$scope", "messageFactory", "socketFactory", function ($scope, messageFactory, socketFactory) {
   $scope.allMessages = [];
   $scope.message = {};
   $scope.user = {username: "Brad"}
 
   getMessages = function(){
-    socketFactory.index().then(function(res){
+    messageFactory.index().then(function(res){
       $scope.allMessages = res.data.allMessages;
     }, function(){
       //errors
     });
   }
-  // getMessages();
 
+  // getMessages();
   $scope.createMessage = function () {
-    console.log($scope.message);
-    socketFactory.socket.emit('send_message', {'user': $scope.user.username, 'message': $scope.message.content});
-    $scope.message = {};
+    messageFactory.createMessage($scope.message, function () {
+      console.log('in callback');
+
+    })
   }
-  socketFactory.socket.on('broadcast_message', function(data) {
+
+  // $scope.createMessage = function () {
+  //   console.log($scope.message);
+  socketFactory.sendMessage({
+    'user': $scope.user.username,
+    'message': $scope.message.content
+  });
+  //   $scope.message = {};
+  //   // messageFactory.createMessage($scope.message)
+  // }
+  //
+  socketFactory.onBroadcast(function(data) {
     $scope.allMessages.push(data);
     $scope.$apply();
   })
