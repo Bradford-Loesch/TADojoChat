@@ -1,63 +1,68 @@
-app.controller("MessageController", ["$scope", "socketFactory", function ($scope, socketFactory) {
-  console.log("loaded MessageController");
+app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", "MessageFactory", function ($scope, $routeParams, SocketFactory, MessageFactory) {
   $scope.allMessages = [];
   $scope.message = {};
-  $scope.user = {username: "Brad"}
+  $scope.allUsers = [];
+  $scope.user = {username: "aethelwulf"}
+  $scope.room = $routeParams.room
 
+  // http functions for messsages
   getMessages = function(){
-    socketFactory.index().then(function(res){
-      $scope.allMessages = res.data.allMessages;
-    }, function(){
-      //errors
+    MessageFactory.getMessages().then(function(res){
+      console.log("response from getMessages");
+      console.log(res);
+      $scope.allMessages = res.data.messages;
+      $scope.allUsers = res.data.users;
     });
-  }
-  // getMessages();
+  };
+  getMessages();
 
-  $scope.createMessage = function () {
+  // socket functions for messages
+  // receive data from user connect broadcasts
+  SocketFactory.onUserConnect(function(data){
+    console.log("data from user connect");
+    console.log(data);
+    console.log("$scope.allUsers");
+    console.log($scope.allUsers);
+    if ($scope.allUsers.length == 0) {
+      getMessages();
+    }
+    else {
+      $scope.allUsers.push(data);
+      $scope.$apply();
+    }
+  });
+
+  // post new message
+  $scope.sendMessage = function() {
+    console.log('in send message');
     console.log($scope.message);
-    socketFactory.socket.emit('send_message', {'user': $scope.user.username, 'message': $scope.message.content});
-    $scope.message = {};
+    SocketFactory.sendMessage({
+      'user': 1,
+      'room': parseInt($scope.room),
+      'message': $scope.message.content});
+      $scope.message = {};
   }
-  socketFactory.socket.on('broadcast_message', function(data) {
-    $scope.allMessages.push(data);
+
+
+  // receive data from message broadcasts
+  SocketFactory.onBroadcast(function(data){
+    console.log(data);
+    $scope.allMessages.push({
+      'user': data.username,
+      'message': data.message});
+    console.log($scope.allMessages);
     $scope.$apply();
-  })
+  });
+
+
+  // receive data from user disconnect broadcasts
+  SocketFactory.onUserDisconnect(function(data){
+    for (var i = 0; i < $scope.allUsers.length; i++) {
+      if ($scope.allUsers[i].id == data.id) {
+        $scope.allUsers.splice(i, 1);
+      }
+    }
+    $scope.$apply();
+  });
+
 }]);
-
-
-
-
-
-
-
-
-
-// $scope.setMessages = function() {
-//   MessageFactory.index(function (data) {
-//     $scope.messages = data;
-//   });
-// }
-// $scope.setMessages();
-//
-// function setMessage(data) {
-//   $scope.message = data;
-//   $scope.newMessage = {};
-// }
-//
-// $scope.show = function() {
-//   MessageFactory.show(setMessage);
-// }
-//
-// $scope.create = function (newMessage)
-// {
-//   MessageFactory.create(newMessage, setMessages);
-// };
-//
-// $scope.update = function() {
-//   MessageFactory.update($scope.newMessage, setMessages);
-//   newMessage = {};
-// }
-//
-// $scope.delete = function(id) {
-//   MessageFactory.delete(setMessages);
-// }
