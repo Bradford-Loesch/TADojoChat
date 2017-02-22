@@ -13,9 +13,13 @@ app.controller('roomsController',['$scope', '$location', 'roomFactory', function
       })
     }
 
-    $scope.deleteRoom = function (idx) {
-      console.log(idx);
-      roomFactory.deleteRoom($scope.)
-      console.log($scope.);
+    $scope.deleteRoom = function (idx, pos) {
+      roomFactory.deleteRoom(idx).then(function(res){
+        console.log(res.data)
+        if (res.data.err){
+          throw res.data.err
+        }
+        $scope.rooms.splice(pos,1);
+      }).catch(console.error);
     }
   }]);

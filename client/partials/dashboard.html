@@ -41,7 +41,7 @@
           <div id="chats">
             <table>
               <tbody>
-                <tr ng-repeat="room in rooms track by $index">
+                <tr ng-repeat="room in rooms">
                   {{room}}
                   <td>
                     <div id="header">
@@ -49,7 +49,7 @@
                     </div>
                     <div id="join">
                       <a href="#!/chatroom/{{room.id}}">join</a>
-                      <a href="#!/rooms" ng-click = "deleteRoom($index)">Delete</a>
+                      <a href="#!/rooms" ng-click = "deleteRoom(room.id, $index)">Delete</a>
                     </div>
                     <p>{{ room.description }}</p>
                   </td>

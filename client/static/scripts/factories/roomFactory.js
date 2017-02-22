@@ -12,7 +12,7 @@ app.factory('roomFactory', ['$http', function($http) {
       return $http.post('/rooms', rooms)
     }
     factory.deleteRoom = function (idx) {
-      rooms.splice(idx,1)
+      return $http.delete('/room/'+idx)
     }
     return factory;
 }]);
