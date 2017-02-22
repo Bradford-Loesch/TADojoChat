@@ -40,8 +40,8 @@
             <div id="userPage">
               <div id="userDescription">
                 <!-- display the data if its there otherwise display not set -->
-                <h2 ng-if="!user.first_name">Full name: <span>no first name set</span></h2>
-                <h2 ng-if="user.first_name">Full name: <span>{{user.first_name}}</span></h2>
+                <h2 ng-if="!user.first_name ">Full name: <span>no first name set</span></h2>
+                <h2 ng-if="user.first_name">Full name: <span>{{user.first_name}} {{user.last_name}}</span></h2>
 
 
                 <h2>chats joined: <span>chat 1</span></h2>

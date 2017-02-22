@@ -16,5 +16,9 @@ app.factory("UserFactory", ["$http", function ($http) {
   factory.index = function(){
     return $http.get('/profile')
   }
+  factory.update = function(user){
+    console.log(user)
+    return $http.post('/profile',user)
+  }
   return factory;
 }]);

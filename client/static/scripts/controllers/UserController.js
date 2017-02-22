@@ -36,4 +36,10 @@ app.controller("UserController", ["$scope", "$location", "UserFactory", function
       // return null;
     }).catch(console.error);
   };
+  $scope.update = function(){
+    console.log($scope.user)
+    UserFactory.update($scope.user).then(data=>{
+      console.log(data)
+    })
+  }
 }]);
