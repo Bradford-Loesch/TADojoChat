@@ -22,7 +22,6 @@
           <ul class="nav navbar-nav">
             <li><a href="/#!/rooms">Chatrooms</a></li>
             <li><a href="/#!/user">My Account</a></li>
-            <li><a href="#">Logout</a></li>
           </ul>
         </div>
       </nav>
@@ -36,7 +35,7 @@
         </li>
       </ul>
         <div id="userAnchor"></div>
-          <div class="container-fluid">
+          <div class="container-fluid" ng-controller="UserController">
             <h1>User</h1>
             <div id="userPageImage"></div>
             <div id="userPage">
@@ -46,6 +45,8 @@
                 <h2>messages sent: <span>999</span></h2>
                 <h2>Email: <span>999</span></h2>
                 <a href="/#!/edit/user">edit the user</a>
+                <br>
+                <a ng-click="logout()">not Username? sign out!</a>
               </div>
           </div>
       </div>
