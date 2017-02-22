@@ -13,5 +13,8 @@ app.factory("UserFactory", ["$http", function ($http) {
   factory.logout = function(){
     return $http.get('/logout')
   }
+  factory.index = function(){
+    return $http.get('/profile')
+  }
   return factory;
 }]);

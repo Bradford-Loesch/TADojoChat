@@ -21,7 +21,6 @@
         <div id="dash" class="container-fluid">
           <ul class="nav navbar-nav">
             <li><a href="/#!/rooms">Chatrooms</a></li>
-            <li><a href="/#!/user">My Account</a></li>
           </ul>
         </div>
       </nav>
@@ -35,16 +34,20 @@
         </li>
       </ul>
         <div id="userAnchor"></div>
-          <div class="container-fluid" ng-controller="UserController">
-            <h1>User</h1>
+          <div class="container-fluid" ng-controller="UserController" ng-init="index()">
+            <h1>{{user.username}}</h1>
             <div id="userPageImage"></div>
             <div id="userPage">
               <div id="userDescription">
-                <h2>Full name: <span>username</span></h2>
+                <!-- display the data if its there otherwise display not set -->
+                <h2 ng-if="!user.first_name">Full name: <span>no first name set</span></h2>
+                <h2 ng-if="user.first_name">Full name: <span>{{user.first_name}}</span></h2>
+
+
                 <h2>chats joined: <span>chat 1</span></h2>
                 <h2>messages sent: <span>999</span></h2>
-                <h2>Email: <span>999</span></h2>
-                <a href="/#!/edit/user">edit the user</a>
+                <h2>Email: <span>{{user.email}}</span></h2>
+                <a href="/#!/edit/user">Add or edit account info here!</a>
                 <br>
                 <a ng-click="logout()">not Username? sign out!</a>
               </div>

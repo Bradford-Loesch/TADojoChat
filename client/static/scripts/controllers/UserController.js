@@ -1,10 +1,11 @@
 app.controller("UserController", ["$scope", "$location", "UserFactory", function ($scope, $location, UserFactory) {
   $scope.login = function(){
     UserFactory.login($scope.user).then(res=>{
-      console.log(res.data)
+      console.log(res)
       if(!res.data.err){
         $location.url("/rooms");
       } else {
+        $scope.validations = res.data.err.items[0]
         throw res.data.err;
       }
       return null;
@@ -28,10 +29,11 @@ app.controller("UserController", ["$scope", "$location", "UserFactory", function
       $location.url('/login')
     })
   }
-  $scope.get = function(id){
-    UserFactory.get(id).then(userData=>{
-      $scope.user = userData;
-      return null;
+  $scope.index = function(){
+    UserFactory.index().then(userData=>{
+      $scope.user = userData.data;
+      console.log(userData.data)
+      // return null;
     }).catch(console.error);
   };
 }]);
