@@ -56,8 +56,12 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
 
 
   // receive data from user disconnect broadcasts
-  SocketFactory.onUserDisconnect(function(){
-    $scope.allUsers.
+  SocketFactory.onUserDisconnect(function(data){
+    for (var i = 0; i < $scope.allUsers.length; i++) {
+      if ($scope.allUsers[i].id == data.id) {
+        $scope.allUsers.splice(i, 1);
+      }
+    }
     $scope.$apply();
   });
 
