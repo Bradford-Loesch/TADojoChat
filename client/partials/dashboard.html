@@ -23,7 +23,6 @@
           <ul class="nav navbar-nav">
             <li><a href="/#!/rooms">Chatrooms</a></li>
             <li><a href="/#!/user">My Account</a></li>
-            <li><a href="#">Logout</a></li>
           </ul>
         </div>
       </nav>
@@ -35,20 +34,29 @@
           </ul>
         </li>
       </ul>
-      <div id="UserWrapper">
-        <div class="container-fluid">
-      <h1>Chatrooms</h1>
-        <div id="chats">
-          <div id="header">
-            <h3>Chat room 1</h3>
+      <div id="UserWrapper"  ng-controller="roomsController" ng-init="index()">
+        <div class="container-fluid" ng-controller="UserController" ng-init="index()">
+        <h1>Welcome {{user.username}}</h1>
+        <h1>Chatrooms</h1>
+          <div id="chats">
+            <table>
+              <tbody>
+                <tr ng-repeat="room in rooms">
+                  <td>
+                    <div id="header">
+                      <h3>{{ room.name }}</h3>
+                    </div>
+                    <div id="join">
+                      <a href="#!/chatroom/{{room.id}}">join</a>
+                    </div>
+                    <p>{{ room.description }}</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div id="join">
-            <a href="#!/chatroom/1">join</a>
-          </div>
-          <p>description of chatroom 1</p>
+          <a style="color:red;"href="/#!/newRoom">Create a new Chatroom</a>
         </div>
-        <a style="color:red;"href="/#!/newRoom">Create a new Chatroom</a>
       </div>
-    </div>
-  </body>
- </html>
+    </body>
+   </html>

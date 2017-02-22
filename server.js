@@ -1,4 +1,3 @@
-
 var express       = require("express"),
   static_loader   = require("utils"),
   q               = require("q"),
@@ -65,6 +64,7 @@ var io = socketIO.listen(server);
 io.use(sharedsession(sess));
 io.sockets.on("connection", function(socket) {
 
+
   // Join room on socket call and emit to other users
 
   // Receive messages from user and emit to all users
@@ -112,6 +112,7 @@ io.sockets.on("connection", function(socket) {
     db.any("DELETE FROM User_Rooms WHERE user_id = $1", [socket.handshake.session.user]);
   });
 });
+
 // var ioSession = require("io-session");
 // io.use(ioSession(session));
 

@@ -21,7 +21,6 @@
         <ul class="nav navbar-nav">
           <li><a href="/#!/rooms">Chatrooms</a></li>
           <li><a href="/#!/user">My Account</a></li>
-          <li><a href="#">Logout</a></li>
         </ul>
       </div>
     </nav>
@@ -35,17 +34,21 @@
       </li>
     </ul>
     <div id="newRoomTop"></div>
-    <div class="container-fluid">
+    <div class="container-fluid" ng-controller="roomsController" ng-init=index()>
       <div id="formLogin">
         <h1>Create a chatroom</h1>
       <div class="row">
         <div class="col-md-6 col-md-offset-3">
           <form>
             <input type="text" class="form-control" ng-model="room.name" placeholder="Name of room">
-            <input type="password" class="form-control" ng-model="room.type" placeholder="Type(unlisted,private, etc)">
-            <textarea class="form-control" name="name" rows="5" cols="80" placeholder="Description of the chatroom"></textarea>
+            <select class="form-control" ng-model="room.type" placeholder="room Type">
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+              <option value="locked">locked</option>
+            </select>
+            <textarea class="form-control" name="name" ng-model="room.description" rows="5" cols="80" placeholder="Description of the chatroom"></textarea>
             <br>
-            <input class="btn btn-default" type="submit" ng-click"">
+            <input class="btn btn-default" type="submit" ng-click="create()">
             <br>
             <br>
           </form>

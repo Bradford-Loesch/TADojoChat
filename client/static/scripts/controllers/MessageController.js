@@ -2,8 +2,8 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
   $scope.allMessages = [];
   $scope.message = {};
   $scope.allUsers = [];
-  $scope.user = {username: "aethelwulf"};
-  $scope.room = $routeParams.room;
+  $scope.user = {};
+  $scope.room = $routeParams.id;
 
   // http functions for messsages
   var getMessages = function(){
@@ -19,15 +19,15 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
 
   // socket functions for messages
   // receive data from user connect broadcasts
-  SocketFactory.onUserConnect(function(data){
+  SocketFactory.onUserConnect(function(res){
     console.log("data from user connect");
-    console.log(data);
+    console.log(res.data);
     console.log("$scope.allUsers");
     console.log($scope.allUsers);
     if ($scope.allUsers.length === 0) {
       getMessages();
     }    else {
-      $scope.allUsers.push(data);
+      $scope.allUsers.push(res.data);
       $scope.$apply();
     }
   });
@@ -43,8 +43,10 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
   };
 
 
+
   // receive data from message broadcasts
   SocketFactory.onBroadcast(function(data){
+    console.log("****** received broadcast data **********");
     console.log(data);
     $scope.allMessages.push({
       "user": data.username,
@@ -57,7 +59,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
   // receive data from user disconnect broadcasts
   SocketFactory.onUserDisconnect(function(data){
     for (var i = 0; i < $scope.allUsers.length; i++) {
-      if ($scope.allUsers[i].id == data.id) {
+      if ($scope.allUsers[i].id === data.id) {
         $scope.allUsers.splice(i, 1);
       }
     }

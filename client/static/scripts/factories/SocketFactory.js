@@ -1,7 +1,12 @@
+
 app.factory("SocketFactory",["$routeParams", function ($routeParams) {
   var factory = {};
   var socket = io.connect();
 
+
+  factory.joinRoom = function() {
+    socket.emit("join_room", parseInt($routeParams.id));
+  };
 
   factory.sendMessage = function(data) {
     socket.emit("send_message", data);
