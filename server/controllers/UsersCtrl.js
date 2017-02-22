@@ -68,6 +68,7 @@ module.exports = {
       }
       return null;
     }).catch(function(err){
+      console.log(err)
       res.json({success:false, err:{header:"Error in login.",items:[err.message||err]}});
     });
   },

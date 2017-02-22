@@ -1,5 +1,3 @@
-
-
 var db = null;
 
 module.exports = {
@@ -16,7 +14,9 @@ module.exports = {
     });
   },
   makeRoom:function(req, res){
-    db.any("INSERT INTO Room(name, owner_id, description) VALUES ($1, $2)",[req.body.name, req.session.user, req.body.description]).then(()=>{
+    console.log(req.body)
+
+    db.any("INSERT INTO Room(name, owner_id, description) VALUES ($1, $2, $3)",[req.body.name, req.session.user, req.body.description]).then(()=>{
       res.json({});
       return null;
     }).catch(err=>{

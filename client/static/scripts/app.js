@@ -11,7 +11,7 @@ app.config(function($routeProvider){
         .when('/rooms',{
             templateUrl:"partials/dashboard.html"
         })
-        .when('/chatroom/1',{
+        .when('/chatroom/:id',{
             templateUrl:"partials/chatroom.html"
         })
         .when('/newRoom',{

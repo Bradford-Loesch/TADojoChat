@@ -40,7 +40,7 @@ var sess = session({
 
 app.use(sess);
 
-var sharedsession = require("express-socket.io-session");
+// var sharedsession = require("express-socket.io-session");
 
 
 app.get("/", function(req, res){
@@ -62,7 +62,8 @@ var server = app.listen(port, function () {
 });
 
 var io = socketIO.listen(server);
-io.use(sharedsession(sess));
+// io.use(sharedsession(sess));
+// io.use(sharedsession(sess));
 io.sockets.on("connection", function(socket) {
   console.log("sockets working");
   socket.on("send_message", function(data){
