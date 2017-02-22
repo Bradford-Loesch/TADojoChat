@@ -39,6 +39,7 @@ module.exports = {
           .then((user)=>{
             console.log("new user ",user);
             req.session.user = user.id;
+            req.session.save();
             res.json({success:true});
             return null;
           });

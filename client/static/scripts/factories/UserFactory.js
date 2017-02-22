@@ -1,4 +1,3 @@
-
 app.factory("UserFactory", ["$http", "$routeParams", function ($http, $routeParams) {
 
   var factory = {};
@@ -20,6 +19,13 @@ app.factory("UserFactory", ["$http", "$routeParams", function ($http, $routePara
     } else {
       return $http.get("/profile");
     }
+  };
+  factory.login = function(user) {
+    return $http.post("/login",user);
+  };
+
+  factory.register = function(user) {
+    return $http.post("/register", user);
   };
 
   return factory;
