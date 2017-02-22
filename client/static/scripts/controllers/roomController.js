@@ -12,4 +12,10 @@ app.controller('roomsController',['$scope', '$location', 'roomFactory', function
         console.log(res.data)
       })
     }
+
+    $scope.deleteRoom = function (idx) {
+      console.log(idx);
+      roomFactory.deleteRoom($scope.room.name)
+      console.log($scope.room.name);
+    }
   }]);
