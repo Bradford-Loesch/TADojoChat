@@ -77,7 +77,7 @@ io.sockets.on("connection", function(socket) {
       message.user = socket.handshake.session.user;
       message.room = data.room;
       console.log(message);
-      io.in(data.room).emit("broadcast_message", message);
+      io.to(data.room).emit("broadcast_message", message);
       console.log("**********sent message************");
       return null;
     }).catch(err=>{
