@@ -44,7 +44,6 @@ app.use(sess);
 
 
 app.get("/", function(req, res){
-  req.session.user = 0;
   static_loader.serve_file(res, "index.html","../client/");
 });
 

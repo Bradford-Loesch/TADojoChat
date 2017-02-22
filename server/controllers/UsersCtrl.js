@@ -87,13 +87,19 @@ module.exports = {
     });
   },
   getMe:function(req, res){
-    db.one("SELECT * FROM Users WHERE id=$1",[req.session.user]).then(res.json).catch(err=>{
+    db.one("SELECT * FROM Users WHERE id=$1",[req.session.user]).then(user=>{
+        res.json(user);
+      }).catch(err=>{
+      console.log('-----------------')
+      console.log(req.session)
       console.error(err);
       res.json({err:err});
     });
   },
   getUser:function(req, res){
-    db.one("SELECT * FROM Users WHERE id=$1",[req.params.id]).then(res.json).catch(err=>{
+    db.one("SELECT * FROM Users WHERE id=$1",[req.params.id]).then(user=>{
+        res.json(user);
+      }).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
@@ -174,7 +180,9 @@ module.exports = {
     });
   },
   deleteMe:function(req, res){
-    db.any("DELETE FROM Users WHERE id=$1", req.session.user).then(res.json).catch(err=>{
+    db.any("DELETE FROM Users WHERE id=$1", req.session.user).then(()=>{
+        res.json({});
+      }).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
@@ -184,7 +192,9 @@ module.exports = {
       res.json({err:"Not an admin"});
       return;
     }
-    db.any("DELETE FROM Users WHERE id=$1", req.params.id).then(res.json).catch(err=>{
+    db.any("DELETE FROM Users WHERE id=$1", req.params.id).then(()=>{
+        res.json({});
+      }).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
