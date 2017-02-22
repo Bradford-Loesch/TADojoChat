@@ -12,6 +12,7 @@ app.controller("UserController", ["$scope", "$location", "UserFactory", function
     }).catch(console.error);
   };
   $scope.create = function(){
+    console.log("Creating");
     console.log($scope.user);
     UserFactory.register($scope.user).then(res=>{
       console.log(res.data.success);

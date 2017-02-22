@@ -25,7 +25,7 @@ module.exports = {
     });
   },
   getRoom:function(req, res){
-    db.any("SELECT * FROM Message JOIN Room ON Room.id = Message.room_id JOIN Users ON Users.id = Message.poster_id WHERE Room.name=$1 ORDER BY created_at ASC",[req.params.name]).then(messages=>{
+    db.any("SELECT * FROM Message JOIN Room ON Room.id = Message.room_id JOIN Users ON Users.id = Message.poster_id WHERE Room.name=$1 ORDER BY Message.created_at ASC",[req.params.name]).then(messages=>{
       return db.any("SELECT * from User_Rooms JOIN Room ON Room.id = room_id WHERE Room.name = $1",[req.params.name]).then(users=>{
         res.json({"users":users, "messages":messages});
         return null;

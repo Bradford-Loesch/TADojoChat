@@ -64,6 +64,10 @@ io.use(sharedsession(sess));
 
 var roomid = -1;
 io.sockets.on('connection', function(socket) {
+  console.log("************************");
+  console.log(socket.id);
+  console.log(socket.handshake.session.user);
+  console.log("************************");
 
   // Join room on socket call and emit to other users
   socket.on('join_room', function(routeroom){
@@ -84,12 +88,13 @@ io.sockets.on('connection', function(socket) {
     db.one("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3) returning message",[data.room, socket.handshake.session.user, data.message]).then(message=>{
       console.log('************newMessage*************');
       console.log(message);
+      var result = {};
+      result.message = message;
       return db.one("SELECT username FROM Users WHERE id=$1",[socket.handshake.session.user]).then(user=>{
         console.log('**********sent message************');
-        console.log(user)
-        message.username = user.username;
-        console.log(message);
-        io.in(roomid).emit('broadcast_message', message);
+        console.log(user);
+        result.username = user.username;
+        io.in(roomid).emit('broadcast_message', result);
       })
     })
   })
