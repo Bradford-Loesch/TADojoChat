@@ -1,4 +1,3 @@
-
 app.factory("UserFactory", ["$http", function ($http) {
 
   var factory = {};
@@ -11,10 +10,10 @@ app.factory("UserFactory", ["$http", function ($http) {
     return $http.post("/register", user);
   };
   factory.logout = function(){
-    return $http.get('/logout')
-  }
+    return $http.get("/logout");
+  };
   factory.index = function(){
-    return $http.get('/profile')
-  }
+    return $http.get("/profile");
+  };
   return factory;
 }]);

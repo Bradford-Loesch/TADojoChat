@@ -15,7 +15,7 @@ app.controller('roomsController',['$scope', '$location', 'roomFactory', function
 
     $scope.deleteRoom = function (idx) {
       console.log(idx);
-      roomFactory.deleteRoom($scope.room.name)
-      console.log($scope.room.name);
+      roomFactory.deleteRoom($scope.)
+      console.log($scope.);
     }
   }]);
