@@ -44,7 +44,6 @@ var sharedsession = require("express-socket.io-session");
 
 
 app.get("/", function(req, res){
-  req.session.user = 0;
   static_loader.serve_file(res, "index.html","../client/")
 })
 
@@ -91,7 +90,7 @@ io.sockets.on('connection', function(socket) {
         console.log(user)
         message.username = user.username;
         console.log(message);
-        io.socket.in(roomid).emit('broadcast_message', message);
+        io.in(roomid).emit('broadcast_message', message);
       })
     })
   })
