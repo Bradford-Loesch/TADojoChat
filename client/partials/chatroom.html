@@ -40,7 +40,7 @@
       <br>
       <p>time message was sent</p>
       <br>
-      <!-- <div class="messagecontainer" ng-repeat = "item in allMessages"> -->
+      <div class="messagecontainer" ng-repeat = "item in allMessages">
         <div class="row" ng-if="item.user == user.username">
           <div class="col-xs-6 col-sm-6">
             <p>{{ item.user }}</p>
@@ -59,7 +59,7 @@
           </div>
           <div class="col-xs-6 col-sm-6"></div>
         </div> <!-- End of guest message row -->
-      <!-- </div> -->
+      </div>
 
        <!-- End of message container -->
       <div id="formBottom" class="row">
@@ -68,7 +68,7 @@
             <label for="messageinput"></label>
             <input id="userForm" type="text" class="form-control" ng-model="message.content">
           </div>
-          <button id="buttonForm" class="btn btn-default" ng-click="createMessage()">Send</button>
+          <button id="buttonForm" class="btn btn-default" ng-click="sendMessage()">Send</button>
         </form>
       </div>
     </div>
