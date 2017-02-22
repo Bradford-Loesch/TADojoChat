@@ -47,6 +47,7 @@ app.get("/", function(req, res){
   static_loader.serve_file(res, "index.html","../client/");
 });
 
+
 app.use( express.static( path.join( root, "client" )));
 
 var ioDelayed = q.defer();
@@ -104,6 +105,7 @@ io.sockets.on("connection", function(socket) {
       });
     }).catch(console.error);
   });
+
   // Remove user when diconnection occurs
   socket.on("disconnect", function(){
     io.emit("broadcast_user_disconnect", socket.handshake.session.user);
