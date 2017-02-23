@@ -2,6 +2,7 @@ var bcrypt = require("bcrypt");
 var fs = require("fs");
 var static_loader = require("utils.js");
 var q = require("q");
+var mkdirp = require("mkdirp");
 
 var db = null;
 
@@ -39,6 +40,7 @@ module.exports = {
           .then((user)=>{
             console.log("new user ",user);
             req.session.user = user.id;
+            req.session.save();
             res.json({success:true});
             return null;
           });
@@ -68,7 +70,6 @@ module.exports = {
       }
       return null;
     }).catch(function(err){
-      console.log(err)
       res.json({success:false, err:{header:"Error in login.",items:[err.message||err]}});
     });
   },
@@ -87,19 +88,13 @@ module.exports = {
     });
   },
   getMe:function(req, res){
-    db.one("SELECT * FROM Users WHERE id=$1",[req.session.user]).then(user=>{
-        res.json(user);
-      }).catch(err=>{
-      console.log('-----------------')
-      console.log(req.session)
+    db.one("SELECT * FROM Users WHERE id=$1",[req.session.user]).then(res.json).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
   },
   getUser:function(req, res){
-    db.one("SELECT * FROM Users WHERE id=$1",[req.params.id]).then(user=>{
-        res.json(user);
-      }).catch(err=>{
+    db.one("SELECT * FROM Users WHERE id=$1",[req.params.id]).then(res.json).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
@@ -115,7 +110,7 @@ module.exports = {
         delete data.password; //It might be empty, so remove it.
       }
       if (req.file){
-        operations.push(q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename));
+        operations.push(q.denodeify(mkdirp)("../../client/avatars/").then(()=>(q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename))).then(()=>1));//give an actual value so that it's in the .then
         data.avatar = "../../client/avatars/"+user.username+"/"+req.file.filename;
       }
       return Promise.all(operations);
@@ -154,7 +149,7 @@ module.exports = {
         delete data.password; //It might be empty, so remove it.
       }
       if (req.file){
-        operations.push((q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename)).then(()=>1));//give an actual value so that it's in the .then
+        operations.push(q.denodeify(mkdirp)("../../client/avatars/").then(()=>(q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename))).then(()=>1));//give an actual value so that it's in the .then
         operations.push(q.denodeify(fs.unlink),user.avatar);
         data.avatar = "../client/avatars/"+user.username+"/"+req.file.filename;
       }
@@ -180,9 +175,7 @@ module.exports = {
     });
   },
   deleteMe:function(req, res){
-    db.any("DELETE FROM Users WHERE id=$1", req.session.user).then(()=>{
-        res.json({});
-      }).catch(err=>{
+    db.any("DELETE FROM Users WHERE id=$1", req.session.user).then(res.json).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
@@ -192,9 +185,7 @@ module.exports = {
       res.json({err:"Not an admin"});
       return;
     }
-    db.any("DELETE FROM Users WHERE id=$1", req.params.id).then(()=>{
-        res.json({});
-      }).catch(err=>{
+    db.any("DELETE FROM Users WHERE id=$1", req.params.id).then(res.json).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
