@@ -8,11 +8,6 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
   // http functions for messsages
   var getMessages = function(){
     MessageFactory.getMessages().then(function(res){
-      console.log("data from getMessages");
-      console.log("messages");
-      console.log(res.data.messages);
-      console.log("users");
-      console.log(res.data.users);
       $scope.allMessages = res.data.messages;
       $scope.allUsers = res.data.users;
       return null;
