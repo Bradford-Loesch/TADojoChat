@@ -33,6 +33,7 @@ app.controller("UserController", ["$scope", "$location", "UserFactory", function
   $scope.index = function(){
     UserFactory.index().then(userData=>{
       $scope.user = userData.data;
+      console.log("***********user data in UserController**********");
       console.log(userData.data)
       // return null;
     }).catch(console.error);

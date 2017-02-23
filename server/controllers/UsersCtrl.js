@@ -114,7 +114,7 @@ res.json(ans)
         delete data.password; //It might be empty, so remove it.
       }
       if (req.file){
-        operations.push(q.denodeify(mkdirp)("../../client/avatars/").then(()=>(q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename)).then(()=>1));//give an actual value so that it's in the .then
+        operations.push(q.denodeify(mkdirp)("../../client/avatars/")).then(()=>(q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename)).then(()=>1));//give an actual value so that it's in the .then
         data.avatar = "../../client/avatars/"+user.username+"/"+req.file.filename;
       }
       return Promise.all(operations);
@@ -153,7 +153,7 @@ res.json(ans)
         delete data.password; //It might be empty, so remove it.
       }
       if (req.file){
-        operations.push(q.denodeify(mkdirp)("../../client/avatars/").then(()=>(q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename)).then(()=>1));//give an actual value so that it's in the .then
+        operations.push(q.denodeify(mkdirp)("../../client/avatars/")).then(()=>(q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename)).then(()=>1));//give an actual value so that it's in the .then
         operations.push(q.denodeify(fs.unlink),user.avatar);
         data.avatar = "../client/avatars/"+user.username+"/"+req.file.filename;
       }
