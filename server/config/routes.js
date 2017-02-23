@@ -18,6 +18,6 @@ module.exports = function(app, ioPromise, db) {
   app.get("/avatar/:id", UsersCtrl.getAvatar);
   app.get("/rooms", ChatCtrl.listRooms);
   app.post("/rooms", ChatCtrl.makeRoom);
-  app.get("/room/:name", ChatCtrl.getRoom);
-  app.delete("/room/:name", ChatCtrl.deleteRoom);
+  app.get("/room/:id", ChatCtrl.getRoom);
+  app.delete("/room/:id", ChatCtrl.deleteRoom);
 };
