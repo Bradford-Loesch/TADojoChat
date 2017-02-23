@@ -4,9 +4,13 @@ app.factory("SocketFactory",["$routeParams", function ($routeParams) {
   var socket = io.connect();
 
 
-  factory.joinRoom = function() {
-    socket.emit("join_room", parseInt($routeParams.id));
-  };
+  factory.joinRoom = function(data) {
+    socket.emit('join_room', data);
+  }
+
+  factory.leaveRoom = function(data) {
+    socket.emit('leave_room', data);
+  }
 
   factory.sendMessage = function(data) {
     socket.emit("send_message", data);

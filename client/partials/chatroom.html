@@ -41,9 +41,9 @@
       <p>time message was sent</p>
       <br>
       <div class="messagecontainer" ng-repeat = "item in allMessages">
-        <div class="row" ng-if="item.user == user.username">
+        <div class="row" ng-if="item.username == user.username">
           <div class="col-xs-6 col-sm-6">
-            <p>{{ item.user }}</p>
+            <p>{{ item.username }} {{ item.created_at }}</p>
           </div>
           <div class="col-xs-6 col-sm-6">
             <div class="userMessage">
@@ -51,13 +51,15 @@
             </div>
           </div>
         </div> <!-- End of user message row -->
-        <div class="row" ng-if="message.user != session.user.username">
+        <div class="row" ng-if="item.username != session.user.username">
           <div class="col-xs-6 col-sm-6">
             <div class="guestMessage">
               <p>asdfasdfasd</p>
             </div>
           </div>
-          <div class="col-xs-6 col-sm-6"></div>
+          <div class="col-xs-6 col-sm-6">
+            <p>{{ item.username }} {{ item.created_at }}</p>
+          </div>
         </div> <!-- End of guest message row -->
       </div>
 

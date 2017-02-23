@@ -42,12 +42,14 @@
             <table>
               <tbody>
                 <tr ng-repeat="room in rooms">
+                  {{room}}
                   <td>
                     <div id="header">
                       <h3>{{ room.name }}</h3>
                     </div>
                     <div id="join">
                       <a href="#!/chatroom/{{room.id}}">join</a>
+                      <a href="#!/rooms" ng-click = "deleteRoom(room.id, $index)">Delete</a>
                     </div>
                     <p>{{ room.description }}</p>
                   </td>
