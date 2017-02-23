@@ -177,6 +177,7 @@ module.exports = {
   },
   deleteMe:function(req, res){
     db.any("DELETE FROM Users WHERE id=$1", req.session.user).then(()=>res.json({})).catch(err=>{
+
       console.error(err);
       res.json({err:err});
     });

@@ -36,7 +36,7 @@ module.exports = {
     });
   },
   deleteRoom:function(req, res){
-    db.one("SELECT * FROM Room WHERE Room.name = $1",[req.params.name]).then(room=>{
+    db.one("SELECT * FROM Room WHERE Room.id = $1",[req.params.id]).then(room=>{
       if (!req.session.is_admin && req.session.user !== room.owner_id){
         res.json({err:"Not an admin"});
         return null;

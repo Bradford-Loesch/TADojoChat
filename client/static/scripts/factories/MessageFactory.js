@@ -2,7 +2,8 @@ app.factory("MessageFactory",["$http", "$routeParams", function ($http, $routePa
   var factory = {};
 
   factory.getMessages = function() {
-    return $http.get(`/room/${$routeParams.room}`);
+    console.log(`/room/${$routeParams.id}`);
+    return $http.get(`/room/${$routeParams.id}`);
   };
 
   return factory;

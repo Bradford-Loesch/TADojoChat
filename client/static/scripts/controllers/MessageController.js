@@ -1,4 +1,4 @@
-app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", "MessageFactory", function ($scope, $routeParams, SocketFactory, MessageFactory) {
+app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", "MessageFactory", "UserFactory", function ($scope, $routeParams, SocketFactory, MessageFactory, UserFactory) {
   $scope.allMessages = [];
   $scope.message = {};
   $scope.allUsers = [];
@@ -8,14 +8,27 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
   // http functions for messsages
   var getMessages = function(){
     MessageFactory.getMessages().then(function(res){
-      console.log("response from getMessages");
-      console.log(res);
+      console.log("data from getMessages");
+      console.log("messages");
+      console.log(res.data.messages);
+      console.log("users");
+      console.log(res.data.users);
       $scope.allMessages = res.data.messages;
       $scope.allUsers = res.data.users;
       return null;
     }).catch(console.error);
   };
+
+  getUser = function(){
+    UserFactory.index().then(userData=>{
+      $scope.user = userData.data;
+      console.log("***********user data in UserController**********");
+      console.log(userData.data)
+      // return null;
+    }).catch(console.error);
+  };
   getMessages();
+  getUser();
 
   // socket functions for messages
   // receive data from user connect broadcasts
