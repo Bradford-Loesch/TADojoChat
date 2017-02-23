@@ -2,3 +2,4 @@
 /bower_components/
 !utils.js
 !file_types.json
+/temp/
