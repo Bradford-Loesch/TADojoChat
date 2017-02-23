@@ -88,25 +88,13 @@ module.exports = {
     });
   },
   getMe:function(req, res){
-<<<<<<< HEAD
-    db.one("SELECT * FROM Users WHERE id=$1",[req.session.user]).then(ans=>{
-res.json(ans)
-}).catch(err=>{
-=======
     db.one("SELECT * FROM Users WHERE id=$1",[req.session.user]).then(user=>res.json(user)).catch(err=>{
->>>>>>> e04e71f9d41e90add691075022154ed69b22836a
       console.error(err);
       res.json({err:err});
     });
   },
   getUser:function(req, res){
-<<<<<<< HEAD
-    db.one("SELECT * FROM Users WHERE id=$1",[req.params.id]).then(ans=>{
-res.json(ans)
-}).catch(err=>{
-=======
     db.one("SELECT * FROM Users WHERE id=$1",[req.params.id]).then(user=>res.json(user)).catch(err=>{
->>>>>>> e04e71f9d41e90add691075022154ed69b22836a
       console.error(err);
       res.json({err:err});
     });
