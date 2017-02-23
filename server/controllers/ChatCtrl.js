@@ -14,7 +14,7 @@ module.exports = {
     });
   },
   makeRoom:function(req, res){
-    console.log(req.body)
+    console.log(req.body);
 
     db.any("INSERT INTO Room(name, owner_id, description) VALUES ($1, $2, $3)",[req.body.name, req.session.user, req.body.description]).then(()=>{
       res.json({});
@@ -25,8 +25,13 @@ module.exports = {
     });
   },
   getRoom:function(req, res){
+<<<<<<< HEAD
     db.any("SELECT * FROM Message JOIN Room ON Room.id = Message.room_id JOIN Users ON Users.id = Message.poster_id WHERE Room.id=$1 ORDER BY Message.created_at ASC",[req.params.id]).then(messages=>{
       return db.any("SELECT * from User_Rooms JOIN Room ON Room.id = room_id WHERE Room.id = $1",[req.params.id]).then(users=>{
+=======
+    db.any("SELECT Message.message, Message.created_at, Message.updated_at, Message.poster_id, Users.username FROM Message JOIN Room ON Room.id = Message.room_id JOIN Users ON Users.id = Message.poster_id WHERE Room.name=$1 ORDER BY Message.created_at ASC",[req.params.name]).then(messages=>{
+      return db.any("SELECT * from User_Rooms JOIN Room ON Room.id = room_id WHERE Room.name = $1",[req.params.name]).then(users=>{
+>>>>>>> 9666117d91f702e4ba816e2ce65a1957bc0e6b0f
         res.json({"users":users, "messages":messages});
         return null;
       });

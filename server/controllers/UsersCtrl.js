@@ -187,13 +187,7 @@ res.json(ans)
     });
   },
   deleteMe:function(req, res){
-<<<<<<< HEAD
-    db.any("DELETE FROM Users WHERE id=$1", req.session.user).then(ans=>{
-res.json(ans)
-}).catch(err=>{
-=======
     db.any("DELETE FROM Users WHERE id=$1", req.session.user).then(()=>res.json({})).catch(err=>{
->>>>>>> e04e71f9d41e90add691075022154ed69b22836a
       console.error(err);
       res.json({err:err});
     });
@@ -203,13 +197,7 @@ res.json(ans)
       res.json({err:"Not an admin"});
       return;
     }
-<<<<<<< HEAD
-    db.any("DELETE FROM Users WHERE id=$1", req.params.id).then(ans=>{
-res.json(ans)
-}).catch(err=>{
-=======
     db.any("DELETE FROM Users WHERE id=$1", req.params.id).then(()=>res.json({})).catch(err=>{
->>>>>>> e04e71f9d41e90add691075022154ed69b22836a
       console.error(err);
       res.json({err:err});
     });

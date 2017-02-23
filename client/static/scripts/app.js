@@ -1,9 +1,9 @@
-var app = angular.module("app", ["ngRoute"]);
+var app = angular.module("app",["ngRoute","ngFileUpload"]);
 
 app.config(function($routeProvider){
-  $routeProvider
-        .when("/",{
-          templateUrl:"partials/register.html"
+    $routeProvider
+        .when('/',{
+            templateUrl:"partials/login.html"
         })
         .when("/login",{
           templateUrl:"partials/login.html"

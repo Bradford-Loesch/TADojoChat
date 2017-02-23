@@ -32,22 +32,19 @@
           </ul>
         </li>
       </ul>
-        <div class="container-fluid">
-          <h1>User</h1>
+        <div class="container-fluid" ng-controller="UserController" >
+          <h1>{{user.username}}</h1>
           <div id="userPageImage"></div>
           <div id="userPage">
             <div id="userDescription">
               <form>
-                <input type="text" class="form-control" ng-model="user.username" placeholder="Username">
-                <input type="text" class="form-control" ng-model="user.email" placeholder="Email">
-                <input type="password" class="form-control" ng-model="user.password" placeholder="Password">
-                <input type="password" class="form-control" ng-model="user.passwordConf" placeholder="Confirm password">
-
+                <input type="text" class="form-control" ng-model="user.first_name" placeholder="First Name">
+                <input type="text" class="form-control" ng-model="user.last_name" placeholder="Last Name">
+                <input type="text" class="form-control" ng-model="user.email" placeholder="email">
                 <br>
-                <input class="btn btn-default" type="submit" ng-click"">
+                <input class="btn btn-default" type="submit" ng-click="update()">
                 <br>
               </form>
-
             </div>
         </div>
       </div>
