@@ -2,6 +2,7 @@ var bcrypt = require("bcrypt");
 var fs = require("fs");
 var static_loader = require("utils.js");
 var q = require("q");
+var mkdirp = require("mkdirp");
 
 var db = null;
 
@@ -113,7 +114,7 @@ res.json(ans)
         delete data.password; //It might be empty, so remove it.
       }
       if (req.file){
-        operations.push(q.denodefy(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename));
+        operations.push(q.denodeify(mkdirp)("../../client/avatars/").then(()=>(q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename)).then(()=>1));//give an actual value so that it's in the .then
         data.avatar = "../../client/avatars/"+user.username+"/"+req.file.filename;
       }
       return Promise.all(operations);
@@ -152,8 +153,8 @@ res.json(ans)
         delete data.password; //It might be empty, so remove it.
       }
       if (req.file){
-        operations.push((q.denodefy(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename)).then(()=>1));//give an actual value so that it's in the .then
-        operations.push(q.denodefy(fs.unlink),user.avatar);
+        operations.push(q.denodeify(mkdirp)("../../client/avatars/").then(()=>(q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename)).then(()=>1));//give an actual value so that it's in the .then
+        operations.push(q.denodeify(fs.unlink),user.avatar);
         data.avatar = "../client/avatars/"+user.username+"/"+req.file.filename;
       }
       return Promise.all(operations);
@@ -202,7 +203,7 @@ res.json(ans)
       if (!user || !user.avatar){
         throw "";//Throw to reach the .catch, which serves up the "anonymous" avatar for users without one or unknown users.
       }
-      return q.denodefy(fs.stat)(user.avatar).then(()=>{
+      return q.denodeify(fs.stat)(user.avatar).then(()=>{
         static_loader.serve_file(res, user.avatar, "");
         return null;
       }).catch(err=>{
