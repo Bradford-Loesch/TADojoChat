@@ -69,20 +69,14 @@ io.sockets.on("connection", function(socket) {
 
   // Receive messages from user and emit to all users
   socket.on("send_message", function(data){
-    console.log("***********data**************");
-    console.log(data);
-    db.one("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3) returning message",[data.room, socket.handshake.session.user, data.message]).then(message=>{
-      console.log("************newMessage*************");
-      console.log(message);
-      message.user = socket.handshake.session.user;
-      message.room = data.room;
-      console.log(message);
-      io.to(data.room).emit("broadcast_message", message);
-      console.log("**********sent message************");
-      return null;
-    }).catch(err=>{
-      console.error(err);
-      socket.emit("message_error", err);
+    db.one("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3) returning Message.id",[data.room, socket.handshake.session.user, data.message]).then(newmessage=>{
+      return db.one("SELECT Message.message, Message.created_at, Message.updated_at, Message.poster_id, Users.username FROM Message JOIN Users ON Users.id = Message.poster_id WHERE Message.id = $1", [newmessage.id]).then(message=>{
+        io.to(data.room).emit("broadcast_message", message);
+        return null;
+      }).catch(err=>{
+        console.error(err);
+        socket.emit("message_error", err);
+      });
     });
   });
   socket.on("join_room", function(room){
@@ -90,7 +84,7 @@ io.sockets.on("connection", function(socket) {
     db.any("INSERT INTO User_Rooms(user_id, room_id), VALUES ($1, $2)", [socket.handshake.session.user, room]).then(()=>{
       return db.one("SELECT * FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
         console.log("********** session user id **************");
-        socket.broadcast.to(room).emit("broadcast_user_disconnect", user.id);
+        socket.broadcast.to(room).emit("broadcast_user_connect", user.id);
         return null;
       });
     }).catch(console.error);
@@ -100,7 +94,7 @@ io.sockets.on("connection", function(socket) {
     db.any("DELETE FROM User_Rooms WHERE user_id = $1 AND room_id = $2", [socket.handshake.session.user, room]).then(()=>{
       return db.one("SELECT * FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
         console.log("********** session user id **************");
-        socket.broadcast.to(room).emit("broadcast_user_connect", user);
+        socket.broadcast.to(room).emit("broadcast_user_disconnect", user);
         return null;
       });
     }).catch(console.error);
