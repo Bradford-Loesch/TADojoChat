@@ -88,13 +88,13 @@ module.exports = {
     });
   },
   getMe:function(req, res){
-    db.one("SELECT * FROM Users WHERE id=$1",[req.session.user]).then(res.json).catch(err=>{
+    db.one("SELECT * FROM Users WHERE id=$1",[req.session.user]).then(user=>res.json(user)).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
   },
   getUser:function(req, res){
-    db.one("SELECT * FROM Users WHERE id=$1",[req.params.id]).then(res.json).catch(err=>{
+    db.one("SELECT * FROM Users WHERE id=$1",[req.params.id]).then(user=>res.json(user)).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
@@ -110,7 +110,7 @@ module.exports = {
         delete data.password; //It might be empty, so remove it.
       }
       if (req.file){
-        operations.push(q.denodeify(mkdirp)("../../client/avatars/").then(()=>(q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename)).then(()=>1));//give an actual value so that it's in the .then
+        operations.push(q.denodeify(mkdirp)("../../client/avatars/").then(()=>(q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename))).then(()=>1));//give an actual value so that it's in the .then
         data.avatar = "../../client/avatars/"+user.username+"/"+req.file.filename;
       }
       return Promise.all(operations);
@@ -149,7 +149,7 @@ module.exports = {
         delete data.password; //It might be empty, so remove it.
       }
       if (req.file){
-        operations.push(q.denodeify(mkdirp)("../../client/avatars/").then(()=>(q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename)).then(()=>1));//give an actual value so that it's in the .then
+        operations.push(q.denodeify(mkdirp)("../../client/avatars/").then(()=>(q.denodeify(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename))).then(()=>1));//give an actual value so that it's in the .then
         operations.push(q.denodeify(fs.unlink),user.avatar);
         data.avatar = "../client/avatars/"+user.username+"/"+req.file.filename;
       }
@@ -175,7 +175,7 @@ module.exports = {
     });
   },
   deleteMe:function(req, res){
-    db.any("DELETE FROM Users WHERE id=$1", req.session.user).then(res.json).catch(err=>{
+    db.any("DELETE FROM Users WHERE id=$1", req.session.user).then(()=>res.json({})).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
@@ -185,7 +185,7 @@ module.exports = {
       res.json({err:"Not an admin"});
       return;
     }
-    db.any("DELETE FROM Users WHERE id=$1", req.params.id).then(res.json).catch(err=>{
+    db.any("DELETE FROM Users WHERE id=$1", req.params.id).then(()=>res.json({})).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
