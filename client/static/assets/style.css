@@ -3,7 +3,8 @@
 }
 
 h3 {
-    color: blue;
+  color: blue;
+  display: inline;;
 }
 .container-fluid{
   position: absolute;
@@ -113,6 +114,14 @@ body {
   border-radius: 20px;
   box-shadow: 8px 7px 8px black;
 
+}
+
+#sideBar{
+  float: left;
+  width: 250px;
+  background: #ccc;
+  min-height: 100%;
+  top: 10px;
 }
 #join{
   display: inline-block;
