@@ -13,6 +13,10 @@
         easingOpen: "swing",
         prependTo:'#chatWrapper'
       });
+      $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+      });
     });
     </script>
     <body>
@@ -25,19 +29,28 @@
           </ul>
         </li>
       </ul>
-      <div id="chatWrapper">
-        <div class="container-fluid">
-          <h3>chatroom1</h3>
-          <br>
-          <p>time message was sent</p>
-          <br>
-          <div class="row">
-            <div class="col-xs-6 col-sm-3"></div>
-            <div class="col-xs-6 col-sm-3">
-              <div class="userMessage">
-                <p>yo!</p>
-            </div>
-          </div>
+      <div id="wrapper">
+        <div id="sidebar-wrapper">
+          <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+              <a href="#">Chatroom Name</a>
+            </li>
+            <li>
+              <a href="#">Chatroom Members</a>
+              <p></p>
+            </li>
+          </ul>
+        </div>
+      <div ng-repeat = "item in allMessages">
+        <div ng-if="item.username == user.username">
+          <h6>{{ item.username }}</h6>
+          <p>{{ item.message }}{{item.created_at}}</p>
+          <!-- <h6>{{ item.username }} {{ item.created_at }}</h6> -->
+        </div>
+        <div ng-if="item.username != session.user.username">
+          <h6>{{ item.username }}</h6>
+          <p>asdfasdfasd</p>
+          <!-- <h6>{{ item.username }} {{ item.created_at }}</h6> -->
         </div>
         <div class="row">
           <div class="col-xs-6 col-sm-3">
@@ -56,6 +69,7 @@
             </form>
           </div>
         </div>
+        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
       </div>
     </body>
  </html>
