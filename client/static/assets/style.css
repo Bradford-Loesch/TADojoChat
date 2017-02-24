@@ -4,6 +4,7 @@
 
 h3 {
     color: blue;
+    display: inline-block;
 }
 .container-fluid{
   position: absolute;
@@ -56,9 +57,6 @@ body {
 	font-size:100%;
 }
 
-.slicknav_menu{
-	display:none;
-}
 #menu{
   display: none;
 }
@@ -113,6 +111,18 @@ body {
   border-radius: 20px;
   box-shadow: 8px 7px 8px black;
 
+}
+#sideBar{
+  background-color: green;
+  position: absolute;
+  height: 100%;
+  width: 100px;
+  vertical-align: top;
+  top:2em;
+  left:0;
+}
+#top{
+  height: 2em;
 }
 #join{
   display: inline-block;

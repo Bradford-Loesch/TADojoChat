@@ -11,20 +11,15 @@
     $(document).ready(function() {
       $('.container-fluid').slicknav({
         label: '',
-        duration: 300,
+        duration: 200,
         easingOpen: "swing",
         prependTo: '#top'
       });
     });
   </script>
+  <div id="top">
       <div id="chatWrapper" ng-controller="MessageController">
         <div class="container-fluid">
-      <nav class="navbar navbar-default">
-          <ul class="nav navbar-nav">
-            <li><a href="/#!/rooms">chatrooms</a></li>
-          </ul>
-      </nav>
-      <div id="top"></div>
       <ul id="menu">
         <li><a href="/#!/rooms">Home</a></li>
         <li>Chatrooms
@@ -33,6 +28,7 @@
           </ul>
         </li>
       </ul>
+      <!-- <div id="sideBar"></div> -->
       <h3>chatroom1</h3>
       <div ng-repeat = "item in allMessages">
         <div ng-if="item.username == user.username">
@@ -44,7 +40,6 @@
           <h6>{{ item.username }}</h6>
           <p>asdfasdfasd</p>
           <!-- <h6>{{ item.username }} {{ item.created_at }}</h6> -->
-
         </div>
       </div>
     </div>
@@ -59,6 +54,7 @@
       </div>
     </div>
   </div>
+</div>
 </body>
 
 </html>
