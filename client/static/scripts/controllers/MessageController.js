@@ -1,7 +1,8 @@
-app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", "MessageFactory", "UserFactory", function ($scope, $routeParams, SocketFactory, MessageFactory, UserFactory) {
+app.controller("MessageController", ["$scope", "$routeParams", "$window", "SocketFactory", "MessageFactory", "UserFactory", function ($scope, $routeParams, $window, SocketFactory, MessageFactory, UserFactory) {
   $scope.allMessages = [];
   $scope.message = {};
   $scope.allUsers = [];
+  $scope.currentUsers = [];
   $scope.user = {};
   $scope.room = $routeParams.id;
 
@@ -70,6 +71,11 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
       }
     }
     $scope.$apply();
+
+    // leave the chat room when the window closes
+    $window.onbeforeunload = function(){
+      SocketFactory.disconnectRoom($scope.user.username);
+    }
   });
 
 }]);

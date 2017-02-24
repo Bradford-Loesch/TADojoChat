@@ -62,10 +62,11 @@ var server = app.listen(port, function () {
 
 var io = socketIO.listen(server);
 io.use(sharedsession(sess));
+
+var currentUsers = {};
 io.sockets.on("connection", function(socket) {
-
-
-  // Join room on socket call and emit to other users
+  // Add user to list of currentUsers
+  currentUsers[socket.id] = socket.handshake.session.user;
 
   // Receive messages from user and emit to all users
   socket.on("send_message", function(data){
@@ -79,22 +80,29 @@ io.sockets.on("connection", function(socket) {
       });
     });
   });
+
+  // Join room on socket call and emit to other users
   socket.on("join_room", function(room){
     socket.join(room);
-    db.any("INSERT INTO User_Rooms(user_id, room_id), VALUES ($1, $2)", [socket.handshake.session.user, room]).then(()=>{
+    if ''
+    db.any("INSERT INTO User_Rooms(user_id, room_id) VALUES ($1, $2)", [socket.handshake.session.user, room]).then(()=>{
       return db.one("SELECT * FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
-        console.log("********** session user id **************");
         socket.broadcast.to(room).emit("broadcast_user_connect", user.id);
         return null;
       });
     }).catch(console.error);
   });
+
+  // Leave room and emit to others
   socket.on("leave_room", function(room){
     socket.leave(room);
     db.any("DELETE FROM User_Rooms WHERE user_id = $1 AND room_id = $2", [socket.handshake.session.user, room]).then(()=>{
       return db.one("SELECT * FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
-        console.log("********** session user id **************");
-        socket.broadcast.to(room).emit("broadcast_user_disconnect", user);
+        data = {
+          'user': user,
+          'currentUsers': currentUsers
+        }
+        socket.broadcast.to(room).emit("broadcast_user_disconnect", data);
         return null;
       });
     }).catch(console.error);
@@ -103,7 +111,7 @@ io.sockets.on("connection", function(socket) {
   // Remove user when diconnection occurs
   socket.on("disconnect", function(){
     io.emit("broadcast_user_disconnect", socket.handshake.session.user);
-    db.any("DELETE FROM User_Rooms WHERE user_id = $1", [socket.handshake.session.user]);
+    delete currentUsers[socket.id];
   });
 });
 
