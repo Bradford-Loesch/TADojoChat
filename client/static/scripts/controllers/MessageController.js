@@ -5,16 +5,12 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
   $scope.user = {};
   $scope.room = $routeParams.id;
 
-  // http functions for messsages
-  var getMessages = function(){
+  // http functions for messsages and user data
+  getMessages = function(){
     MessageFactory.getMessages().then(function(res){
-      console.log("data from getMessages");
-      console.log("messages");
-      console.log(res.data.messages);
-      console.log("users");
-      console.log(res.data.users);
       $scope.allMessages = res.data.messages;
       $scope.allUsers = res.data.users;
+      console.log($scope.allMessages);
       return null;
     }).catch(console.error);
   };
@@ -22,21 +18,25 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
   getUser = function(){
     UserFactory.index().then(userData=>{
       $scope.user = userData.data;
-      console.log("***********user data in UserController**********");
-      console.log(userData.data)
       // return null;
     }).catch(console.error);
   };
-  getMessages();
+
+  // Join room on connect
+  joinRoom = function(){
+    SocketFactory.joinRoom(parseInt($scope.room));
+  }
+  joinRoom();
   getUser();
+  getMessages();
 
   // socket functions for messages
   // receive data from user connect broadcasts
   SocketFactory.onUserConnect(function(res){
-    console.log("data from user connect");
-    console.log(res.data);
-    console.log("$scope.allUsers");
-    console.log($scope.allUsers);
+    // console.log("data from user connect");
+    // console.log(res.data);
+    // console.log("$scope.allUsers");
+    // console.log($scope.allUsers);
     if ($scope.allUsers.length === 0) {
       getMessages();
     }    else {
@@ -47,8 +47,6 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
 
   // post new message
   $scope.sendMessage = function() {
-    console.log("in send message");
-    console.log($scope.message);
     SocketFactory.sendMessage({
       "room": parseInt($scope.room),
       "message": $scope.message.content});
@@ -59,12 +57,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
 
   // receive data from message broadcasts
   SocketFactory.onBroadcast(function(data){
-    console.log("****** received broadcast data **********");
-    console.log(data);
-    $scope.allMessages.push({
-      "user": data.username,
-      "message": data.message});
-    console.log($scope.allMessages);
+    $scope.allMessages.push(data);
     $scope.$apply();
   });
 

@@ -34,17 +34,30 @@
         </li>
       </ul>
       <h3>chatroom1</h3>
-      <div ng-repeat = "item in allMessages">
-        <div ng-if="item.username == user.username">
-          <p>{{ item.message }}</p>
-          <h6>{{ item.username }} {{ item.created_at }}</h6>
-          <p>--------------------------------------</p>
-        </div>
-        <div ng-if="item.username != session.user.username">
-          <p>asdfasdfasd</p>
-          <h6>{{ item.username }} {{ item.created_at }}</h6>
-          <p>--------------------------------------</p>
-        </div>
+      <br>
+      <p>time message was sent</p>
+      <br>
+      <div class="messagecontainer" ng-repeat = "item in allMessages">
+        <div class="row" ng-if="item.username == user.username">
+          <div class="col-xs-6 col-sm-6">
+            <p>{{ item.username }} {{ item.created_at }}</p>
+          </div>
+          <div class="col-xs-6 col-sm-6">
+            <div class="userMessage">
+              <p>{{ item.message }}</p>
+            </div>
+          </div>
+        </div> <!-- End of user message row -->
+        <div class="row" ng-if="item.username != user.username">
+          <div class="col-xs-6 col-sm-6">
+            <div class="guestMessage">
+              <p>{{ item.message }}</p>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-6">
+            <p>{{ item.username }} {{ item.created_at }}</p>
+          </div>
+        </div> <!-- End of guest message row -->
       </div>
     </div>
       <div id="chatBottom">

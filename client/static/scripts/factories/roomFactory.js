@@ -1,4 +1,4 @@
-console.log('roomFactory working')
+// console.log('roomFactory working')
 app.factory('roomFactory', ['$http', function($http) {
 
     var factory = {};
