@@ -36,22 +36,23 @@
       <h3>chatroom1</h3>
       <div ng-repeat = "item in allMessages">
         <div ng-if="item.username == user.username">
-          <p>{{ item.message }}</p>
-          <h6>{{ item.username }} {{ item.created_at }}</h6>
-          <p>--------------------------------------</p>
+          <h6>{{ item.username }}</h6>
+          <p>{{ item.message }}{{item.created_at}}</p>
+          <!-- <h6>{{ item.username }} {{ item.created_at }}</h6> -->
         </div>
         <div ng-if="item.username != session.user.username">
+          <h6>{{ item.username }}</h6>
           <p>asdfasdfasd</p>
-          <h6>{{ item.username }} {{ item.created_at }}</h6>
-          <p>--------------------------------------</p>
+          <!-- <h6>{{ item.username }} {{ item.created_at }}</h6> -->
+
         </div>
       </div>
     </div>
       <div id="chatBottom">
           <form>
             <label for="messageinput"></label>
-            <textarea ng-model="message.content" rows="4" cols="40">Write Message Here</textarea>
-            <!-- <input  type="text" ng-model="message.content"> -->
+            <!-- <textarea class="form-control" ng-model="message.content" rows="4" cols="40">Write Message Here</textarea> -->
+            <input class="inline-form" type="text" ng-model="message.content">
             <button id="buttonForm" class="btn btn-default" ng-click="sendMessage()">Send</button>
           </form>
         </div>
