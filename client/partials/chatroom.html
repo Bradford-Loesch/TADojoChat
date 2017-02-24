@@ -8,18 +8,13 @@
 
 <body>
   <script type="text/javascript">
-    $(document).ready(function() {
-      $('.container-fluid').slicknav({
-        label: '',
-        duration: 200,
-        easingOpen: "swing",
-        prependTo: '#top'
-      });
+  $(document).ready(function() {
+    $('#menu').slicknav({
+    		prependTo:'#chatWrapper'
     });
+  });
   </script>
-  <div id="top">
-      <div id="chatWrapper" ng-controller="MessageController">
-        <div class="container-fluid">
+  <div id="chatWrapper">
       <ul id="menu">
         <li><a href="/#!/rooms">Home</a></li>
         <li>Chatrooms
@@ -28,12 +23,9 @@
           </ul>
         </li>
       </ul>
-      <!-- <div id="sideBar"></div> -->
+      <div ng-controller="MessageController">
+      <div id="sideBar"></div>
       <h3>chatroom1</h3>
-      <div id="sideBar">
-        <h4>Chatroom Name</h4>
-
-      </div>
       <div ng-repeat = "item in allMessages">
         <div ng-if="item.username == user.username">
           <h6>{{ item.username }}</h6>
@@ -46,18 +38,16 @@
           <!-- <h6>{{ item.username }} {{ item.created_at }}</h6> -->
         </div>
       </div>
-    </div>
       <div id="chatBottom">
-          <form>
-            <label for="messageinput"></label>
-            <!-- <textarea class="form-control" ng-model="message.content" rows="4" cols="40">Write Message Here</textarea> -->
-            <input class="inline-form" type="text" ng-model="message.content">
-            <button id="buttonForm" class="btn btn-default" ng-click="sendMessage()">Send</button>
-          </form>
-        </div>
+        <form>
+          <label for="messageinput"></label>
+          <input class="inline-form" type="text" ng-model="message.content">
+          <button id="buttonForm" class="btn btn-default" ng-click="sendMessage()">Send</button>
+        </form>
       </div>
     </div>
   </div>
+</div>
 </div>
 </body>
 
