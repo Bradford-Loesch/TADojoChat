@@ -2,6 +2,7 @@ var bcrypt = require("bcrypt");
 var fs = require("fs");
 var static_loader = require("utils.js");
 var q = require("q");
+var mkdirp = require("mkdirp");
 
 var db = null;
 
@@ -87,17 +88,13 @@ module.exports = {
     });
   },
   getMe:function(req, res){
-    db.one("SELECT * FROM Users WHERE id=$1",[req.session.user]).then(ans=>{
-res.json(ans)
-}).catch(err=>{
+    db.one("SELECT * FROM Users WHERE id=$1",[req.session.user]).then(user=>res.json(user)).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
   },
   getUser:function(req, res){
-    db.one("SELECT * FROM Users WHERE id=$1",[req.params.id]).then(ans=>{
-res.json(ans)
-}).catch(err=>{
+    db.one("SELECT * FROM Users WHERE id=$1",[req.params.id]).then(user=>res.json(user)).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
@@ -113,8 +110,9 @@ res.json(ans)
         delete data.password; //It might be empty, so remove it.
       }
       if (req.file){
-        operations.push(q.denodefy(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename));
-        data.avatar = "../../client/avatars/"+user.username+"/"+req.file.filename;
+        operations.push(q.denodeify(mkdirp)("client/avatars/"+user.username+"/").then(()=>(q.denodeify(fs.rename)(req.file.path, "client/avatars/"+user.username+"/"+req.file.originalname))).then(()=>1));//give an actual value so that it's in the .then
+        operations.push(q.denodeify(fs.unlink),user.avatar);
+        data.avatar = "client/avatars/"+user.username+"/"+req.file.originalname;
       }
       return Promise.all(operations);
     }).then(delayed=>{
@@ -152,9 +150,9 @@ res.json(ans)
         delete data.password; //It might be empty, so remove it.
       }
       if (req.file){
-        operations.push((q.denodefy(fs.rename)(req.file.path, "../../client/avatars/"+user.username+"/"+req.file.filename)).then(()=>1));//give an actual value so that it's in the .then
-        operations.push(q.denodefy(fs.unlink),user.avatar);
-        data.avatar = "../client/avatars/"+user.username+"/"+req.file.filename;
+        operations.push(q.denodeify(mkdirp)("client/avatars/"+user.username+"/").then(()=>(q.denodeify(fs.rename)(req.file.path, "client/avatars/"+user.username+"/"+req.file.originalname))).then(()=>1));//give an actual value so that it's in the .then
+        operations.push(q.denodeify(fs.unlink),user.avatar);
+        data.avatar = "client/avatars/"+user.username+"/"+req.file.originalname;
       }
       return Promise.all(operations);
     }).then(delayed=>{
@@ -178,9 +176,8 @@ res.json(ans)
     });
   },
   deleteMe:function(req, res){
-    db.any("DELETE FROM Users WHERE id=$1", req.session.user).then(ans=>{
-res.json(ans)
-}).catch(err=>{
+    db.any("DELETE FROM Users WHERE id=$1", req.session.user).then(()=>res.json({})).catch(err=>{
+
       console.error(err);
       res.json({err:err});
     });
@@ -190,29 +187,30 @@ res.json(ans)
       res.json({err:"Not an admin"});
       return;
     }
-    db.any("DELETE FROM Users WHERE id=$1", req.params.id).then(ans=>{
-res.json(ans)
-}).catch(err=>{
+    db.any("DELETE FROM Users WHERE id=$1", req.params.id).then(()=>res.json({})).catch(err=>{
       console.error(err);
       res.json({err:err});
     });
   },
   getAvatar:function(req, res){
     db.oneOrNone("SELECT * FROM Users WHERE id=$1",[req.params.id]).then(function(user){
+      console.log("getavatar");
       if (!user || !user.avatar){
+        console.log("no avatar");
         throw "";//Throw to reach the .catch, which serves up the "anonymous" avatar for users without one or unknown users.
       }
-      return q.denodefy(fs.stat)(user.avatar).then(()=>{
-        static_loader.serve_file(res, user.avatar, "");
+      return q.denodeify(fs.stat)(user.avatar).then(()=>{
+        console.log("serving");
+        static_loader.serve_file(res, "../"+user.avatar, "");
         return null;
       }).catch(err=>{
-        if (!err.code === "ENOENT"){ // ENOENT is the "file does not exist" error, so it simply means the user has no avatar, and shouldn't be logged. Any other error should be logged.
+        if (!(err.code === "aENOENT")){ // ENOENT is the "file does not exist" error, so it simply means the user has no avatar, and shouldn't be logged. Any other error should be logged.
           console.error(err);
         }
         throw "";//Throw to reach the .catch, which serves up the "anonymous" avatar for users without one or unknown users.
       });
     }).catch(()=>{
-      static_loader.serve_file(res, "anonymous.jpg", "../client/avatars");
+      static_loader.serve_file(res, "anonymous.jpg", "../client/avatars/");
     });
   }
 };
