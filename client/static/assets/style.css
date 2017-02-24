@@ -113,13 +113,13 @@ body {
 
 }
 #sideBar{
-  background-color: green;
-  position: absolute;
-  height: 100%;
-  width: 100px;
-  vertical-align: top;
-  top:2em;
-  left:0;
+  position: fixed;
+  float:left;
+  left: 0;
+  width: 250px;
+  background: #ccc;
+  min-height:100%;
+  /*top:10px;*/
 }
 #top{
   height: 2em;
