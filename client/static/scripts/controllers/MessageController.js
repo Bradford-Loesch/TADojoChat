@@ -51,8 +51,8 @@ app.controller("MessageController", ["$scope", "$routeParams", "$window", "Socke
   SocketFactory.onUserConnect(function(data) {
     console.log("received user connect broadcast");
     console.log(data);
-    console.log($scope.allUsers);
-    console.log($scope.currentUsers);
+    // console.log($scope.allUsers);
+    // console.log($scope.currentUsers);
     $scope.currentUsers = [];
     // for (var i = 0; i < data.currentUsers.length; i++) {
     //   for (var j = 0; j < $scope.allUsers.length; i++) {
