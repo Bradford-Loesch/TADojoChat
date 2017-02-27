@@ -8,12 +8,12 @@ app.factory("SocketFactory",["$routeParams", function ($routeParams) {
     socket.emit('join_room', data);
   }
 
-  factory.disconnectRoom = function() {
-    socket.emit('disconnect_room', data);
-  }
-
   factory.leaveRoom = function(data) {
     socket.emit('leave_room', data);
+  }
+
+  factory.disconnectRoom = function() {
+    socket.emit('disconnect_room', data);
   }
 
   factory.sendMessage = function(data) {

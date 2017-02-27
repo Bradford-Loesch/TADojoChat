@@ -11,7 +11,8 @@ app.controller("MessageController", ["$scope", "$routeParams", "$window", "Socke
     MessageFactory.getMessages().then(function(res){
       $scope.allMessages = res.data.messages;
       $scope.allUsers = res.data.users;
-      console.log($scope.allMessages);
+      // console.log("*********allUsers on load***********");
+      // console.log($scope.allUsers);
       return null;
     }).catch(console.error);
   };
@@ -25,26 +26,12 @@ app.controller("MessageController", ["$scope", "$routeParams", "$window", "Socke
 
   // Join room on connect
   joinRoom = function(){
+    console.log("Joining room");
     SocketFactory.joinRoom(parseInt($scope.room));
   }
-  joinRoom();
   getUser();
   getMessages();
-
-  // socket functions for messages
-  // receive data from user connect broadcasts
-  SocketFactory.onUserConnect(function(res){
-    // console.log("data from user connect");
-    // console.log(res.data);
-    // console.log("$scope.allUsers");
-    // console.log($scope.allUsers);
-    if ($scope.allUsers.length === 0) {
-      getMessages();
-    }    else {
-      $scope.allUsers.push(res.data);
-      $scope.$apply();
-    }
-  });
+  joinRoom();
 
   // post new message
   $scope.sendMessage = function() {
@@ -54,28 +41,45 @@ app.controller("MessageController", ["$scope", "$routeParams", "$window", "Socke
     $scope.message = {};
   };
 
-
-
   // receive data from message broadcasts
-  SocketFactory.onBroadcast(function(data){
+  SocketFactory.onBroadcast(function(data) {
     $scope.allMessages.push(data);
     $scope.$apply();
   });
 
+  // reveive data from user connect broadcasts
+  SocketFactory.onUserConnect(function(data) {
+    console.log("received user connect broadcast");
+    console.log(data);
+    console.log($scope.allUsers);
+    console.log($scope.currentUsers);
+    $scope.currentUsers = [];
+    // for (var i = 0; i < data.currentUsers.length; i++) {
+    //   for (var j = 0; j < $scope.allUsers.length; i++) {
+    //     if (data.currentUsers[i] == $scope.allUsers[j].id) {
+    //       $scope.currentUsers.push($scope.allUsers[j]);
+    //     }
+    //   }
+    // }
+    if ('newuser' in data) {
+      $scope.allUsers.push(data.newuser);
+    }
+    console.log($scope.currentUsers);
+  })
 
   // receive data from user disconnect broadcasts
-  SocketFactory.onUserDisconnect(function(data){
+  SocketFactory.onUserDisconnect(function(data) {
     for (var i = 0; i < $scope.allUsers.length; i++) {
-      if ($scope.allUsers[i].id === data.id) {
+      if ($scope.allUsers[i].id == data.id) {
         $scope.allUsers.splice(i, 1);
       }
     }
     $scope.$apply();
-
-    // leave the chat room when the window closes
-    $window.onbeforeunload = function(){
-      SocketFactory.disconnectRoom($scope.user.username);
-    }
   });
+
+  // leave the chat room when the window closes
+  $window.onbeforeunload = function(){
+    SocketFactory.disconnectRoom($scope.user.username);
+  }
 
 }]);
