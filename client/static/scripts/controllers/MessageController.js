@@ -1,4 +1,4 @@
-app.controller("MessageController", ["$scope", "$routeParams", "$window", "SocketFactory", "MessageFactory", "UserFactory", function ($scope, $routeParams, $window, SocketFactory, MessageFactory, UserFactory) {
+app.controller("MessageController", ["$scope", "$routeParams", "$location", "SocketFactory", "MessageFactory", "UserFactory", function ($scope, $routeParams, $location, SocketFactory, MessageFactory, UserFactory) {
   $scope.allMessages = [];
   $scope.message = {};
   $scope.allUsers = [];
@@ -11,8 +11,6 @@ app.controller("MessageController", ["$scope", "$routeParams", "$window", "Socke
     MessageFactory.getMessages().then(function(res){
       $scope.allMessages = res.data.messages;
       $scope.allUsers = res.data.users;
-      // console.log("*********allUsers on load***********");
-      // console.log($scope.allUsers);
       return null;
     }).catch(console.error);
   };
@@ -43,7 +41,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "$window", "Socke
 
   // receive data from message broadcasts
   SocketFactory.onBroadcast(function(data) {
-    console.log($scope.allMessages)
+    $scope.allMessages.push(data);
     var d = new Date($scope.allMessages[0].created_at)
     // $scope.time = date
     $scope.$apply();
@@ -54,8 +52,6 @@ app.controller("MessageController", ["$scope", "$routeParams", "$window", "Socke
     $scope.currentUsers = [];
     for (var i = 0; i < data.currentUsers.length; i++) {
       for (var j = 0; j < $scope.allUsers.length; j++) {
-        console.log(data.currentUsers[i]);
-        console.log($scope.allUsers[j].id);
         if (data.currentUsers[i] == $scope.allUsers[j].id) {
           $scope.currentUsers.push($scope.allUsers[j]);
         }
@@ -76,13 +72,14 @@ app.controller("MessageController", ["$scope", "$routeParams", "$window", "Socke
 
   // receive data from user disconnect broadcasts
   SocketFactory.onUserDisconnect(function(data) {
+    console.log("***********disconnection");
     setCurrentUsers(data);
     $scope.$apply();
   });
 
   // leave the chat room when the window closes
-  $window.onbeforeunload = function(){
+  $scope.$on('$locationChangeStart', function(event) {
     SocketFactory.disconnectRoom(parseInt($scope.room));
-  }
+  });
 
 }]);

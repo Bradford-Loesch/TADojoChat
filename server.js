@@ -67,12 +67,11 @@ var currentUsers = {};
 io.sockets.on("connection", function(socket) {
   // Function to translate socket ids to user ids
   getUserIds = function(room) {
-    console.log(room);
     var roomUserIds = [];
     var roomUserSockets = io.sockets.adapter.rooms[room];
-    console.log(roomUserSockets);
+    // console.log(roomUserSockets);
     for (var socket in roomUserSockets.sockets) {
-      console.log(socket);
+      // console.log(socket);
       roomUserIds.push(currentUsers[socket]);
     }
     return roomUserIds;
@@ -98,28 +97,27 @@ io.sockets.on("connection", function(socket) {
       currentUsers[socket.id] = socket.handshake.session.user;
     }
     socket.join(room);
-    var roomUsers = getUserIds(room);
 
     // Check to see if user currently in room list
     db.any("SELECT * from User_Rooms WHERE user_id=$1 and room_id=$2", [socket.handshake.session.user, room]).then(rooms=>{
       if (rooms.length > 0) {
-        console.log("*************roomUsers***********");
-        console.log(currentUsers);
-        console.log(roomUsers);
+        // console.log("*************roomUsers***********");
+        // console.log(currentUsers);
+        // console.log(roomUsers);
         data = {
           'id': socket.handshake.session.user,
-          'currentUsers': roomUsers
+          'currentUsers': getUserIds(room)
         }
-        socket.to(room).emit("broadcast_user_connect", data);
+        io.to(room).emit("broadcast_user_connect", data);
       } else {
         db.any("INSERT INTO User_Rooms(user_id, room_id) VALUES ($1, $2)", [socket.handshake.session.user, room]).then(()=>{
           return db.one("SELECT * FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
             data = {
               'id': socket.handshake.session.user,
-              'currentUsers': roomUsers,
+              'currentUsers': getUserIds(room),
               'newuser': user
             }
-            socket.to(room).emit("broadcast_user_connect", data);
+            io.to(room).emit("broadcast_user_connect", data);
             return null;
           });
         }).catch(console.error);
@@ -145,15 +143,11 @@ io.sockets.on("connection", function(socket) {
 
   // Exit from room and update list of current users
   socket.on("disconnect_room", function(room){
-    if (room) {
-      var currentUsers = getUserIds(room);
-      data = {
-        'currentUsers': getUserIds(room)
-      }
-    } else {
-      data = {};
-    }
     socket.leave(room);
+    var currentUsers = getUserIds(room);
+    data = {
+      'currentUsers': getUserIds(room)
+    }
     socket.broadcast.to(room).emit("broadcast_user_disconnect", data);
     return null;
   })
@@ -161,13 +155,6 @@ io.sockets.on("connection", function(socket) {
   // Remove user when diconnection occurs
   socket.on("disconnect", function(){
     delete currentUsers[socket.id];
-
-    // Handled by disconnect room for now. Possibly add more later
-    // data = {
-    //   // 'roomUsers': io.nsps['/'].adapter.rooms[room],
-    //   // 'currentUsers': currentUsers
-    // }
-    // io.emit("broadcast_user_disconnect", data);
   });
 });
 
