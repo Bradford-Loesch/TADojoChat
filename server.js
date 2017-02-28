@@ -4,6 +4,7 @@ var express       = require("express"),
   session         = require("express-session"),
   pgSession       = require("connect-pg-simple")(session),
   pgp             = require("pg-promise")(),
+  q               = require("q");
   path            = require("path"),
   routes          = require("./server/config/routes.js"),
   commands        = require("./server/config/commands.js"),
@@ -50,7 +51,9 @@ app.get("/", function(req, res){
 app.use( express.static( path.join( root, "client" )));
 
 
-routes(app);
+var ioDeferred = q.defer();
+routes(app, ioDeferred.promise);
+commands.setup(user_sockets, ioDeferred);
 
 static_loader.install(app);
 
@@ -135,4 +138,4 @@ io.sockets.on("connection", function(socket) {
 // var ioSession = require("io-session");
 // io.use(ioSession(session));
 
-io_holder.setIO(io);
+ioDeferred.resolve(io);

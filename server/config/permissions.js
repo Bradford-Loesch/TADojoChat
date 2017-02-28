@@ -17,9 +17,23 @@ module.exports = {
     });
   },
   changePermission:function(changer_id, changed_id, room_id, level){
+    if (changer_id === changed_id){
+      return Promise.resolve(false);
+    }
     return this.checkPermission(changer_id, room_id, level+1).then(success=>{
       if (success){
-        return db.any("INSERT INTO Room_Roles(user_id, room_id, permission_level) VALUES ");
+        return db.any("BEGIN TRAN "
+                     +"IF EXISTS (SELECT * FROM Room_Roles WITH (UPDLOCK,SERIALIZABLE) WHERE user_id=$1 AND room_id=$2) "
+                     +"BEGIN "
+                     +"   UPDATE Room_Roles SET permission_level = $3 "
+                     +"   WHERE user_id=$1 AND room_id=$2 "
+                     +"END "
+                     +"ELSE "
+                     +"BEGIN "
+                     +"   INSERT INTO TABLE (user_id, room_id, permission_level) "
+                     +"   VALUES ($1, $2, $3) "
+                     +"END "
+                     +"COMMIT TRAN ").then(()=>true);
       }
       return false;
     });
