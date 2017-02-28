@@ -104,7 +104,7 @@ module.exports = {
     db.one("SELECT * FROM Users WHERE id=$1",[req.session.user]).then(user=>{
       var operations = [user];
       if (data.password) {
-        operations.push(bcrypt.hashpw(data.password,14));
+        operations.push(bcrypt.hash(data.password,14));
       } else {
         operations.push(null);
         delete data.password; //It might be empty, so remove it.
@@ -144,7 +144,7 @@ module.exports = {
     db.one("SELECT * FROM Users WHERE id=$1",[req.params.id]).then(user=>{
       var operations = [user];
       if (data.password) {
-        operations.push(bcrypt.hashpw(data.password,14));
+        operations.push(bcrypt.hash(data.password,14));
       } else {
         operations.push(null);
         delete data.password; //It might be empty, so remove it.
@@ -203,13 +203,13 @@ module.exports = {
         static_loader.serve_file(res, "../"+user.avatar, "");
         return null;
       }).catch(err=>{
-        if (!(err.code === "aENOENT")){ // ENOENT is the "file does not exist" error, so it simply means the user has no avatar, and shouldn't be logged. Any other error should be logged.
+        if (!(err.code === "ENOENT")){ // ENOENT is the "file does not exist" error, so it simply means the user has no avatar, and shouldn't be logged. Any other error should be logged.
           console.error(err);
         }
         throw "";//Throw to reach the .catch, which serves up the "anonymous" avatar for users without one or unknown users.
       });
     }).catch(()=>{
-      static_loader.serve_file(res, "anonymous.jpg", "../client/avatars/");
+      static_loader.serve_file(res, "anonymous.png", "../client/avatars/");
     });
   }
 };
