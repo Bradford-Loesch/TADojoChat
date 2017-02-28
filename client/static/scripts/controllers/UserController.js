@@ -35,8 +35,8 @@ app.controller("UserController", ["$scope", "Upload", "$location", "UserFactory"
     UserFactory.index().then(userData=>{
       delete userData.password
       $scope.user = userData.data;
-      console.log("***********user data in UserController**********");
-      console.log(userData.data);
+      // console.log("***********user data in UserController**********");
+      // console.log(userData.data);
       return null;
     }).catch(console.error);
   };
