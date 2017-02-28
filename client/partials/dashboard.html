@@ -11,7 +11,7 @@
     });
     </script>
     <body>
-      <div id="top"></div>
+      <!-- <div id="top"></div> -->
       <nav class="navbar navbar-inverse">
 
         <div id="dash" class="container-fluid">
@@ -22,16 +22,17 @@
           </ul>
         </div>
       </nav>
-      <ul id="menu">
-        <li><a href="/#!/user">user</a></li>
-        <li>Chatrooms
-          <ul>
-            <li><a href="/#!/chatroom/Main">chatroom1</a></li>
-          </ul>
-        </li>
-      </ul>
       <div id="UserWrapper"  ng-controller="roomsController" ng-init="index()">
+        <ul id="menu">
+          <li><a href="/#!/user">user</a></li>
+          <li>Chatrooms
+            <ul>
+              <li><a href="/#!/chatroom/Main">chatroom1</a></li>
+            </ul>
+          </li>
+        </ul>
         <div class="container-fluid" ng-controller="UserController" ng-init="index()">
+          <div id="top"></div>
         <h1>Welcome {{user.username}}</h1>
         <h1>Chatrooms</h1>
           <div id="chats">
