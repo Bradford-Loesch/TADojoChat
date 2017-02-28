@@ -237,7 +237,8 @@
     font-family: sans-serif;
 }
 h3 {
-    color: blue;
+  color: blue;
+  display: inline;
 }
 .container-fluid{
   position: absolute;
@@ -257,7 +258,6 @@ h3 {
   color:red;
 }
 select.form-control{
-  color:black;
   padding: 25px 12px;
   font-size: 20px;
   margin-top: 10px;
@@ -288,9 +288,6 @@ body {
 	font-size:100%;
 }
 
-.slicknav_menu{
-	display:none;
-}
 #menu{
   display: none;
 }
@@ -357,6 +354,16 @@ body {
   box-shadow: 8px 7px 8px black;
 
 }
+#sideBar{
+  position: absolute;
+  left: 0;
+  width: 250px;
+  background: #ccc;
+  min-height:100%;
+}
+#top{
+  height: 2em;
+}
 #join{
   display: inline-block;
 }
@@ -365,14 +372,28 @@ body {
   display: inline-block;
   text-align: center;
 }
+.inline-form{
+  font-size: 1.7em;
+  border-radius:10px;
+}
 .toptxt{
   color:white;
 }
 #chatWrapper{
+  background-color: green;
+  text-align: center;
   width: 100%;
-  overflow-y: hidden;
-  font-size: 0.8em;
-  background-color: red;
+  overflow:auto;
+  font-size: 1em;
+  word-wrap:break-word;
+  position:fixed;
+}
+
+
+#chatWrapper .container-fluid{
+  background-color: white;
+  padding-bottom: 50px;
+
 }
 #userDescription{
   padding-top: 3em;
@@ -424,6 +445,8 @@ span{
     text-align:center;
     font-size:1.4em;
     color:black;
+		/*sgdfg*/
+    overflow: hidden;
   }
 
 }

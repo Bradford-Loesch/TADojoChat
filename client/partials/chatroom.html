@@ -67,7 +67,6 @@
       <div id="text">
         <div ng-repeat = "item in allMessages">
           <div ng-if="item.username == user.username">
-
             <p>{{ item.message }}</p>
             <h5>{{ item.username }} Said at {{ item.created_at | date: "shortTime"}}</h5>
           </div> <!-- End of user message row -->
