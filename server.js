@@ -145,10 +145,15 @@ io.sockets.on("connection", function(socket) {
 
   // Exit from room and update list of current users
   socket.on("disconnect_room", function(room){
-    socket.leave(room);
-    data = {
-      'currentUsers': getUserIds(room)
+    if (room) {
+      var currentUsers = getUserIds(room);
+      data = {
+        'currentUsers': getUserIds(room)
+      }
+    } else {
+      data = {};
     }
+    socket.leave(room);
     socket.broadcast.to(room).emit("broadcast_user_disconnect", data);
     return null;
   })
