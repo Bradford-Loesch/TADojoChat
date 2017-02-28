@@ -62,10 +62,21 @@ var server = app.listen(port, function () {
 
 var io = socketIO.listen(server);
 io.use(sharedsession(sess));
+
+var currentUsers = {};
 io.sockets.on("connection", function(socket) {
-
-
-  // Join room on socket call and emit to other users
+  // Function to translate socket ids to user ids
+  getUserIds = function(room) {
+    console.log(room);
+    var roomUserIds = [];
+    var roomUserSockets = io.sockets.adapter.rooms[room];
+    console.log(roomUserSockets);
+    for (var socket in roomUserSockets.sockets) {
+      console.log(socket);
+      roomUserIds.push(currentUsers[socket]);
+    }
+    return roomUserIds;
+  }
 
   // Receive messages from user and emit to all users
   socket.on("send_message", function(data){
@@ -79,31 +90,79 @@ io.sockets.on("connection", function(socket) {
       });
     });
   });
+
+  // Join room on socket call and emit to other users
   socket.on("join_room", function(room){
+    // Add user to list of currentUsers, join room
+    if (!(socket.id in currentUsers)){
+      currentUsers[socket.id] = socket.handshake.session.user;
+    }
     socket.join(room);
-    db.any("INSERT INTO User_Rooms(user_id, room_id), VALUES ($1, $2)", [socket.handshake.session.user, room]).then(()=>{
-      return db.one("SELECT * FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
-        console.log("********** session user id **************");
-        socket.broadcast.to(room).emit("broadcast_user_connect", user.id);
-        return null;
-      });
-    }).catch(console.error);
+    var roomUsers = getUserIds(room);
+
+    // Check to see if user currently in room list
+    db.any("SELECT * from User_Rooms WHERE user_id=$1 and room_id=$2", [socket.handshake.session.user, room]).then(rooms=>{
+      if (rooms.length > 0) {
+        console.log("*************roomUsers***********");
+        console.log(currentUsers);
+        console.log(roomUsers);
+        data = {
+          'id': socket.handshake.session.user,
+          'currentUsers': roomUsers
+        }
+        socket.to(room).emit("broadcast_user_connect", data);
+      } else {
+        db.any("INSERT INTO User_Rooms(user_id, room_id) VALUES ($1, $2)", [socket.handshake.session.user, room]).then(()=>{
+          return db.one("SELECT * FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
+            data = {
+              'id': socket.handshake.session.user,
+              'currentUsers': roomUsers,
+              'newuser': user
+            }
+            socket.to(room).emit("broadcast_user_connect", data);
+            return null;
+          });
+        }).catch(console.error);
+      }
+    });
   });
+
+  // Leave room and emit to others
   socket.on("leave_room", function(room){
     socket.leave(room);
+    // Remove user from database
     db.any("DELETE FROM User_Rooms WHERE user_id = $1 AND room_id = $2", [socket.handshake.session.user, room]).then(()=>{
       return db.one("SELECT * FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
-        console.log("********** session user id **************");
-        socket.broadcast.to(room).emit("broadcast_user_disconnect", user);
+        data = {
+          'user': user,
+          'currentUsers': getUserIds(room)
+        }
+        socket.broadcast.to(room).emit("broadcast_user_disconnect", data);
         return null;
       });
     }).catch(console.error);
   });
 
+  // Exit from room and update list of current users
+  socket.on("disconnect_room", function(room){
+    socket.leave(room);
+    data = {
+      'roomUsers': getUserIds()
+    }
+    socket.broadcast.to(room).emit("broadcast_user_disconnect", data);
+    return null;
+  })
+
   // Remove user when diconnection occurs
   socket.on("disconnect", function(){
-    io.emit("broadcast_user_disconnect", socket.handshake.session.user);
-    db.any("DELETE FROM User_Rooms WHERE user_id = $1", [socket.handshake.session.user]);
+    delete currentUsers[socket.id];
+
+    // Handled by disconnect room for now. Possibly add more later
+    // data = {
+    //   // 'roomUsers': io.nsps['/'].adapter.rooms[room],
+    //   // 'currentUsers': currentUsers
+    // }
+    // io.emit("broadcast_user_disconnect", data);
   });
 });
 
