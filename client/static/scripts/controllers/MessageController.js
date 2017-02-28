@@ -24,7 +24,6 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
 
   // Join room on connect
   joinRoom = function(){
-    console.log("Joining room");
     SocketFactory.joinRoom(parseInt($scope.room));
   }
   getUser();
@@ -66,13 +65,10 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
       $scope.allUsers.push(data.newuser);
     }
     $scope.$apply();
-    console.log("*********currentUsers**************");
-    console.log($scope.currentUsers);
   })
 
   // receive data from user disconnect broadcasts
   SocketFactory.onUserDisconnect(function(data) {
-    console.log("***********disconnection");
     setCurrentUsers(data);
     $scope.$apply();
   });
