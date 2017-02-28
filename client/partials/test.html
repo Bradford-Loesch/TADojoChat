@@ -1,9 +1,36 @@
 
-<div class="wrapper" ng-controller="MessageController">
-  <ul ng-repeat = "message in allMessages">
-    <li ng-bind="message"> </li>
-    <li>{{ message.message.content }}</li>
-  </ul>
-  <input type="text" name="message" ng-model="message.content" value="">
-  <button type="button" name="send" ng-href="#here" ng-click="createMessage()">Send</button>
+<style media="screen">
+  .red {background-color: red;}
+  .blue {background-color: blue;}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#red').click(function() {
+    $('body').addClass('red');
+  });
+
+  $('#blue').click(function() {
+    // $(this).parentsUntil("#main-wrapper").addClass('blue');
+    // angular.element($event.target).parent().addClass('blue');
+    $(document.body).addClass('blue');
+  });
+
+});
+</script>
+<div id="container2">
+  <div ng-class="selectedClass" style="width:400px; height: 400px; outline: 1px solid black;">
+    <select id="selectcolor" name="select" ng-model="selectedClass">
+      <option value="red" id="red">red</option>
+      <option value="blue" id="blue">blue</option>
+      <option value="red">red</option>
+      <option value="red">red</option>
+    </select>
+  </div>
+
 </div>
+
+<!-- .getElementById("chatWrapper").style.backgroundColor=this.value -->
+<!-- <label for="color">Color: </label>
+<input type="text" name="color" size="20" id="color" />
+<button type="button" onClick="javascript:changeBGC()">Submit</button> -->

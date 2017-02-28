@@ -34,12 +34,23 @@
       </ul>
     </li>
   </ul>
-  <div id="chatWrapper" ng-controller="MessageController">
+
+  <!--
+  <script type="text/javascript">
+  function changeBGC(color){
+    document.body.style.backgroundColor = document.getElementById('color').value;
+  }
+  </script> -->
+
+
+  <div id="chatWrapper" ng-class="selectedClass" ng-controller="MessageController">
+    <!-- <test> -->
     <div class="container-fluid">
       <h3>chatroom1</h3>
       <br>
       <p>time message was sent</p>
       <br>
+
       <div class="messagecontainer" ng-repeat = "item in allMessages">
         <div class="row" ng-if="item.username == user.username">
           <div class="col-xs-6 col-sm-6">
@@ -51,6 +62,7 @@
             </div>
           </div>
         </div> <!-- End of user message row -->
+
         <div class="row" ng-if="item.username != user.username">
           <div class="col-xs-6 col-sm-6">
             <div class="guestMessage">
@@ -72,7 +84,11 @@
           </div>
           <button id="buttonForm" class="btn btn-default" ng-click="sendMessage()">Send</button>
         </form>
+        <!-- <label for="color">Color: </label>
+        <input type="text" name="color" size="20" id="color" />
+        <button type="button" onClick="javascript:changeBGC()">Submit</button> -->
       </div>
+
     </div>
   </div>
 </body>
