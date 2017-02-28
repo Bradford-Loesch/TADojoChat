@@ -147,7 +147,7 @@ io.sockets.on("connection", function(socket) {
   socket.on("disconnect_room", function(room){
     socket.leave(room);
     data = {
-      'roomUsers': getUserIds()
+      'currentUsers': getUserIds(room)
     }
     socket.broadcast.to(room).emit("broadcast_user_disconnect", data);
     return null;

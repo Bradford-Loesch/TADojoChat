@@ -12,7 +12,7 @@ app.factory("SocketFactory",["$routeParams", function ($routeParams) {
     socket.emit('leave_room', data);
   }
 
-  factory.disconnectRoom = function() {
+  factory.disconnectRoom = function(data) {
     socket.emit('disconnect_room', data);
   }
 

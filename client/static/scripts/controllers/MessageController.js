@@ -47,39 +47,40 @@ app.controller("MessageController", ["$scope", "$routeParams", "$window", "Socke
     $scope.$apply();
   });
 
+  // set current user list
+  setCurrentUsers = function(data){
+    $scope.currentUsers = [];
+    for (var i = 0; i < data.currentUsers.length; i++) {
+      for (var j = 0; j < $scope.allUsers.length; j++) {
+        console.log(data.currentUsers[i]);
+        console.log($scope.allUsers[j].id);
+        if (data.currentUsers[i] == $scope.allUsers[j].id) {
+          $scope.currentUsers.push($scope.allUsers[j]);
+        }
+      }
+    }
+  }
+
   // reveive data from user connect broadcasts
   SocketFactory.onUserConnect(function(data) {
-    console.log("received user connect broadcast");
-    console.log(data);
-    // console.log($scope.allUsers);
-    // console.log($scope.currentUsers);
-    $scope.currentUsers = [];
-    // for (var i = 0; i < data.currentUsers.length; i++) {
-    //   for (var j = 0; j < $scope.allUsers.length; i++) {
-    //     if (data.currentUsers[i] == $scope.allUsers[j].id) {
-    //       $scope.currentUsers.push($scope.allUsers[j]);
-    //     }
-    //   }
-    // }
+    setCurrentUsers(data);
     if ('newuser' in data) {
       $scope.allUsers.push(data.newuser);
     }
+    $scope.$apply();
+    console.log("*********currentUsers**************");
     console.log($scope.currentUsers);
   })
 
   // receive data from user disconnect broadcasts
   SocketFactory.onUserDisconnect(function(data) {
-    for (var i = 0; i < $scope.allUsers.length; i++) {
-      if ($scope.allUsers[i].id == data.id) {
-        $scope.allUsers.splice(i, 1);
-      }
-    }
+    setCurrentUsers(data);
     $scope.$apply();
   });
 
   // leave the chat room when the window closes
   $window.onbeforeunload = function(){
-    SocketFactory.disconnectRoom($scope.user.username);
+    SocketFactory.disconnectRoom(parseInt($scope.room));
   }
 
 }]);
