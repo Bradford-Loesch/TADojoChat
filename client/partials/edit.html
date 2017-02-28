@@ -32,9 +32,9 @@
           </ul>
         </li>
       </ul>
-        <div class="container-fluid" ng-controller="UserController" >
+        <div class="container-fluid" ng-controller="UserController" ng-init="index()">
           <h1>{{user.username}}</h1>
-          <div id="userPageImage"></div>
+          <div id="userPageImage" style="background-image:url('/avatar/{{user.id}}')"></div>
           <div id="userPage">
             <div id="userDescription">
               <form>

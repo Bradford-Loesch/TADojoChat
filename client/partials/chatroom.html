@@ -8,23 +8,54 @@
 
 <body>
   <script type="text/javascript">
-    $(document).ready(function() {
-      $('.container-fluid').slicknav({
-        label: '',
-        duration: 300,
-        easingOpen: "swing",
-        prependTo: '#top'
-      });
-    });
+      // $('.container-fluid').slicknav({
+      //   label: '',
+      //   duration: 300,
+      //   easingOpen: "swing",
+      //   prependTo: '#top'
+      // });
+    function openNav() {
+      document.getElementById("mySidenav").style.width = "200px";
+      document.getElementById("main").style.marginLeft = "250px";
+    }
+      /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+    function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+      document.getElementById("main").style.marginLeft = "0"
+    }
+    console.log(screen.width)
+    if(screen.width > 700){
+      openNav()
+    }
+    console.log(document.getElementById("mySidenav").style.width)
   </script>
-      <div id="chatWrapper" ng-controller="MessageController">
-        <div class="container-fluid">
-      <nav class="navbar navbar-default">
-          <ul class="nav navbar-nav">
-            <li><a href="/#!/rooms">chatrooms</a></li>
-          </ul>
-      </nav>
-      <div id="top"></div>
+<div id="mySidenav" class="sidenav" ng-controller="UserController" ng-init="index()">
+  <p>Hello {{user.username}}</p>
+  <div id="chatroomAvatar" style="background-image:url('/avatar/{{user.id}}')"></div>
+  <a class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="/#!/rooms">Home</a>
+  <a href="/#!/chatroom">My Account</a>
+  <p>Other users in this room</p>
+  <a>user</a>
+  <a>user</a>
+  <a>user</a>
+  <a>user</a>
+  <a>user</a>
+  <a>user</a>
+  <p>Other chatrooms</p>
+  <a>chatroom</a>
+  <a>chatroom</a>
+  <a>chatroom</a>
+  <a>chatroom</a>
+</div>
+
+<!-- Use any element to open the sidenav -->
+
+<!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+<div id="main">
+  <!-- <button ng-if="document.getElementById('main').style.marginLeft == null" onclick="openNav()" >Measfafas</button> -->
+  <button onclick="openNav()">Menu</button>
+  <div ng-controller="MessageController">
       <ul id="menu">
         <li><a href="/#!/rooms">Home</a></li>
         <li>Chatrooms
@@ -33,44 +64,31 @@
           </ul>
         </li>
       </ul>
-      <h3>chatroom1</h3>
+      <h3>ChatRoom</h3>
       <br>
-      <p>time message was sent</p>
-      <br>
-      <div class="messagecontainer" ng-repeat = "item in allMessages">
-        <div class="row" ng-if="item.username == user.username">
-          <div class="col-xs-6 col-sm-6">
-            <p>{{ item.username }} {{ item.created_at }}</p>
-          </div>
-          <div class="col-xs-6 col-sm-6">
-            <div class="userMessage">
-              <p>{{ item.message }}</p>
-            </div>
-          </div>
+      <div ng-repeat = "item in allMessages">
+        <div ng-if="item.username == user.username">
+          <p>{{ item.message }}</p>
+            <h5>{{ item.username }} {{ item.created_at }}</h5>
         </div> <!-- End of user message row -->
-        <div class="row" ng-if="item.username != user.username">
-          <div class="col-xs-6 col-sm-6">
-            <div class="guestMessage">
-              <p>{{ item.message }}</p>
-            </div>
-          </div>
-          <div class="col-xs-6 col-sm-6">
-            <p>{{ item.username }} {{ item.created_at }}</p>
+        <div ng-if="item.username != user.username">
+              <p>reply</p>
+              <p>{{ item.username }} {{ item.created_at }}</p>
           </div>
         </div> <!-- End of guest message row -->
-      </div>
     </div>
+  </div>
       <div id="chatBottom">
           <form>
             <label for="messageinput"></label>
-            <textarea ng-model="message.content" rows="4" cols="40">Write Message Here</textarea>
-            <!-- <input  type="text" ng-model="message.content"> -->
-            <button id="buttonForm" class="btn btn-default" ng-click="sendMessage()">Send</button>
+            <input  type="text" ng-model="message.content">
+            <button onclick="closeNav()">close</button>
           </form>
         </div>
       </div>
     </div>
   </div>
+</div>
 </body>
 
 </html>
