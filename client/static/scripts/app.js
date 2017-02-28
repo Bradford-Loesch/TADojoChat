@@ -8,6 +8,10 @@ app.config(function($routeProvider){
         .when("/login",{
           templateUrl:"partials/login.html"
         })
+        .when("/register",{
+          templateUrl:"partials/register.html"
+        })
+
         .when("/rooms",{
           templateUrl:"partials/dashboard.html"
         })
