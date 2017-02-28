@@ -11,14 +11,14 @@ app.factory("UserFactory", ["$http", function ($http) {
     return $http.post("/register", user);
   };
   factory.logout = function(){
-    return $http.get('/logout')
-  }
+    return $http.get("/logout");
+  };
   factory.index = function(){
-    return $http.get('/profile')
-  }
+    return $http.get("/profile");
+  };
   factory.update = function(user){
-    console.log(user)
-    return $http.post('/profile',user)
-  }
+    console.log(user);
+    return $http.post("/profile",user);
+  };
   return factory;
 }]);

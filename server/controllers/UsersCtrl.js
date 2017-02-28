@@ -3,13 +3,10 @@ var fs = require("fs");
 var static_loader = require("utils.js");
 var q = require("q");
 var mkdirp = require("mkdirp");
+var db = require("./db.js");
 
-var db = null;
 
 module.exports = {
-  setDB:function(dbObj){
-    db = db||dbObj;
-  },
   register: function(req, res){
     var data = req.body;
     var errors = [];

@@ -5,12 +5,12 @@ app.factory("SocketFactory",["$routeParams", function ($routeParams) {
 
 
   factory.joinRoom = function(data) {
-    socket.emit('join_room', data);
-  }
+    socket.emit("join_room", data);
+  };
 
   factory.leaveRoom = function(data) {
-    socket.emit('leave_room', data);
-  }
+    socket.emit("leave_room", data);
+  };
 
   factory.sendMessage = function(data) {
     socket.emit("send_message", data);

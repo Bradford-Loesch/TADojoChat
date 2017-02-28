@@ -1,36 +1,36 @@
 var express       = require("express"),
   static_loader   = require("utils"),
-  q               = require("q"),
   socketIO        = require("socket.io"),
   session         = require("express-session"),
   pgSession       = require("connect-pg-simple")(session),
   pgp             = require("pg-promise")(),
   path            = require("path"),
   routes          = require("./server/config/routes.js"),
+  commands        = require("./server/config/commands.js"),
   bp              = require("body-parser"),
   root            = __dirname,
   port            = process.env.PORT || 8000,
-  app             = express();
+  app             = express(),
+  db              = require("./server/config/db.js"),
+  io_holder       = require("./server/config/io.js");
 
 // app.use( express.static( path.join( root, "server" )));  Server-side files SHOULD NEVER be client-accessible!
 // app.use( express.static( path.join( root, "node_modules" )));
 
+var user_sockets = {};
+
 app.use(bp.json());
-
-var cn = {
-  database: "chat",
-  user: "coder65535",
-  password: "Brian1",
-  host: "localhost",
-  port: 5432
-};
-
-var db = pgp(cn);
 
 var sess = session({
   store: new pgSession({
     pg: pgp.pg,
-    conString: cn
+    conString: {
+      database: "chat",
+      user: "coder65535",
+      password: "Brian1",
+      host: "localhost",
+      port: 5432
+    }
   }),
   saveUninitialized:true,
   secret:"SecretPassForSessionData",
@@ -49,9 +49,8 @@ app.get("/", function(req, res){
 
 app.use( express.static( path.join( root, "client" )));
 
-var ioDelayed = q.defer();
 
-routes(app, ioDelayed.promise, db);
+routes(app);
 
 static_loader.install(app);
 
@@ -63,7 +62,12 @@ var server = app.listen(port, function () {
 var io = socketIO.listen(server);
 io.use(sharedsession(sess));
 io.sockets.on("connection", function(socket) {
-
+  db.one("SELECT * FROM Users WHERE id=$1",[socket.handshake.session.user]).then(user=>{
+    user_sockets[user.username] = socket;
+    return null;
+  }).catch(err=>{
+    console.error(err);
+  });
 
   // Join room on socket call and emit to other users
 
@@ -71,19 +75,34 @@ io.sockets.on("connection", function(socket) {
   socket.on("send_message", function(data){
     console.log("***********data**************");
     console.log(data);
-    db.one("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3) returning message",[data.room, socket.handshake.session.user, data.message]).then(message=>{
-      console.log("************newMessage*************");
-      console.log(message);
-      message.user = socket.handshake.session.user;
-      message.room = data.room;
-      console.log(message);
-      io.to(data.room).emit("broadcast_message", message);
-      console.log("**********sent message************");
-      return null;
-    }).catch(err=>{
-      console.error(err);
-      socket.emit("message_error", err);
-    });
+    if (data.message[0] === "/"){
+      var [command, ...args] = data.message.split(" ");
+      command = command.substring(1);
+      console.log("SERVER COMMAND: ",command);
+      if (commands[command] && command !== "setup"){
+        var output = commands[command](args, socket, data);
+        if (output){
+          var res = {output:output, room:data.room};
+          socket.emit("server_message",res); //call the command specified by "command" with the given args
+        }
+      } else {
+        socket.emit("server_message",command+"is not a command");
+      }
+    } else {
+      db.one("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3) returning message",[data.room, socket.handshake.session.user, data.message]).then(message=>{
+        console.log("************newMessage*************");
+        console.log(message);
+        message.user = socket.handshake.session.user;
+        message.room = data.room;
+        console.log(message);
+        io.to(data.room).emit("broadcast_message", message);
+        console.log("**********sent message************");
+        return null;
+      }).catch(err=>{
+        console.error(err);
+        socket.emit("message_error", err);
+      });
+    }
   });
   socket.on("join_room", function(room){
     socket.join(room);
@@ -116,4 +135,4 @@ io.sockets.on("connection", function(socket) {
 // var ioSession = require("io-session");
 // io.use(ioSession(session));
 
-ioDelayed.resolve(io);
+io_holder.setIO(io);

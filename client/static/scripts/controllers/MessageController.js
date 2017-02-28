@@ -19,12 +19,12 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
     }).catch(console.error);
   };
 
-  getUser = function(){
+  var getUser = function(){
     UserFactory.index().then(userData=>{
       $scope.user = userData.data;
       console.log("***********user data in UserController**********");
-      console.log(userData.data)
-      // return null;
+      console.log(userData.data);
+      return null;
     }).catch(console.error);
   };
   getMessages();

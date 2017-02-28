@@ -1,9 +1,6 @@
-var db = null;
+var db = require("./db.js");
 
 module.exports = {
-  setDB:function(dbObj){
-    db = db||dbObj;
-  },
   listRooms:function(req, res){
     db.any("SELECT * FROM Room WHERE is_private = false").then(rooms=>{
       res.json({"rooms":rooms});
