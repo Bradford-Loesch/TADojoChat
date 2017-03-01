@@ -36,10 +36,10 @@
       <a class="closebtn" id="chatroomToggle" onclick="closeNav()">&times;</a>
       <a href="/#!/rooms">Home</a>
       <a href="/#!/chatroom">My Account</a>
-      <p>Other users in this room</p>
+      <p>Users</p>
 
       <a ng-repeat="user in currentUsers" href="/#!/user/{{user.id}}">{{user.username}}</a>
-      <p>Other chatrooms</p>
+      <p>Chatrooms</p>
       <a>chatroom</a>
       <a>chatroom</a>
       <a>chatroom</a>
@@ -67,12 +67,11 @@
       <div id="text">
         <div ng-repeat = "item in allMessages">
           <div ng-if="item.username == user.username">
-            <!-- <emoji>{{ item.message }}</emoji> -->
-            <!-- <p ng-bind="item.message | emoji"></p> -->
+            <p ng-bind-html="item.message | emoji"></p>
             <h5>{{ item.username }} Said at {{ item.created_at | date: "shortTime"}}</h5>
           </div> <!-- End of user message row -->
           <div ng-if="item.username != user.username">
-            <p>{{ item.message }}</p>
+            <p ng-bind-html="item.message | emoji"></p>
             <h5>{{ item.username }} Said at {{ item.created_at | date: "shortTime"}}</h5>
           </div>
         </div> <!-- End of guest message row -->

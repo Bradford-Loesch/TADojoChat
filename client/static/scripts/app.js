@@ -1,4 +1,4 @@
-var app = angular.module("app",["ngRoute", "ngFileUpload", "ngSantitize", "dbaq.emoji"]);
+var app = angular.module("app",["ngRoute", "ngFileUpload", "ngSanitize", "dbaq.emoji"]);
 
 app.config(function($routeProvider){
   $routeProvider
