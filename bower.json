@@ -21,7 +21,8 @@
     "angular": "^1.6.2",
     "angular-route": "^1.6.2",
     "animate.css": "^3.5.2",
-    "ng-file-upload": "^12.2.13"
+    "ng-file-upload": "^12.2.13",
+    "angular-themer": "^0.4.1"
   },
   "devDependencies": {
     "socket.io-client": "latest"

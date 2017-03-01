@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html ng-app="app">
-
   <head>
     <meta charset="utf-8">
-    <title> Index </title>
-
+    <title>Index</title>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -20,8 +18,13 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="static/assets/style.css">
+    <link rel="stylesheet" href="static/assets/light.css">
+    <link rel="stylesheet" href="static/assets/dark.css">
+    <link rel="stylesheet" href="static/assets/dracula.css">
     <script src="/cdn/ng-file-upload/ng-file-upload.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sidebar/3.3.2/jquery.sidebar.min.js"></script>
+    <script src="cdn/angular-themer/dist/themer.min.js"></script>
+    <link themer-link>
 
     <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
 
@@ -38,8 +41,9 @@
     <script type="text/javascript" src="static/scripts/controllers/roomController.js"></script>
   </head>
   <body>
-      <div ng-view="" id="main-wrapper">
-          <!-- This is where the partials will be loaded (ng-route) -->
-      </div>
+    <div ng-view="">
+      <!-- This is where the partials will be loaded (ng-route) -->
+    </div>
+
   </body>
 </html>

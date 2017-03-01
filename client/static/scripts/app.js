@@ -1,6 +1,6 @@
-var app = angular.module("app",["ngRoute","ngFileUpload"]);
+var app = angular.module("app",["ngRoute","ngFileUpload", "angular-themer"]);
 
-app.config(function($routeProvider){
+app.config(["$routeProvider", 'themerProvider', function($routeProvider, themerProvider){
   $routeProvider
         .when("/",{
           templateUrl:"partials/login.html"
@@ -33,4 +33,15 @@ app.config(function($routeProvider){
         .otherwise({
           redirect_to: "/"
         });
-});
+        styles = [
+          { key: 'LIGHT', label: 'Light Theme', href: ['static/assets/light.css']},
+          { key: 'DARK', label: 'Dark Theme', href: ['static/assets/dark.css']},
+          { key: 'DRACULA', label: 'Dracula Theme', href: ['static/assets/dracula.css']}
+        ];
+        themerProvider.storeTheme(true);
+        themerProvider.setStyles(styles);
+
+        var selected = themerProvider.getStoredTheme() || styles[0].key;
+        console.log("SELECTED:", selected);
+        themerProvider.setSelected(selected);
+}]);

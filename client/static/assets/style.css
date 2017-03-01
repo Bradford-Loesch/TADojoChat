@@ -163,7 +163,7 @@
 }
 *::-webkit-scrollbar-thumb
 {
-	background-color: #337ab7;
+	background-color: red;
   border-radius: 40px;
 }
 
@@ -200,7 +200,9 @@
   font-size: 27px;
   color: #337ab7;
   display: block;
-  transition: 0.3s
+  transition: 0.3s;
+  background-color: inherit;
+
 }
 
 
@@ -420,6 +422,7 @@ div.form-group{
 span{
   font-size: 0.8em;
 }
+
 @media screen and (max-width: 40em) {
 	#chatroomToggle{
 		display: block;
