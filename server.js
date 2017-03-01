@@ -4,7 +4,7 @@ var express       = require("express"),
   session         = require("express-session"),
   pgSession       = require("connect-pg-simple")(session),
   pgp             = require("pg-promise")(),
-  q               = require("q");
+  q               = require("q"),
   path            = require("path"),
   routes          = require("./server/config/routes.js"),
   commands        = require("./server/config/commands.js"),
@@ -12,8 +12,7 @@ var express       = require("express"),
   root            = __dirname,
   port            = process.env.PORT || 8000,
   app             = express(),
-  db              = require("./server/config/db.js"),
-  io_holder       = require("./server/config/io.js");
+  db              = require("./server/config/db.js");
 
 // app.use( express.static( path.join( root, "server" )));  Server-side files SHOULD NEVER be client-accessible!
 // app.use( express.static( path.join( root, "node_modules" )));
@@ -81,7 +80,7 @@ io.sockets.on("connection", function(socket) {
     if (data.message[0] === "/"){
       var [command, ...args] = data.message.split(" ");
       command = command.substring(1);
-      console.log("SERVER COMMAND: ",command);
+      console.log("SERVER COMMAND: ",command+ ": "+args);
       if (commands[command] && command !== "setup"){
         var output = commands[command](args, socket, data);
         if (output){
@@ -89,7 +88,7 @@ io.sockets.on("connection", function(socket) {
           socket.emit("server_message",res); //call the command specified by "command" with the given args
         }
       } else {
-        socket.emit("server_message",command+"is not a command");
+        socket.emit("server_message",{output:command+"is not a command", room:data.room});
       }
     } else {
       db.one("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3) returning message",[data.room, socket.handshake.session.user, data.message]).then(message=>{
