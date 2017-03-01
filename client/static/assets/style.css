@@ -185,6 +185,9 @@
 #text p{
 	font-size: 1.5em;
 }
+#top{
+	display: none;
+}
 /* The navigation menu links */
 .sidenav a {
   padding: 8px 8px 8px 32px;
