@@ -163,7 +163,7 @@
 }
 *::-webkit-scrollbar-thumb
 {
-	background-color: red;
+	background-color: black;
   border-radius: 40px;
 }
 
@@ -255,6 +255,7 @@ h3 {
 .container-fluid h1{
   color:#3872d1;
   text-shadow: 5px 2px 5px black;
+  background-color: inherit;
 
 }
 #validator{
@@ -367,6 +368,7 @@ body {
 }
 #top{
   height: 2em;
+  background-color: inherit;
 }
 #join{
   display: inline-block;
