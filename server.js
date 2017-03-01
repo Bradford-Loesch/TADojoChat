@@ -67,11 +67,14 @@ var currentUsers = {};
 io.sockets.on("connection", function(socket) {
   // Function to translate socket ids to user ids
   getUserIds = function(room) {
-    console.log(room);
     var roomUserIds = [];
     var roomUserSockets = io.sockets.adapter.rooms[room];
-    // console.log(roomUserSockets);
-    if (roomUserSockets.sockets) {
+    console.log("******************");
+    console.log(room);
+    console.log(roomUserSockets);
+    if (typeof(roomUserSockets) === "undefined") {
+      // pass
+    } else {
       for (var socket in roomUserSockets.sockets) {
         // console.log(socket);
         roomUserIds.push(currentUsers[socket]);

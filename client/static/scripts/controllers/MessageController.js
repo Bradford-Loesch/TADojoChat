@@ -56,6 +56,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
         }
       }
     }
+    $scope.$apply();
   }
 
   // reveive data from user connect broadcasts
