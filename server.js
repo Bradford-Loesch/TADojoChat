@@ -69,10 +69,16 @@ io.sockets.on("connection", function(socket) {
   getUserIds = function(room) {
     var roomUserIds = [];
     var roomUserSockets = io.sockets.adapter.rooms[room];
-    // console.log(roomUserSockets);
-    for (var socket in roomUserSockets.sockets) {
-      // console.log(socket);
-      roomUserIds.push(currentUsers[socket]);
+    console.log("******************");
+    console.log(room);
+    console.log(roomUserSockets);
+    if (typeof(roomUserSockets) === "undefined") {
+      // pass
+    } else {
+      for (var socket in roomUserSockets.sockets) {
+        // console.log(socket);
+        roomUserIds.push(currentUsers[socket]);
+      }
     }
     return roomUserIds;
   }

@@ -1,6 +1,6 @@
-var app = angular.module("app",["ngRoute","ngFileUpload"]);
+var app = angular.module("app",["ngRoute", "ngFileUpload", "ngSanitize", "dbaq.emoji", 'angular-themer']);
 
-app.config(function($routeProvider){
+app.config(["$routeProvider", 'themerProvider', function($routeProvider, themerProvider){
   $routeProvider
         .when("/",{
           templateUrl:"partials/login.html"
@@ -33,4 +33,18 @@ app.config(function($routeProvider){
         .otherwise({
           redirect_to: "/"
         });
-});
+        styles = [
+          { key: 'LIGHT', label: 'Light Theme', href: 'static/assets/light.css'},
+          { key: 'DARK', label: 'Leprechaun Theme', href: 'static/assets/leprechaun.css'},
+          { key: 'DRACULA', label: 'Dracula Theme', href: ['static/assets/dracula.css', 'static/assets/header-size.css']},
+          { key: 'Pink', label: 'Pink Panther Theme', href: 'static/assets/pink.css'},
+
+        ];
+
+        themerProvider.storeTheme(true);
+        themerProvider.setStyles(styles);
+
+        var selected = themerProvider.getStoredTheme() || styles[0].key;
+        console.log("SELECTED:", selected);
+        themerProvider.setSelected(selected);
+}]);
