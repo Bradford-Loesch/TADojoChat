@@ -25,7 +25,6 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
     UserFactory.index().then(userData=>{
       $scope.user = userData.data;
       // return null;
-
     }).catch(console.error);
   };
 
@@ -47,9 +46,9 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
 
   // receive data from message broadcasts
   SocketFactory.onBroadcast(function(data) {
-    console.log($scope.allMessages)
     $scope.allMessages.push(data);
     var d = new Date($scope.allMessages[0].created_at)
+    // $scope.time = date
     $scope.$apply();
   });
 
