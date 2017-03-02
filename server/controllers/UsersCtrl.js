@@ -211,5 +211,14 @@ module.exports = {
     }).catch(()=>{
       static_loader.serve_file(res, "anonymous.png", "../client/avatars/");
     });
+  },
+  getMyRooms:function(req, res){
+    db.any("SELECT User_Rooms.room_id AS room_id, Room.name AS name FROM User_Rooms JOIN Room on Room.id = User_rooms.room_id WHERE User_rooms.room_id = $1",[req.session.user]).then(rooms=>{
+      res.json(rooms);
+      return null;
+    }).catch(err=>{
+      console.error(err);
+      res.json({err:err});
+    });
   }
 };
