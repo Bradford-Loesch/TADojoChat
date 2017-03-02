@@ -20,5 +20,8 @@ app.factory("UserFactory", ["$http", function ($http) {
     console.log(user)
     return $http.post('/profile',user)
   }
+  factory.getUser = function(id){
+    return $http.get('/profile/' + id)
+  }
   return factory;
 }]);

@@ -10,17 +10,14 @@
         <li>Chatrooms
           <ul>
             <li><a href="/#!/chatroom/1">chatroom1</a></li>
-
           </ul>
         </li>
       </ul>
-      <div id="top"></div>
       <nav class="navbar navbar-inverse">
         <div id="dash" class="container-fluid">
           <ul class="nav navbar-nav">
             <li><a href="/#!/rooms">Chatrooms</a></li>
             <li><a href="/#!/user">My Account</a></li>
-
             <li><a href="#">Logout</a></li>
           </ul>
         </div>
@@ -37,12 +34,18 @@
           <div id="userPageImage" style="background-image:url('/avatar/{{user.id}}')"></div>
           <div id="userPage">
             <div id="userDescription">
-              <form>
+              <form ng-app="fileUpload" ng-controller="UserController" name="form">
+                <div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+                  ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
+                  ngf-resize="{width: 100, height: 100}">Chage user Image</div> {{file.name}}
                 <input type="text" class="form-control" ng-model="user.first_name" placeholder="First Name">
                 <input type="text" class="form-control" ng-model="user.last_name" placeholder="Last Name">
-                <input type="text" class="form-control" ng-model="user.email" placeholder="email">
+                <input type="date" class="form-control" ng-model="user.birthday">
+                <input type="text" class="form-control" ng-model="user.location" placeholder="location">
+                <input type="text" class="form-control" ng-model="user.skype" placeholder="skype">
+                <textarea name="name" class="form-control" ng-model="user.description" rows="3" cols="60" placeholder="description"></textarea>
                 <br>
-                <input class="btn btn-default" type="submit" ng-click="update()">
+                <input class="btn btn-default" type="submit" ng-click="submit()">
                 <br>
               </form>
             </div>

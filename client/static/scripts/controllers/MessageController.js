@@ -1,10 +1,16 @@
-app.controller("MessageController", ["$scope", "$routeParams", "$location", "SocketFactory", "MessageFactory", "UserFactory", function ($scope, $routeParams, $location, SocketFactory, MessageFactory, UserFactory) {
+app.controller("MessageController", ["$scope", "$routeParams", "$location", "SocketFactory", "MessageFactory", "UserFactory", "themer", function ($scope, $routeParams, $location, SocketFactory, MessageFactory, UserFactory, themer) {
+  $scope.styles = styles
   $scope.allMessages = [];
   $scope.message = {};
   $scope.allUsers = [];
   $scope.currentUsers = [];
   $scope.user = {};
   $scope.room = $routeParams.id;
+  $scope.updateStyle = function(style){
+  console.log("hi", style)
+    themer.setSelected(style);
+  }
+
 
   // http functions for messsages and user data
   getMessages = function(){

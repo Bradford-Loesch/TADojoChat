@@ -1,4 +1,4 @@
-app.controller("UserController", ["$scope", "Upload", "$location", "UserFactory", function ($scope, Upload, $location, UserFactory) {
+app.controller("UserController", ["$scope", "Upload", "$location","$routeParams", "UserFactory", "$window", function ($scope, Upload, $location,$routeParams, UserFactory, $window) {
   $scope.login = function(){
     UserFactory.login($scope.user).then(res=>{
       console.log(res);
@@ -34,24 +34,20 @@ app.controller("UserController", ["$scope", "Upload", "$location", "UserFactory"
   $scope.index = function(){
     UserFactory.index().then(userData=>{
       delete userData.password
+      userData.data.birthday = new Date(userData.data.birthday);
       $scope.user = userData.data;
       // console.log("***********user data in UserController**********");
-      // console.log(userData.data);
+      console.log(userData.data);
       return null;
     }).catch(console.error);
   };
-  $scope.update = function(){
-    console.log($scope.user);
-    UserFactory.update($scope.user).then(data=>{
-      console.log(data);
-      return null;
-    }).catch(console.error);
-  };
-  $scope.upload = function (file){
+  $scope.upload = function (){
+    $scope.user.avatar = $scope.file;
     Upload.upload({
       url: "/profile",
-      data: {avatar: file}
+      data: $scope.user
     }).then(function (res) {
+      $window.location.reload();
       console.log("here");
       console.log(res);
       console.log("Success " + res.config.data.filename + "uploaded. Response: ",res.data);
@@ -59,15 +55,21 @@ app.controller("UserController", ["$scope", "Upload", "$location", "UserFactory"
     }).catch(function (res) {
       console.log("Error status: " + res.status);
     });
-    console.log(file);
+    console.log($scope.file);
   };
-
-
+  $scope.getUser = function(){
+    console.log($routeParams)
+    UserFactory.getUser($routeParams.id).then(data=>{
+      data.data.birthday = new Date(data.data.birthday);
+      console.log(data.data)
+      $scope.otheruser = data.data
+    })
+  }
   $scope.submit = function() {
-    if ($scope.form.file.$valid && $scope.file) {
+    if (!$scope.form.file || $scope.form.file.$valid) {
       console.log($scope.file);
-      $scope.upload($scope.file);
-    }    else{
+      $scope.upload();
+    }else{
       console.log("file is not valid");
     }
   };

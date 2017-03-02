@@ -16,6 +16,7 @@ module.exports = function(app, ioPromise, db) {
   app.delete("/profile", UsersCtrl.deleteMe);
   app.delete("/profile/:id", UsersCtrl.deleteUser);
   app.get("/avatar/:id", UsersCtrl.getAvatar);
+  app.get("/rooms/me", UsersCtrl.getMyRooms);
   app.get("/avatar", UsersCtrl.getAvatar);
   app.get("/rooms", ChatCtrl.listRooms);
   app.post("/rooms", ChatCtrl.makeRoom);
