@@ -35,7 +35,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
   };
   getUser();
   getMessages();
-  joinRoom();
+  setTimeout(joinRoom,500);
 
   // post new message
   $scope.sendMessage = function() {
@@ -68,12 +68,11 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
 
   // reveive data from user connect broadcasts
   SocketFactory.onUserConnect(function(data) {
-    setCurrentUsers(data);
-    if ("newuser" in data) {
+    if ('newuser' in data) {
       $scope.allUsers.push(data.newuser);
     }
-    $scope.$apply();
-  });
+    setCurrentUsers(data);
+  })
 
   // receive data from user disconnect broadcasts
   SocketFactory.onUserDisconnect(function(data) {

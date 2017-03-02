@@ -12,7 +12,6 @@ app.config(["$routeProvider", "themerProvider", function($routeProvider, themerP
         .when("/register",{
           templateUrl:"partials/register.html"
         })
-
         .when("/rooms",{
           templateUrl:"partials/dashboard.html"
         })
@@ -24,6 +23,9 @@ app.config(["$routeProvider", "themerProvider", function($routeProvider, themerP
         })
         .when("/user",{
           templateUrl:"partials/user.html"
+        })
+        .when("/user/:id",{
+          templateUrl:"partials/otherUser.html"
         })
         .when("/edit/user",{
           templateUrl:"partials/edit.html"

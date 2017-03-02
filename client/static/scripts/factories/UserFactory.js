@@ -17,8 +17,11 @@ app.factory("UserFactory", ["$http", function ($http) {
     return $http.get("/profile");
   };
   factory.update = function(user){
-    console.log(user);
-    return $http.post("/profile",user);
-  };
+    console.log(user)
+    return $http.post('/profile',user)
+  }
+  factory.getUser = function(id){
+    return $http.get('/profile/' + id)
+  }
   return factory;
 }]);

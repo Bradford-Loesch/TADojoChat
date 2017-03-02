@@ -1,6 +1,6 @@
 app.controller("roomsController",["$scope", "$location", "roomFactory", function ($scope, $location,roomFactory){
   $scope.index = function(){
-    console.log("inde");
+    // console.log("index");
     roomFactory.index().then(function(res){
       console.log(res.data.rooms);
       $scope.rooms = res.data.rooms;
