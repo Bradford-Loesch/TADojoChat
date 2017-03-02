@@ -11,7 +11,6 @@ app.config(function($routeProvider){
         .when("/register",{
           templateUrl:"partials/register.html"
         })
-
         .when("/rooms",{
           templateUrl:"partials/dashboard.html"
         })
@@ -23,6 +22,9 @@ app.config(function($routeProvider){
         })
         .when("/user",{
           templateUrl:"partials/user.html"
+        })
+        .when("/user/:id",{
+          templateUrl:"partials/otherUser.html"
         })
         .when("/edit/user",{
           templateUrl:"partials/edit.html"

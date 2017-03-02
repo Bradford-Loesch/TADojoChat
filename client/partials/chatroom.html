@@ -35,7 +35,7 @@
       <div id="chatroomAvatar" style="background-image:url('/avatar/{{user.id}}')"></div>
       <a class="closebtn" id="chatroomToggle" onclick="closeNav()">&times;</a>
       <a href="/#!/rooms">Home</a>
-      <a href="/#!/chatroom">My Account</a>
+      <a href="/#!/user">My Account</a>
       <p>Other users in this room</p>
 
       <a ng-repeat="user in allUsers" href="/#!/user/{{user.id}}">{{user.username}}</a>
