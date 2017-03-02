@@ -52,7 +52,7 @@ app.use( express.static( path.join( root, "client" )));
 
 var ioDeferred = q.defer();
 routes(app, ioDeferred.promise);
-commands.setup(user_sockets, ioDeferred);
+commands.setup(user_sockets, ioDeferred.promise);
 
 static_loader.install(app);
 

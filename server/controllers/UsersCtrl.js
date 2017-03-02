@@ -3,7 +3,7 @@ var fs = require("fs");
 var static_loader = require("utils.js");
 var q = require("q");
 var mkdirp = require("mkdirp");
-var db = require("./db.js");
+var db = require("../config/db.js");
 
 
 module.exports = {

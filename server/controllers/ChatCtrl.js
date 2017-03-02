@@ -1,4 +1,4 @@
-var db = require("./db.js");
+var db = require("../config/db.js");
 
 module.exports = {
   listRooms:function(req, res){

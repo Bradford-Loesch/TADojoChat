@@ -1,4 +1,4 @@
-var pgp = require("pgp");
+var pgp = require("pg-promise")();
 var cn = {
   database: "chat",
   user: "coder65535",
