@@ -104,7 +104,7 @@ io.sockets.on("connection", function(socket) {
           socket.emit("server_message",res); //call the command specified by "command" with the given args
         }
       } else {
-        socket.emit("server_message",{output:command+"is not a command", room:data.room});
+        socket.emit("server_message",{output:command+" is not a valid command", room:data.room});
       }
     } else {
       db.one("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3) returning Message.id",[data.room, socket.handshake.session.user, data.message]).then(newmessage=>{

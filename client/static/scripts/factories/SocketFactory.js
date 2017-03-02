@@ -24,6 +24,18 @@ app.factory("SocketFactory",[function () {
     socket.on("broadcast_message", callback);
   };
 
+  factory.onServerMessage = function(callback) {
+    socket.on("server_message", callback);
+  };
+
+  factory.onPoll = function(callback) {
+    socket.on("poll", callback);
+  };
+
+  factory.onPollUpdate = function(callback) {
+    socket.on("poll_update", callback);
+  }
+
   factory.onUserConnect = function(callback) {
     socket.on("broadcast_user_connect", callback);
   };

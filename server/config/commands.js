@@ -18,8 +18,8 @@ module.exports = {
     }
     message = message.join(" ");
     if (user in user_sockets){
-      db.one("SELECT username FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
-        io.sockets.connected[user_sockets[user.username]].emit("server_message", "Whisper from "+user.name+": "+message);
+      db.one("SELECT username FROM Users WHERE id=$1", [socket.handshake.session.user]).then(sender=>{
+        io.sockets.connected[user_sockets[user.username]].emit("server_message", {output:"Whisper from "+sender.name+": "+message, room:null});
         return null;
       }).catch(console.error);
     } else {

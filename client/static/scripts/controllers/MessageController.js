@@ -6,6 +6,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
   $scope.allUsers = [];
   $scope.currentUsers = [];
   $scope.user = {};
+  $scope.polls = [];
   $scope.room = $routeParams.id;
   $scope.updateStyle = function(style){
     console.log("hi", style);
@@ -18,6 +19,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
     MessageFactory.getMessages().then(function(res){
       $scope.allMessages = res.data.messages;
       $scope.allUsers = res.data.users;
+      $scope.polls = res.data.polls;
       return null;
     }).catch(console.error);
   };
@@ -50,6 +52,27 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
     $scope.allMessages.push(data);
     // var d = new Date($scope.allMessages[0].created_at);
     // $scope.time = date
+    $scope.$apply();
+  });
+
+  SocketFactory.onServerMessage(function(data) {
+    if (data.room == $scope.room || data.room == null) {
+      serverMessage = {
+        'username': 'from server',
+        'message': data.output
+      }
+      $scope.allMessages.push(serverMessage);
+    }
+    $scope.$apply();
+  });
+
+  SocketFactory.onPoll(function(data) {
+    $scope.polls.push(data);
+    $scope.$apply();
+  });
+
+  SocketFactory.onPollUpdate(function(data) {
+    $scope.polls[$scope.polls.length-1].answers = data;
     $scope.$apply();
   });
 
