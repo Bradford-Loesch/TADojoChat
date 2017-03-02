@@ -1,18 +1,21 @@
-app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", "MessageFactory", "UserFactory", function ($scope, $routeParams, SocketFactory, MessageFactory, UserFactory) {
+/* global styles */
+app.controller("MessageController", ["$scope", "$routeParams", "$location", "SocketFactory", "MessageFactory", "UserFactory", "themer", function ($scope, $routeParams, $location, SocketFactory, MessageFactory, UserFactory, themer) {
+  $scope.styles = styles;
   $scope.allMessages = [];
   $scope.message = {};
   $scope.allUsers = [];
+  $scope.currentUsers = [];
   $scope.user = {};
   $scope.room = $routeParams.id;
+  $scope.updateStyle = function(style){
+    console.log("hi", style);
+    themer.setSelected(style);
+  };
 
-  // http functions for messsages
+
+  // http functions for messsages and user data
   var getMessages = function(){
     MessageFactory.getMessages().then(function(res){
-      console.log("data from getMessages");
-      console.log("messages");
-      console.log(res.data.messages);
-      console.log("users");
-      console.log(res.data.users);
       $scope.allMessages = res.data.messages;
       $scope.allUsers = res.data.users;
       return null;
@@ -22,61 +25,65 @@ app.controller("MessageController", ["$scope", "$routeParams", "SocketFactory", 
   var getUser = function(){
     UserFactory.index().then(userData=>{
       $scope.user = userData.data;
-      console.log("***********user data in UserController**********");
-      console.log(userData.data);
       return null;
     }).catch(console.error);
   };
-  getMessages();
-  getUser();
 
-  // socket functions for messages
-  // receive data from user connect broadcasts
-  SocketFactory.onUserConnect(function(res){
-    console.log("data from user connect");
-    console.log(res.data);
-    console.log("$scope.allUsers");
-    console.log($scope.allUsers);
-    if ($scope.allUsers.length === 0) {
-      getMessages();
-    }    else {
-      $scope.allUsers.push(res.data);
-      $scope.$apply();
-    }
-  });
+  // Join room on connect
+  var joinRoom = function(){
+    SocketFactory.joinRoom(parseInt($scope.room));
+  };
+  getUser();
+  getMessages();
+  joinRoom();
 
   // post new message
   $scope.sendMessage = function() {
-    console.log("in send message");
-    console.log($scope.message);
     SocketFactory.sendMessage({
       "room": parseInt($scope.room),
       "message": $scope.message.content});
     $scope.message = {};
   };
 
-
-
   // receive data from message broadcasts
-  SocketFactory.onBroadcast(function(data){
-    console.log("****** received broadcast data **********");
-    console.log(data);
-    $scope.allMessages.push({
-      "user": data.username,
-      "message": data.message});
-    console.log($scope.allMessages);
+  SocketFactory.onBroadcast(function(data) {
+    $scope.allMessages.push(data);
+    // var d = new Date($scope.allMessages[0].created_at);
+    // $scope.time = date
     $scope.$apply();
   });
 
-
-  // receive data from user disconnect broadcasts
-  SocketFactory.onUserDisconnect(function(data){
-    for (var i = 0; i < $scope.allUsers.length; i++) {
-      if ($scope.allUsers[i].id === data.id) {
-        $scope.allUsers.splice(i, 1);
+  // set current user list
+  var setCurrentUsers = function(data){
+    $scope.currentUsers = [];
+    for (var i = 0; i < data.currentUsers.length; i++) {
+      for (var j = 0; j < $scope.allUsers.length; j++) {
+        if (data.currentUsers[i] === $scope.allUsers[j].id) {
+          $scope.currentUsers.push($scope.allUsers[j]);
+        }
       }
     }
     $scope.$apply();
+  };
+
+  // reveive data from user connect broadcasts
+  SocketFactory.onUserConnect(function(data) {
+    setCurrentUsers(data);
+    if ("newuser" in data) {
+      $scope.allUsers.push(data.newuser);
+    }
+    $scope.$apply();
+  });
+
+  // receive data from user disconnect broadcasts
+  SocketFactory.onUserDisconnect(function(data) {
+    setCurrentUsers(data);
+    $scope.$apply();
+  });
+
+  // leave the chat room when the window closes
+  $scope.$on("$locationChangeStart", function() {
+    SocketFactory.disconnectRoom(parseInt($scope.room));
   });
 
 }]);

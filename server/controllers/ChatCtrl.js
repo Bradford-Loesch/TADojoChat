@@ -22,6 +22,7 @@ module.exports = {
     });
   },
   getRoom:function(req, res){
+
     db.any("SELECT Message.message, Message.created_at, Message.updated_at, Message.poster_id, Users.username FROM Message JOIN Users ON Users.id = Message.poster_id WHERE Message.room_id=$1 ORDER BY Message.created_at ASC",[req.params.id]).then(messages=>{
       return db.any("SELECT * from User_Rooms WHERE room_id = $1",[req.params.id]).then(users=>{
         return db.any("SELECT * FROM Poll WHERE room_id=$1;").then(polls_raw=>{

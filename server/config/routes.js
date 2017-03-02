@@ -14,6 +14,8 @@ module.exports = function(app) {
   app.delete("/profile", UsersCtrl.deleteMe);
   app.delete("/profile/:id", UsersCtrl.deleteUser);
   app.get("/avatar/:id", UsersCtrl.getAvatar);
+  app.get("/rooms/me", UsersCtrl.getMyRooms);
+  app.get("/avatar", UsersCtrl.getAvatar);
   app.get("/rooms", ChatCtrl.listRooms);
   app.post("/rooms", ChatCtrl.makeRoom);
   app.get("/room/:id", ChatCtrl.getRoom);

@@ -1,5 +1,5 @@
 
-app.factory("SocketFactory",["$routeParams", function ($routeParams) {
+app.factory("SocketFactory",[function () {
   var factory = {};
   var socket = io.connect();
 
@@ -10,6 +10,10 @@ app.factory("SocketFactory",["$routeParams", function ($routeParams) {
 
   factory.leaveRoom = function(data) {
     socket.emit("leave_room", data);
+  };
+
+  factory.disconnectRoom = function(data) {
+    socket.emit("disconnect_room", data);
   };
 
   factory.sendMessage = function(data) {

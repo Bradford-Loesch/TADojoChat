@@ -101,7 +101,7 @@ module.exports = {
     db.one("SELECT * FROM Users WHERE id=$1",[req.session.user]).then(user=>{
       var operations = [user];
       if (data.password) {
-        operations.push(bcrypt.hashpw(data.password,14));
+        operations.push(bcrypt.hash(data.password,14));
       } else {
         operations.push(null);
         delete data.password; //It might be empty, so remove it.
@@ -141,7 +141,7 @@ module.exports = {
     db.one("SELECT * FROM Users WHERE id=$1",[req.params.id]).then(user=>{
       var operations = [user];
       if (data.password) {
-        operations.push(bcrypt.hashpw(data.password,14));
+        operations.push(bcrypt.hash(data.password,14));
       } else {
         operations.push(null);
         delete data.password; //It might be empty, so remove it.
@@ -174,7 +174,6 @@ module.exports = {
   },
   deleteMe:function(req, res){
     db.any("DELETE FROM Users WHERE id=$1", req.session.user).then(()=>res.json({})).catch(err=>{
-
       console.error(err);
       res.json({err:err});
     });
@@ -201,13 +200,22 @@ module.exports = {
         static_loader.serve_file(res, "../"+user.avatar, "");
         return null;
       }).catch(err=>{
-        if (!(err.code === "aENOENT")){ // ENOENT is the "file does not exist" error, so it simply means the user has no avatar, and shouldn't be logged. Any other error should be logged.
+        if (!(err.code === "ENOENT")){ // ENOENT is the "file does not exist" error, so it simply means the user has no avatar, and shouldn't be logged. Any other error should be logged.
           console.error(err);
         }
         throw "";//Throw to reach the .catch, which serves up the "anonymous" avatar for users without one or unknown users.
       });
     }).catch(()=>{
-      static_loader.serve_file(res, "anonymous.jpg", "../client/avatars/");
+      static_loader.serve_file(res, "anonymous.png", "../client/avatars/");
+    });
+  },
+  getMyRooms:function(req, res){
+    db.any("SELECT User_Rooms.room_id AS room_id, Room.name AS name FROM User_Rooms JOIN Room on Room.id = User_rooms.room_id WHERE User_rooms.room_id = $1",[req.session.user]).then(rooms=>{
+      res.json(rooms);
+      return null;
+    }).catch(err=>{
+      console.error(err);
+      res.json({err:err});
     });
   }
 };

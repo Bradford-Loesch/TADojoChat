@@ -70,8 +70,27 @@ io.sockets.on("connection", function(socket) {
   }).catch(err=>{
     console.error(err);
   });
+});
 
-  // Join room on socket call and emit to other users
+var currentUsers = {};
+io.sockets.on("connection", function(socket) {
+  // Function to translate socket ids to user ids
+  var getUserIds = function(room) {
+    var roomUserIds = [];
+    var roomUserSockets = io.sockets.adapter.rooms[room];
+    console.log("******************");
+    console.log(room);
+    console.log(roomUserSockets);
+    if (typeof(roomUserSockets) === "undefined") {
+      // pass
+    } else {
+      for (var socket in roomUserSockets.sockets) {
+        // console.log(socket);
+        roomUserIds.push(currentUsers[socket]);
+      }
+    }
+    return roomUserIds;
+  };
 
   // Receive messages from user and emit to all users
   socket.on("send_message", function(data){
@@ -91,50 +110,89 @@ io.sockets.on("connection", function(socket) {
         socket.emit("server_message",{output:command+"is not a command", room:data.room});
       }
     } else {
-      db.one("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3) returning message",[data.room, socket.handshake.session.user, data.message]).then(message=>{
-        console.log("************newMessage*************");
-        console.log(message);
-        message.user = socket.handshake.session.user;
-        message.room = data.room;
-        console.log(message);
-        io.to(data.room).emit("broadcast_message", message);
-        console.log("**********sent message************");
-        return null;
+      db.one("INSERT INTO Message(room_id, poster_id, message) VALUES($1,$2,$3) returning Message.id",[data.room, socket.handshake.session.user, data.message]).then(newmessage=>{
+        return db.one("SELECT Message.message, Message.created_at, Message.updated_at, Message.poster_id, Users.username FROM Message JOIN Users ON Users.id = Message.poster_id WHERE Message.id = $1", [newmessage.id]).then(message=>{
+          message.room = data.room;
+          io.to(data.room).emit("broadcast_message", message);
+          return null;
+        });
       }).catch(err=>{
         console.error(err);
         socket.emit("message_error", err);
       });
     }
   });
+
+    // Join room on socket call and emit to other users
   socket.on("join_room", function(room){
+      // Add user to list of currentUsers, join room
+    if (!(socket.id in currentUsers)){
+      currentUsers[socket.id] = socket.handshake.session.user;
+    }
     socket.join(room);
-    db.any("INSERT INTO User_Rooms(user_id, room_id), VALUES ($1, $2)", [socket.handshake.session.user, room]).then(()=>{
-      return db.one("SELECT * FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
-        console.log("********** session user id **************");
-        socket.broadcast.to(room).emit("broadcast_user_disconnect", user.id);
+
+      // Check to see if user currently in room list
+    db.any("SELECT * from User_Rooms WHERE user_id=$1 and room_id=$2", [socket.handshake.session.user, room]).then(rooms=>{
+      if (rooms.length > 0) {
+          // console.log("*************roomUsers***********");
+          // console.log(currentUsers);
+          // console.log(roomUsers);
+        let data = {
+          "id": socket.handshake.session.user,
+          "currentUsers": getUserIds(room)
+        };
+        io.to(room).emit("broadcast_user_connect", data);
         return null;
-      });
+      } else {
+        return db.any("INSERT INTO User_Rooms(user_id, room_id) VALUES ($1, $2)", [socket.handshake.session.user, room]).then(()=>{
+          return db.one("SELECT * FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
+            let data = {
+              "id": socket.handshake.session.user,
+              "currentUsers": getUserIds(room),
+              "newuser": user
+            };
+            io.to(room).emit("broadcast_user_connect", data);
+            return null;
+          });
+        });
+      }
     }).catch(console.error);
   });
+
+    // Leave room and emit to others
   socket.on("leave_room", function(room){
     socket.leave(room);
+      // Remove user from database
     db.any("DELETE FROM User_Rooms WHERE user_id = $1 AND room_id = $2", [socket.handshake.session.user, room]).then(()=>{
       return db.one("SELECT * FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
-        console.log("********** session user id **************");
-        socket.broadcast.to(room).emit("broadcast_user_connect", user);
+        let data = {
+          "user": user,
+          "currentUsers": getUserIds(room)
+        };
+        socket.broadcast.to(room).emit("broadcast_user_disconnect", data);
         return null;
       });
     }).catch(console.error);
   });
 
-  // Remove user when diconnection occurs
+    // Exit from room and update list of current users
+  socket.on("disconnect_room", function(room){
+    socket.leave(room);
+    // var currentUsers = getUserIds(room);
+    let data = {
+      "currentUsers": getUserIds(room)
+    };
+    socket.broadcast.to(room).emit("broadcast_user_disconnect", data);
+    return null;
+  });
+
+    // Remove user when diconnection occurs
   socket.on("disconnect", function(){
-    io.emit("broadcast_user_disconnect", socket.handshake.session.user);
-    db.any("DELETE FROM User_Rooms WHERE user_id = $1", [socket.handshake.session.user]);
+    delete currentUsers[socket.id];
   });
 });
 
-// var ioSession = require("io-session");
-// io.use(ioSession(session));
+  // var ioSession = require("io-session");
+  // io.use(ioSession(session));
 
 ioDeferred.resolve(io);
