@@ -34,13 +34,11 @@
           <div id="userPageImage" style="background-image:url('/avatar/{{user.id}}')"></div>
           <div id="userPage">
             <div id="userDescription">
-              <form>
-                <form ng-app="fileUpload" ng-controller="UserController" name="form">
+              <form ng-app="fileUpload" ng-controller="UserController" name="form">
                 <div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
                   ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
                   ngf-resize="{width: 100, height: 100}">Chage user Image Here</div>
                 <button class="btn btn-default" type="submit" ng-click="submit()">submit</button>
-              </form id="userInfo">
                 <input type="text" class="form-control" ng-model="user.first_name" placeholder="First Name">
                 <input type="text" class="form-control" ng-model="user.last_name" placeholder="Last Name">
                 <input type="date" class="form-control" ng-model="user.birthday">

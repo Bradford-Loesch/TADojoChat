@@ -71,10 +71,11 @@ app.controller("UserController", ["$scope", "Upload", "$location","$routeParams"
     })
   }
   $scope.submit = function() {
-    if ($scope.form.file.$valid && $scope.file) {
+    console.log($scope.form)
+    if ($scope.form.file.$valid) {
       console.log($scope.file);
       $scope.upload($scope.file);
-    }    else{
+    }else{
       console.log("file is not valid");
     }
   };
