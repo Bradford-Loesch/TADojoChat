@@ -1,4 +1,4 @@
-app.controller("UserController", ["$scope", "Upload", "$location", "UserFactory", function ($scope, Upload, $location, UserFactory) {
+app.controller("UserController", ["$scope", "Upload", "$location","$routeParams", "UserFactory", function ($scope, Upload, $location,$routeParams, UserFactory) {
   $scope.login = function(){
     UserFactory.login($scope.user).then(res=>{
       console.log(res);
@@ -34,6 +34,7 @@ app.controller("UserController", ["$scope", "Upload", "$location", "UserFactory"
   $scope.index = function(){
     UserFactory.index().then(userData=>{
       delete userData.password
+      userData.data.birthday = new Date(userData.data.birthday);
       $scope.user = userData.data;
       // console.log("***********user data in UserController**********");
       console.log(userData.data);
@@ -61,8 +62,14 @@ app.controller("UserController", ["$scope", "Upload", "$location", "UserFactory"
     });
     console.log(file);
   };
-
-
+  $scope.getUser = function(){
+    console.log($routeParams)
+    UserFactory.getUser($routeParams.id).then(data=>{
+      data.data.birthday = new Date(data.data.birthday);
+      console.log(data.data)
+      $scope.otheruser = data.data
+    })
+  }
   $scope.submit = function() {
     if ($scope.form.file.$valid && $scope.file) {
       console.log($scope.file);
