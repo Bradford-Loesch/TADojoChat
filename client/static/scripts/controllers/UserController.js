@@ -38,7 +38,7 @@ app.controller("UserController", ["$scope", "Upload", "$location","$routeParams"
       userData.data.birthday = new Date(userData.data.birthday);
       $scope.user = userData.data;
       // console.log("***********user data in UserController**********");
-      console.log(userData.data);
+      // console.log(userData.data);
       return null;
     }).catch(console.error);
     $scope.getRooms()

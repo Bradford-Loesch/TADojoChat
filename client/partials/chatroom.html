@@ -76,6 +76,11 @@
         <div id="clickMe">
             <button class="clickMeButton" type="button" name="button" ng-click="updateStyle('spookyV2')">Testbutton</button>
         </div>
+        <div ng-if="currentPoll.question">
+          <h5>Current Poll: {{ currentPoll.question }}</h5>
+
+          <h5 ng-repeat="answer in currentPoll.answers">Option {{ answer.number}}: {{answer.answer}} Votes: {{answer.votes}}</h5>
+        </div>
         <div ng-repeat = "item in allMessages">
           <div ng-if="item.username == user.username">
             <p class="animated shake" ng-bind-html="item.message | emoji"></p>
