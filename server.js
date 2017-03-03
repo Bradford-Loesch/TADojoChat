@@ -93,6 +93,9 @@ io.sockets.on("connection", function(socket) {
   socket.on("send_message", function(data){
     console.log("***********data**************");
     console.log(data);
+    if (!data.message){
+      return;
+    }
     if (data.message[0] === "/"){
       var [command, ...args] = data.message.split(" ");
       command = command.substring(1);
