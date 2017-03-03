@@ -131,17 +131,10 @@ io.sockets.on("connection", function(socket) {
       // Check to see if user currently in room list
     db.any("SELECT * from User_Rooms WHERE user_id=$1 and room_id=$2", [socket.handshake.session.user, room]).then(rooms=>{
       if (rooms.length > 0) {
-<<<<<<< HEAD
-        // console.log("*************roomUsers***********");
-        // console.log(currentUsers);
-        // console.log(roomUsers);
-        var data = {
-=======
           // console.log("*************roomUsers***********");
           // console.log(currentUsers);
           // console.log(roomUsers);
         let data = {
->>>>>>> commands
           "id": socket.handshake.session.user,
           "currentUsers": getUserIds(room)
         };
@@ -150,11 +143,7 @@ io.sockets.on("connection", function(socket) {
       } else {
         return db.any("INSERT INTO User_Rooms(user_id, room_id) VALUES ($1, $2)", [socket.handshake.session.user, room]).then(()=>{
           return db.one("SELECT * FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
-<<<<<<< HEAD
-            var data = {
-=======
             let data = {
->>>>>>> commands
               "id": socket.handshake.session.user,
               "currentUsers": getUserIds(room),
               "newuser": user
@@ -173,11 +162,7 @@ io.sockets.on("connection", function(socket) {
       // Remove user from database
     db.any("DELETE FROM User_Rooms WHERE user_id = $1 AND room_id = $2", [socket.handshake.session.user, room]).then(()=>{
       return db.one("SELECT * FROM Users WHERE id=$1", [socket.handshake.session.user]).then(user=>{
-<<<<<<< HEAD
-        var data = {
-=======
         let data = {
->>>>>>> commands
           "user": user,
           "currentUsers": getUserIds(room)
         };
@@ -191,11 +176,7 @@ io.sockets.on("connection", function(socket) {
   socket.on("disconnect_room", function(room){
     socket.leave(room);
     // var currentUsers = getUserIds(room);
-<<<<<<< HEAD
-    var data = {
-=======
     let data = {
->>>>>>> commands
       "currentUsers": getUserIds(room)
     };
     socket.broadcast.to(room).emit("broadcast_user_disconnect", data);
