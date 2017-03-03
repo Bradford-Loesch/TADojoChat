@@ -6,8 +6,8 @@ var config = {
   "host": "localhost",
   "port": "5432"
 };
-pgtools.dropdb(config, "chat").then(()=>{
-  console.log("hi");
+
+function makeDB(){
   return pgtools.createdb(config, "chat").then(()=>{
     config.database = "chat";
     var db = pgp(config);
@@ -33,4 +33,8 @@ pgtools.dropdb(config, "chat").then(()=>{
       });
     });
   });
-}).catch(console.error);
+}
+
+pgtools.dropdb(config, "chat").then(makeDB,makeDB).catch(err=>{
+  console.error(err);
+});
