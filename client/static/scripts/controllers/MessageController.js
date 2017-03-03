@@ -18,12 +18,12 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
   // http functions for messsages and user data
   var getMessages = function(){
     MessageFactory.getMessages().then(function(res){
-      console.log(res.data);
+      // console.log(res.data);
       $scope.allMessages = res.data.messages;
       $scope.allUsers = res.data.users;
       $scope.polls = res.data.polls;
       setCurrentPoll($scope.polls);
-      console.log($scope.polls);
+      // console.log($scope.polls);
       return null;
     }).catch(console.error);
   };
@@ -92,7 +92,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
 
   // set current user list
   var setCurrentUsers = function(data){
-    console.log(data);
+    // console.log(data);
     $scope.currentUsers = [];
     for (var i = 0; i < data.currentUsers.length; i++) {
       for (var j = 0; j < $scope.allUsers.length; j++) {
