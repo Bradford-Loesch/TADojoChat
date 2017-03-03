@@ -16,13 +16,16 @@
   // });
   function openNav() {
     document.getElementById("mySidenav").style.width = "200px";
-    document.getElementById("main").style.marginLeft = "250px";
+    document.getElementById("main").style.marginLeft = "200px";
   }
   /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
   function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0"
   }
+  // function change(){
+  //   updateStyle(spookyV2)
+  // }
   console.log(screen.width)
   if(screen.width > 700){
     openNav()
@@ -31,9 +34,7 @@
   </script>
   <div ng-controller="MessageController">
     <div id="mySidenav" class="sidenav" ng-controller="UserController" ng-init="index()">
-      <select ng-change="updateStyle(selectedStyle)" ng-model="selectedStyle">
-        <option selected ng-repeat="style in styles" value="{{style.key}}">{{style.label}}</option>
-      </select>
+
       <p>Hello {{user.username}}</p>
       <div id="chatroomAvatar" style="background-image:url('/avatar/{{user.id}}')"></div>
       <a class="closebtn" id="chatroomToggle" onclick="closeNav()">&times;</a>
@@ -52,6 +53,14 @@
 
     <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
     <div id="main">
+      <div id="themeDropdown">
+        <h3>select a theme</h3>
+        <select style="color:black"class="form-control"
+        ng-change="updateStyle(selectedStyle)" ng-model="selectedStyle">
+          <option style="color:black" selected ng-repeat="style in styles | filter: {label:'!spookyV2'}" value="{{style.key}}" placeholder="theme selector">{{style.label}}</option>
+        </select>
+      </div>
+
       <!-- <button ng-if="document.getElementById('main').style.marginLeft == null" onclick="openNav()" >Measfafas</button> -->
       <button id="chatroomToggle" type="button" onclick="openNav()" class="btn btn-default" aria-label="Left Align">
         <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
@@ -67,10 +76,13 @@
       <h3>{{time}}</h3>
       <br>
       <div id="text">
+        <div id="clickMe">
+            <button class="clickMeButton" type="button" name="button" ng-click="updateStyle('spookyV2')">Testbutton</button>
+        </div>
         <div ng-repeat = "item in allMessages">
           <div ng-if="item.username == user.username">
-            <p ng-bind-html="item.message | emoji"></p>
-            <h5>{{ item.username }} {{ item.created_at | date: "shortTime"}}</h5>
+            <p class="animated shake" ng-bind-html="item.message | emoji"></p>
+            <h5 class="animated shake">{{ item.username }} {{ item.created_at | date: "shortTime"}}</h5>
           </div> <!-- End of user message row -->
           <div ng-if="item.username != user.username">
             <p ng-bind-html="item.message | emoji"></p>
@@ -78,13 +90,13 @@
           </div>
         </div> <!-- End of guest message row -->
       </div>
+    </div>
     <div id="chatBottom">
       <form>
         <label for="messageinput"></label>
-        <input  type="text" ng-model="message.content">
+        <input  class="form-control" id="chatInput" type="text" ng-model="message.content">
         <button id="buttonForm" class="btn btn-default" ng-click="sendMessage()">Send</button>
       </form>
-    </div>
     </div>
   </div>
 </div>

@@ -40,6 +40,10 @@ app.config(["$routeProvider", 'themerProvider', function($routeProvider, themerP
           { key: 'DARK', label: 'Leprechaun Theme', href: 'static/assets/leprechaun.css'},
           { key: 'DRACULA', label: 'Dracula Theme', href: ['static/assets/dracula.css', 'static/assets/header-size.css']},
           { key: 'Pink', label: 'Pink Panther Theme', href: 'static/assets/pink.css'},
+          { key: 'spookyTheme', label: 'spookyTheme', href: 'static/assets/spookyTheme.css'},
+          { key: 'spookyV2', label: 'spookyV2', href: 'static/assets/spookyV2.css'}
+
+
 
         ];
 
