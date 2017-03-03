@@ -37,6 +37,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
   // Join room on connect
   var joinRoom = function(){
     SocketFactory.joinRoom(parseInt($scope.room));
+    updateScroll();
   };
   getUser();
   getMessages();
@@ -56,6 +57,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
     // var d = new Date($scope.allMessages[0].created_at);
     // $scope.time = date
     $scope.$apply();
+    updateScroll();
   });
 
   SocketFactory.onServerMessage(function(data) {
@@ -67,6 +69,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
       $scope.allMessages.push(serverMessage);
     }
     $scope.$apply();
+    updateScroll();
   });
 
   setCurrentPoll = function(polls) {

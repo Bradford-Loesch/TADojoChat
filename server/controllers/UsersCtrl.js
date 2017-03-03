@@ -210,7 +210,7 @@ module.exports = {
     });
   },
   getMyRooms:function(req, res){
-    db.any("SELECT User_Rooms.room_id AS room_id, Room.name AS name FROM User_Rooms JOIN Room on Room.id = User_rooms.room_id WHERE User_rooms.room_id = $1",[req.session.user]).then(rooms=>{
+    db.any("SELECT User_Rooms.room_id AS room_id, Room.name AS name FROM User_Rooms JOIN Room on Room.id = User_rooms.room_id WHERE User_rooms.user_id = $1",[req.session.user]).then(rooms=>{
       res.json(rooms);
       return null;
     }).catch(err=>{

@@ -23,6 +23,9 @@
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0"
   }
+  function updateScroll(){
+    window.scrollTo(0,document.body.scrollHeight);
+  }
   // function change(){
   //   updateStyle(spookyV2)
   // }
@@ -40,9 +43,9 @@
       <a class="closebtn" id="chatroomToggle" onclick="closeNav()">&times;</a>
       <a href="/#!/rooms">Home</a>
       <a href="/#!/user">My Account</a>
-      <p>Other users in this room</p>
+      <p>Users Online</p>
       <a ng-repeat="user in currentUsers" href="/#!/user/{{user.id}}">{{user.username}}</a>
-      <p>Chatrooms you are in</p>
+      <p>Your Chatrooms</p>
       <a ng-repeat="room in roomsIn" href="/#!/user/">{{room.name}}</a>
     </div>
 
