@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $('#menu').slicknav({
+      label: '',
+      duration: 300,
+      easingOpen: "swing",
+      prependTo:'#userAnchor'
+    });
+  });
+  </script>
+
+    <body>
+      <nav class="navbar navbar-inverse">
+        <div id="dash" class="container-fluid">
+          <ul class="nav navbar-nav">
+            <li><a href="/#!/rooms">Chatrooms</a></li>
+          </ul>
+        </div>
+      </nav>
+      <ul id="menu">
+        <li><a href="/#!/rooms">home</a></li>
+        <li><a href="/#!/newRoom">Create a new chatroom</a></li>
+        <li>Chatrooms
+          <ul>
+            <li><a href="/#!/chatroom/1">chatroom1</a></li>
+          </ul>
+        </li>
+      </ul>
+        <div id="userAnchor"></div>
+          <div class="container-fluid" ng-controller="UserController" ng-init="getUser()">
+            <h1>{{otheruser.username}}</h1>
+            <div id="userPageImage" style="background-image:url('/avatar/{{otheruser.id}}')"></div>
+            <div id="userPage">
+              <div id="userDescription">
+                <h2 ng-if="!otheruser.first_name &amp;&amp; !otheruser.last_name">Full name: <span>No first or last name set</span></h2>
+                <h2 ng-if="otheruser.first_name">Full name: <span>{{otheruser.first_name}} {{otheruser.last_name}}</span></h2>
+                <h2>Birthday: <span>{{otheruser.birthday.toDateString()}}</span></h2>
+
+                <h2>Email: <span>{{otheruser.email}}</span></h2>
+                <h2>Location: <span>{{otheruser.location}}</span></h2>
+                <h2>skype: <span>{{otheruser.skype}}</span></h2>
+                <h2>Description: <span>{{otheruser.description}}</span></h2>
+
+
+                <br>
+                <a ng-click="logout()">not Username? sign out!</a>
+              </div>
+          </div>
+      </div>
+  </body>
+ </html>

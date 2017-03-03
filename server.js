@@ -69,9 +69,6 @@ io.sockets.on("connection", function(socket) {
   var getUserIds = function(room) {
     var roomUserIds = [];
     var roomUserSockets = io.sockets.adapter.rooms[room];
-    console.log("******************");
-    console.log(room);
-    console.log(roomUserSockets);
     if (typeof(roomUserSockets) === "undefined") {
       // pass
     } else {
