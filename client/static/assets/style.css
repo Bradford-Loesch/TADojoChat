@@ -150,16 +150,16 @@
 *::-webkit-scrollbar
 {
 	width: 6px;
-	background-color: #F5F5F5;
+	background-color:#0e0d0d;
 }
 *::-webkit-scrollbar-thumb
 {
-	background-color: #F5F5F5;
+	background-color: #0e0d0d;
   border-radius: 40px;
 }
 *::-webkit-scrollbar{
 	width: 6px;
-	background-color: #F5F5F5;
+	background-color: #0e0d0d;
 }
 *::-webkit-scrollbar-thumb
 {
@@ -174,13 +174,14 @@
   z-index: 1; /* Stay on top */
   top: 0;
   left: 0;
-  background-color: #111; /* Black*/
+  background-color: #0e0d0d; /* Black*/
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 60px; /* Place content 60px from the top */
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 #text{
 	word-wrap: break-word;
+  margin-bottom: 70px;
 }
 #text p{
 	font-size: 1.5em;
@@ -204,6 +205,13 @@
   color: #337ab7;
   display: block;
   transition: 0.3s
+}
+#themeDropdown{
+  float:right;
+  text-align: center;
+  position: fixed;
+  margin-left: 900px;
+
 }
 
 
@@ -319,12 +327,33 @@ body {
   text-align:center;
   font-size:1.4em;
   color:black;
+  background-color: #0e0d0d;
 }
 #userDescription .form-control {
   width: 90%;
   margin:auto;
   border-radius: 13px;
   margin-top: 8px;
+}
+#clickMe{
+  background-color: red;
+  height: 553px;
+  width: 300px;
+  margin-top: 22%;
+  position: fixed;
+  margin-left: 300px;
+  opacity: 0;
+  display: none;
+}
+#chatInput{
+  display: inline-block;
+  width: 40%;
+  margin-left: 200px;
+  height: 30px;
+}
+.clickMeButton{
+  height:83px;
+  width: 400px;
 }
 #userPageImage{
   position: relative;
@@ -453,8 +482,15 @@ span{
     text-align:center;
     font-size:1.4em;
     color:black;
-		/*sgdfg*/
-    overflow: hidden;
+    background-color:black;
+    margin-left: 0px;
   }
+  #themeDropdown{
+    margin-left: 200px;
+  }
+  #chatInput{
+    margin-left: 0px;
+  }
+
 
 }
