@@ -57,7 +57,7 @@
         <h3>select a theme</h3>
         <select style="color:black"class="form-control"
         ng-change="updateStyle(selectedStyle)" ng-model="selectedStyle">
-          <option style="color:black" selected ng-repeat="style in styles | filter: {style:'!Dracula Theme'}" value="{{style.key}}" placeholder="theme selector">{{style.label}}</option>
+          <option style="color:black" selected ng-repeat="style in styles | filter: {label:'!spookyV2'}" value="{{style.key}}" placeholder="theme selector">{{style.label}}</option>
         </select>
       </div>
 
