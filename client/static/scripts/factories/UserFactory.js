@@ -23,5 +23,8 @@ app.factory("UserFactory", ["$http", function ($http) {
   factory.getUser = function(id){
     return $http.get('/profile/' + id)
   }
+  factory.getrooms = function(){
+    return $http.get('/rooms/me')
+  }
   return factory;
 }]);

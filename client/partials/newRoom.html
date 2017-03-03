@@ -41,11 +41,7 @@
         <div class="col-md-6 col-md-offset-3">
           <form>
             <input type="text" class="form-control" ng-model="room.name" placeholder="Name of room">
-            <select class="form-control" ng-model="room.type" placeholder="room Type">
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-              <option value="locked">locked</option>
-            </select>
+            <input type="text" class="form-control" ng-model="room.type" placeholder="Type">
             <textarea class="form-control" name="name" ng-model="room.description" rows="5" cols="80" placeholder="Description of the chatroom"></textarea>
             <br>
             <input class="btn btn-default" type="submit" ng-click="create()">

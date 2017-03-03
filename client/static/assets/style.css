@@ -236,6 +236,7 @@
     font-size: 1.4em;
 }
 #main h5{
+  width: 20%;
   color: #337ab7;
 }
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
@@ -269,7 +270,9 @@ h3 {
   display: inline-block;
 }
 #validator{
+  text-align: center;
   color:red;
+  margin: auto;
 }
 select.form-control{
   padding: 25px 12px;
@@ -337,9 +340,9 @@ body {
 }
 #clickMe{
   background-color: red;
-  height: 553px;
-  width: 300px;
-  margin-top: 22%;
+  height: 503px;
+  width: 80%;
+  margin-top: 18%;
   position: fixed;
   margin-left: 300px;
   opacity: 0;
@@ -352,8 +355,8 @@ body {
   height: 30px;
 }
 .clickMeButton{
-  height:83px;
-  width: 400px;
+  height:400px;
+  width: 80%;
 }
 #userPageImage{
   position: relative;

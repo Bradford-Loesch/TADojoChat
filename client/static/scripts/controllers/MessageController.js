@@ -11,7 +11,6 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
     themer.setSelected(style);
   }
 
-
   // http functions for messsages and user data
   getMessages = function(){
     MessageFactory.getMessages().then(function(res){

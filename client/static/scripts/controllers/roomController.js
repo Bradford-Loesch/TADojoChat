@@ -10,6 +10,7 @@ app.controller('roomsController',['$scope', '$location', 'roomFactory', function
       console.log($scope.room)
       roomFactory.create($scope.room).then(function(res){
         console.log(res.data)
+        $location.url('/rooms')
       })
     }
 

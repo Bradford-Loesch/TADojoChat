@@ -19,12 +19,7 @@
         </form>
         <br>
         <a href="/#!/login">Already have an account?</a>
-        <table>
-          <tr ng-repeat="validate in validations">
-            <td id="validator" ><h1>dsfs{{validate}}</h1></td>
-          </tr>
-        </table>
-
+        <h2 id="validator" ng-repeat="error in errors">{{error}}</h2>
       </div>
     </div>
   </div>

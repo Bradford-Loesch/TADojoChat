@@ -7,13 +7,16 @@
   <body>
     <script type="text/javascript">
     $(document).ready(function(){
-      $('#menu').slicknav();
+      $('#menu').slicknav({
+        label: '',
+        duration: 300,
+        easingOpen: "swing",
+        prependTo:'#userAnchor'
+      });
     });
     </script>
     <body>
-      <!-- <div id="top"></div> -->
       <nav class="navbar navbar-inverse">
-
         <div id="dash" class="container-fluid">
           <ul class="nav navbar-nav">
             <li><a href="/#!">Logout</a></li>
@@ -24,15 +27,17 @@
       </nav>
       <div id="UserWrapper"  ng-controller="roomsController" ng-init="index()">
         <ul id="menu">
-          <li><a href="/#!/user">user</a></li>
-          <li>Chatrooms
+          <li><a href="/#!/user">My Account</a></li>
+          <li><a ng-click="logout()">Log out</a></li>
+
+          <!-- <li>Chatrooms
             <ul>
               <li><a href="/#!/chatroom/Main">chatroom1</a></li>
             </ul>
-          </li>
+          </li> -->
         </ul>
+        <div id="userAnchor"></div>
         <div class="container-fluid" ng-controller="UserController" ng-init="index()">
-          <div id="top"></div>
         <h1>Welcome {{user.username}}</h1>
         <h1>Chatrooms</h1>
           <div id="chats">

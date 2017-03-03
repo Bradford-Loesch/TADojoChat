@@ -19,6 +19,7 @@ app.controller("UserController", ["$scope", "Upload", "$location","$routeParams"
       if(!res.data.err){
         $location.url("/rooms");
       } else {
+        $scope.errors = (res.data.err.items)
         throw res.data.err;
       }
       return null;
@@ -40,6 +41,7 @@ app.controller("UserController", ["$scope", "Upload", "$location","$routeParams"
       console.log(userData.data);
       return null;
     }).catch(console.error);
+    $scope.getRooms()
   };
   $scope.upload = function (){
     $scope.user.avatar = $scope.file;
@@ -73,5 +75,11 @@ app.controller("UserController", ["$scope", "Upload", "$location","$routeParams"
       console.log("file is not valid");
     }
   };
+  $scope.getRooms = function() {
+    UserFactory.getrooms().then(data=>{
+      console.log(data.data)
+      $scope.roomsIn = data.data
+    })
+  }
 
 }]);

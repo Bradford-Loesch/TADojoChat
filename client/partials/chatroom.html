@@ -42,11 +42,8 @@
       <a href="/#!/user">My Account</a>
       <p>Other users in this room</p>
       <a ng-repeat="user in currentUsers" href="/#!/user/{{user.id}}">{{user.username}}</a>
-      <p>Chatrooms</p>
-      <a>chatroom</a>
-      <a>chatroom</a>
-      <a>chatroom</a>
-      <a>chatroom</a>
+      <p>Chatrooms you are in</p>
+      <a ng-repeat="room in roomsIn" href="/#!/user/">{{room.name}}</a>
     </div>
 
     <!-- Use any element to open the sidenav -->
