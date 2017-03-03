@@ -26,15 +26,19 @@ module.exports = {
     db.any("SELECT Message.message, Message.created_at, Message.updated_at, Message.poster_id, Users.username FROM Message JOIN Users ON Users.id = Message.poster_id WHERE Message.room_id=$1 ORDER BY Message.created_at ASC",[req.params.id]).then(messages=>{
       return db.any("SELECT * from User_Rooms JOIN Users ON User_Rooms.user_id=Users.id WHERE User_Rooms.room_id = $1",[req.params.id]).then(users=>{
         return db.any("SELECT * FROM Poll WHERE room_id=$1;",[req.params.id]).then(polls_raw=>{
-          var polls = [];
+          var polls = {};
+          console.log(polls_raw);
           for (let answer of polls_raw){
+            console.log(answer);
             if (answer.question in polls){
               polls[answer.question].answers.push({number:answer.answer_number, answer:answer.answer, votes:answer.votes});
             } else {
-              polls[answer.question].answers = [{number:answer.answer_number, answer:answer.answer, votes:answer.votes, created_at:answer.created_at}];
-              polls[answer.question].created_at = answer.created_at;
+              polls[answer.question] = {};
+              polls[answer.question].answers = [{number:answer.answer_number, answer:answer.answer, votes:answer.votes}];
+              polls[answer.question].created_at = answer.date;
               polls[answer.question].open = answer.open;
             }
+            console.log(polls)
           }
           res.json({"users":users, "messages":messages, "polls":polls});
           return null;

@@ -2,15 +2,15 @@ app.controller("roomsController",["$scope", "$location", "roomFactory", function
   $scope.index = function(){
     // console.log("index");
     roomFactory.index().then(function(res){
-      console.log(res.data.rooms);
+      // console.log(res.data.rooms);
       $scope.rooms = res.data.rooms;
       return null;
     }).catch(console.error);
   };
   $scope.create = function(){
-    console.log($scope.room);
+    // console.log($scope.room);
     roomFactory.create($scope.room).then(function(res){
-      console.log(res.data);
+      // console.log(res.data);
       return null;
     }).catch(console.error);
   };

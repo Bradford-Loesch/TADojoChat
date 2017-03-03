@@ -30,24 +30,26 @@ module.exports = {
     return this.whisper(args, data, socket);
   },
   poll:function(args, data, socket){
-    var [question, ...answers] = args.join(" ").split(":");
+    var [question, ...answers] = args.join(" ").split("#");
     for (let i in answers){
       answers[i] = answers[i].trim();
     }
     question = question.trim();
-    if (!answers || answers.length <= 2){
-      return "Usage: /poll <question>:<answer>:<answer>[:<answer>[...]]";
+    if (!answers || answers.length <= 1){
+      return "Usage: /poll <question>*<answer>*<answer>[*<answer>[...]]";
     }
     db.tx(t=>{
-      return t.oneOrNone("SELECT * FROM Poll_Question WHERE room_id = $1 AND open = true",[data.room_id]).then(active=>{
+      return t.oneOrNone("SELECT * FROM Poll_Question WHERE room_id = $1 AND open = true",[data.room]).then(active=>{
+        console.log(active)
         if (active){
           socket.emit("server_message",{output:"There is already an active poll.", room:data.room});
           return null;
         }
         return t.one("INSERT INTO Poll_Question(question, room_id) VALUES ($1, $2) RETURNING id",[question,data.room]).then(res=>{
+          console.log(res.id);
           var queries = [];
           for (let answer of answers){
-            queries.push(t.any("INSERT INTO Poll_Answer(answer, question_id) VALUES ($1, $2)",[answer], res.id));
+            queries.push(t.any("INSERT INTO Poll_Answer(answer, question_id) VALUES ($1, $2)",[answer, res.id]));
           }
           return t.batch(queries);
         });

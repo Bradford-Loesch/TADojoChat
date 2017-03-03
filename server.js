@@ -98,7 +98,7 @@ io.sockets.on("connection", function(socket) {
       command = command.substring(1);
       console.log("SERVER COMMAND: ",command+ ": "+args);
       if (commands[command] && command !== "setup"){
-        var output = commands[command](args, socket, data);
+        var output = commands[command](args, data, socket);
         if (output){
           var res = {output:output, room:data.room};
           socket.emit("server_message",res); //call the command specified by "command" with the given args
