@@ -1,9 +1,6 @@
-var db = null;
+var db = require("../config/db.js");
 
 module.exports = {
-  setDB:function(dbObj){
-    db = db||dbObj;
-  },
   listRooms:function(req, res){
     db.any("SELECT * FROM Room WHERE is_private = false").then(rooms=>{
       res.json({"rooms":rooms});
@@ -25,10 +22,27 @@ module.exports = {
     });
   },
   getRoom:function(req, res){
-    db.any("SELECT Message.message, Message.created_at, Message.updated_at, Message.poster_id, Users.username FROM Message JOIN Room ON Room.id = Message.room_id JOIN Users ON Users.id = Message.poster_id WHERE Room.id=$1 ORDER BY Message.created_at ASC",[req.params.id]).then(messages=>{
-      return db.any("SELECT * from User_Rooms JOIN Room ON Room.id = room_id JOIN Users ON Users.id = User_Rooms.user_id WHERE Room.id = $1",[req.params.id]).then(users=>{
-        res.json({"users":users, "messages":messages});
-        return null;
+
+    db.any("SELECT Message.message, Message.created_at, Message.updated_at, Message.poster_id, Users.username FROM Message JOIN Users ON Users.id = Message.poster_id WHERE Message.room_id=$1 ORDER BY Message.created_at ASC",[req.params.id]).then(messages=>{
+      return db.any("SELECT * from User_Rooms JOIN Users ON User_Rooms.user_id=Users.id WHERE User_Rooms.room_id = $1",[req.params.id]).then(users=>{
+        return db.any("SELECT * FROM Poll WHERE room_id=$1;",[req.params.id]).then(polls_raw=>{
+          var polls = {};
+          console.log(polls_raw);
+          for (let answer of polls_raw){
+            console.log(answer);
+            if (answer.question in polls){
+              polls[answer.question].answers.push({number:answer.answer_number, answer:answer.answer, votes:answer.votes});
+            } else {
+              polls[answer.question] = {};
+              polls[answer.question].answers = [{number:answer.answer_number, answer:answer.answer, votes:answer.votes}];
+              polls[answer.question].created_at = answer.date;
+              polls[answer.question].open = answer.open;
+            }
+            console.log(polls)
+          }
+          res.json({"users":users, "messages":messages, "polls":polls});
+          return null;
+        });
       });
     }).catch(err=>{
       console.error(err);

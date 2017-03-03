@@ -1,6 +1,7 @@
-var app = angular.module("app",["ngRoute", "ngFileUpload", "ngSanitize", "dbaq.emoji", 'angular-themer']);
+/* global styles:true */
+var app = angular.module("app",["ngRoute", "ngFileUpload", "ngSanitize", "dbaq.emoji", "angular-themer"]);
 
-app.config(["$routeProvider", 'themerProvider', function($routeProvider, themerProvider){
+app.config(["$routeProvider", "themerProvider", function($routeProvider, themerProvider){
   $routeProvider
         .when("/",{
           templateUrl:"partials/login.html"
@@ -42,15 +43,12 @@ app.config(["$routeProvider", 'themerProvider', function($routeProvider, themerP
           { key: 'Pink', label: 'Pink Panther Theme', href: 'static/assets/pink.css'},
           { key: 'spookyTheme', label: 'spookyTheme', href: 'static/assets/spookyTheme.css'},
           { key: 'spookyV2', label: 'spookyV2', href: 'static/assets/spookyV2.css'}
+  ];
 
+  themerProvider.storeTheme(true);
+  themerProvider.setStyles(styles);
 
-
-        ];
-
-        themerProvider.storeTheme(true);
-        themerProvider.setStyles(styles);
-
-        var selected = themerProvider.getStoredTheme() || styles[0].key;
-        console.log("SELECTED:", selected);
-        themerProvider.setSelected(selected);
+  var selected = themerProvider.getStoredTheme() || styles[0].key;
+  console.log("SELECTED:", selected);
+  themerProvider.setSelected(selected);
 }]);

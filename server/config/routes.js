@@ -2,9 +2,7 @@ var UsersCtrl = require("../controllers/UsersCtrl.js");
 var ChatCtrl = require("../controllers/ChatCtrl.js");
 var multer = require("multer")({dest: "temp/"});
 
-module.exports = function(app, ioPromise, db) {
-  UsersCtrl.setDB(db);
-  ChatCtrl.setDB(db);
+module.exports = function(app) {
   // Login and registration methods
   app.post("/register", UsersCtrl.register);
   app.post("/login", UsersCtrl.login);

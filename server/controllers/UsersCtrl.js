@@ -3,13 +3,10 @@ var fs = require("fs");
 var static_loader = require("utils.js");
 var q = require("q");
 var mkdirp = require("mkdirp");
+var db = require("../config/db.js");
 
-var db = null;
 
 module.exports = {
-  setDB:function(dbObj){
-    db = db||dbObj;
-  },
   register: function(req, res){
     var data = req.body;
     var errors = [];
@@ -22,7 +19,7 @@ module.exports = {
     if (!data.email || !data.email.match(/^(?=[A-Z0-9][A-Z0-9@._%+-]{5,253}$)[A-Z0-9._%+-]{1,64}@(?:(?=[A-Z0-9-]{1,63}\.)[A-Z0-9]+(?:-[A-Z0-9]+)*\.){1,8}[A-Z]{2,63}$/i)){
       errors.push("Invalid email");
     }
-    if (!data.username || data.username.toLowerCase() === "anonymous" || data.username.toLowerCase() === "[deleted]" || !data.username.match(/^[ -~]+$/)){//space to tilde enforces printable ascii
+    if (!data.username || data.username.toLowerCase() === "anonymous" || data.username.toLowerCase() === "[deleted]" || !data.username.match(/^[!-~]+$/)){//bang to tilde enforces printable non-space ascii
       errors.push("Invalid username");
       res.json({success:false, err:{header:"Error in register:",items:errors}});
     } else {
