@@ -6,7 +6,8 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
   $scope.allUsers = [];
   $scope.currentUsers = [];
   $scope.user = {};
-  $scope.polls = [];
+  $scope.polls = {};
+  $scope.currentPoll = {};
   $scope.room = $routeParams.id;
   $scope.updateStyle = function(style){
     console.log("hi", style);
@@ -21,6 +22,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
       $scope.allMessages = res.data.messages;
       $scope.allUsers = res.data.users;
       $scope.polls = res.data.polls;
+      setCurrentPoll($scope.polls);
       console.log($scope.polls);
       return null;
     }).catch(console.error);
@@ -68,14 +70,23 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
     $scope.$apply();
   });
 
+  setCurrentPoll = function(polls) {
+    for (var question in polls) {
+      if (polls[question]['open']) {
+        $scope.currentPoll.question = question;
+        $scope.currentPoll.answers = polls[question]['answers'];
+      }
+    }
+  }
+
   SocketFactory.onPoll(function(data) {
-    console.log(data);
     $scope.polls.push(data);
+    setCurrentPoll($scope.polls);
     $scope.$apply();
   });
 
   SocketFactory.onPollUpdate(function(data) {
-    $scope.polls[$scope.polls.length-1].answers = data;
+    $scope.currentPoll.answers = data;
     $scope.$apply();
   });
 

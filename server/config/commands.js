@@ -65,22 +65,27 @@ module.exports = {
     return this.poll(args, data, socket);
   },
   vote:function(args, data, socket){
+    console.log(args);
     var [id, ...bad] = args;
-    if (!id || bad || id < 1){
+    id = +id;
+    console.log(id, bad)
+    if (!id || bad.length || id< 1){
       return "Usage: /vote <id>\nid is the id of the answer you wish to vote for.\nIf you vote for another answer, your first vote will be removed.";
     }
     db.oneOrNone("SELECT * FROM Poll_Question WHERE room_id = $1 AND open = true",[data.room]).then(active=>{
+      console.log(active)
       if (!active){
         socket.emit("server_message",{output:"There is no active poll.", room:data.room});
         return null;
       }
       return db.oneOrNone("SELECT * FROM Poll_Answer WHERE question_id=$1 AND number = $2",[active.id, id]).then(ans=>{
+        console.log(ans)
         if (!ans){
           socket.emit("server_message",{output:"That is not a valid answer.", room:data.room});
           return null;
         }
         return db.any("INSERT INTO Poll_Vote(user_id, answer_id) VALUES ($1, $2)",[socket.handshake.session.user, ans.id]).then(()=>{
-          return db.any("SELECT * FROM Poll WHERE room_id=$1 AND open=true;").then(answers=>{
+          return db.any("SELECT * FROM Poll WHERE room_id=$1 AND open=true;", [data.room]).then(answers=>{
             io.to(data.room).emit("poll_update",answers);
             return null;
           });
