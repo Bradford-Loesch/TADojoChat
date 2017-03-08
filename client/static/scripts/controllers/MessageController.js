@@ -6,7 +6,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
   $scope.allUsers = [];
   $scope.currentUsers = [];
   $scope.user = {};
-  $scope.polls = {};
+  $scope.polls = [];
   $scope.currentPoll = {};
   $scope.room = $routeParams.id;
   $scope.updateStyle = function(style){
@@ -67,9 +67,9 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
         'message': data.output
       }
       $scope.allMessages.push(serverMessage);
+      $scope.$apply();
+      updateScroll();
     }
-    $scope.$apply();
-    updateScroll();
   });
 
   setCurrentPoll = function(polls) {
@@ -79,17 +79,22 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
         $scope.currentPoll.answers = polls[question]['answers'];
       }
     }
-  }
+  };
 
   SocketFactory.onPoll(function(data) {
-    $scope.polls.push(data);
-    setCurrentPoll($scope.polls);
+    // $scope.polls.push(data);
+    console.log(data);
+    setCurrentPoll(data);
     $scope.$apply();
   });
 
   SocketFactory.onPollUpdate(function(data) {
     $scope.currentPoll.answers = data;
     $scope.$apply();
+  });
+
+  SocketFactory.onPollClose(function(data) {
+
   });
 
   // set current user list
@@ -112,7 +117,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
       $scope.allUsers.push(data.newuser);
     }
     setCurrentUsers(data);
-  })
+  });
 
   // receive data from user disconnect broadcasts
   SocketFactory.onUserDisconnect(function(data) {

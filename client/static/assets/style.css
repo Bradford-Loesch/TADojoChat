@@ -236,8 +236,12 @@
     font-size: 1.4em;
     overflow: hidden;
 }
-#main h5{
-  width: 20%;
+#main h4 {
+  color: red;
+  font-size: 1.0em;
+}
+#main h5 {
+  width: 50%;
   color: #337ab7;
 }
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */

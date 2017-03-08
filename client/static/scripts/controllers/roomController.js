@@ -17,7 +17,7 @@ app.controller("roomsController",["$scope", "$location", "roomFactory", function
 
   $scope.deleteRoom = function (idx, pos) {
     roomFactory.deleteRoom(idx).then(function(res){
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.err){
         throw res.data.err;
       }

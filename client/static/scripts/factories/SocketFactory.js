@@ -36,6 +36,10 @@ app.factory("SocketFactory",[function () {
     socket.on("poll_update", callback);
   }
 
+  factory.onPollClose = function(callback) {
+    socket.on("poll_close", callback)
+  }
+
   factory.onUserConnect = function(callback) {
     socket.on("broadcast_user_connect", callback);
   };

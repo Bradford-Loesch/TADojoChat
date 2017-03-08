@@ -36,7 +36,7 @@ module.exports = {
     }
     question = question.trim();
     if (!answers || answers.length <= 1){
-      return "Usage: /poll <question>*<answer>*<answer>[*<answer>[...]]";
+      return "Usage: /poll question#answer#answer[#answer[...]]";
     }
     db.tx(t=>{
       return t.oneOrNone("SELECT * FROM Poll_Question WHERE room_id = $1 AND open = true",[data.room]).then(active=>{
@@ -102,6 +102,7 @@ module.exports = {
         socket.emit("server_message",{output:"There is no active poll.", room:data.room});
         return null;
       }
+      io.to(data.room).emit("poll_close",active.id);
       return db.any("UPDATE Poll_Question SET open=false WHERE id=$1",[active.id]);
     }).catch(console.error);
   }

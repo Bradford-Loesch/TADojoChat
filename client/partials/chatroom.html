@@ -85,13 +85,20 @@
           <h5 ng-repeat="answer in currentPoll.answers">Option {{ answer.number}}: {{answer.answer}} Votes: {{answer.votes}}</h5>
         </div>
         <div ng-repeat = "item in allMessages">
-          <div ng-if="item.username == user.username">
-            <p class="animated shake" ng-bind-html="item.message | emoji"></p>
-            <h5 class="animated shake">{{ item.username }} {{ item.created_at | date: "shortTime"}}</h5>
-          </div> <!-- End of user message row -->
-          <div ng-if="item.username != user.username">
-            <p ng-bind-html="item.message | emoji"></p>
-            <h5>{{ item.username }} {{ item.created_at | date: "shortTime"}}</h5>
+          <div ng-switch="item.username">
+            <div ng-switch-when="item.username == user.username">
+              <p class="animated shake" ng-bind-html="item.message | emoji"></p>
+              <h5 class="animated shake">{{ item.username }} {{ item.created_at | date: "shortTime"}}</h5>
+            </div> <!-- End of user message row -->
+            <div ng-switch-when="from server">
+              <h4 class="animated shake">{{ item.username }}:</h4>
+              <h4 class="animated shake">{{ item. message }}</h4>
+            </div>
+            <div ng-switch-default>
+              <p class="animated shake" ng-bind-html="item.message | emoji"></p>
+              <h5 class="animated shake">{{ item.username }} {{ item.created_at | date: "shortTime"}}</h5>
+            </div>
+
           </div>
         </div> <!-- End of guest message row -->
       </div>
