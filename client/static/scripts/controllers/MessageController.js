@@ -84,7 +84,17 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
   SocketFactory.onPoll(function(data) {
     // $scope.polls.push(data);
     console.log(data);
-    setCurrentPoll(data);
+    if ('question' in data) {
+      $scope.currentPoll.question = data.question;
+      $scope.currentPoll.answers = [];
+      for (var i = 0; i < data.answers.length; i++) {
+        $scope.currentPoll.answers.push({
+          'answer': data.answers[i],
+          'number': i+1,
+          'votes': "0"
+        });
+      }
+    }
     $scope.$apply();
   });
 
@@ -94,7 +104,8 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
   });
 
   SocketFactory.onPollClose(function(data) {
-
+    $scope.currentPoll = {};
+    $scope.$apply();
   });
 
   // set current user list

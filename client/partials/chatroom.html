@@ -46,7 +46,7 @@
       <p>Users Online</p>
       <a ng-repeat="user in currentUsers" href="/#!/user/{{user.id}}">{{user.username}}</a>
       <p>Your Chatrooms</p>
-      <a ng-repeat="room in roomsIn" href="/#!/user/">{{room.name}}</a>
+      <a ng-repeat="room in roomsIn" href="/#!/chatroom/{{room.room_id}}">{{room.name}}</a>
     </div>
 
     <!-- Use any element to open the sidenav -->
@@ -54,7 +54,7 @@
     <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
     <div id="main">
       <div id="themeDropdown">
-        <h3>select a theme</h3>
+        <h4>select a theme</h4>
         <select style="color:black"class="form-control"
         ng-change="updateStyle(selectedStyle)" ng-model="selectedStyle">
           <option style="color:black" selected ng-repeat="style in styles | filter: {label:'!spookyV2'}" value="{{style.key}}" placeholder="theme selector">{{style.label}}</option>

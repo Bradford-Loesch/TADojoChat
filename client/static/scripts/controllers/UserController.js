@@ -1,7 +1,7 @@
 app.controller("UserController", ["$scope", "Upload", "$location","$routeParams", "UserFactory", "$window", function ($scope, Upload, $location,$routeParams, UserFactory, $window) {
   $scope.login = function(){
     UserFactory.login($scope.user).then(res=>{
-      console.log(res);
+      // console.log(res);
       if(!res.data.err){
         $location.url("/rooms");
       } else {
@@ -12,10 +12,10 @@ app.controller("UserController", ["$scope", "Upload", "$location","$routeParams"
     }).catch(console.error);
   };
   $scope.create = function(){
-    console.log("Creating");
-    console.log($scope.user);
+    // console.log("Creating");
+    // console.log($scope.user);
     UserFactory.register($scope.user).then(res=>{
-      console.log(res.data.success);
+      // console.log(res.data.success);
       if(!res.data.err){
         $location.url("/rooms");
       } else {
@@ -27,7 +27,7 @@ app.controller("UserController", ["$scope", "Upload", "$location","$routeParams"
   };
   $scope.logout = function(){
     UserFactory.logout().then(function(res){
-      console.log(res);
+      // console.log(res);
       $location.url("/login");
       return null;
     }).catch(console.error);
