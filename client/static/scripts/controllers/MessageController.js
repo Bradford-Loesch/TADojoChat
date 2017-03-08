@@ -22,7 +22,7 @@ app.controller("MessageController", ["$scope", "$routeParams", "$location", "Soc
       $scope.allUsers = res.data.users;
       $scope.polls = res.data.polls;
       setCurrentPoll($scope.polls);
-      // console.log($scope.polls);
+      console.log($scope.polls);
       return null;
     }).catch(console.error);
   };
