@@ -1,13 +1,22 @@
 {
-  "name": "test_json",
+  "name": "live_chat_application",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "contributors": [
+    "Bradford Loesch",
+    "Brian Keyser",
+    "Luis Salas",
+    "Anish Gheewala"
+  ],
+  "license": "MIT",
+  "repository" :
+  { "type" : "git"
+  , "url" : "https://github.com/Bradford-Loesch/TADojoChat"
+  },
   "dependencies": {
     "angular": "^1.6.0",
     "angular-route": "^1.6.0",

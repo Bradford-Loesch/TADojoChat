@@ -1,11 +1,14 @@
 {
-  "name": "simple_mean",
-  "description": "",
+  "name": "live_chat_application",
+  "description": "Live chat application utilizing socket.io",
   "main": "server.js",
   "authors": [
-    "Bradford Loesch"
+    "Bradford Loesch",
+    "Brian Keyser",
+    "Luis Salas",
+    "Anish Gheewala"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://github.com/Bradford-Loesch/TADojoChat",
   "private": true,
   "ignore": [
